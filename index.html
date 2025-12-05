@@ -1045,8 +1045,14 @@
         };
 
         // Initialize Firebase
-        firebase.initializeApp(firebaseConfig);
-        const db = firebase.firestore();
+        let db;
+        try {
+            firebase.initializeApp(firebaseConfig);
+            db = firebase.firestore();
+            console.log("Firebase initialized successfully");
+        } catch (error) {
+            console.error("Firebase initialization error:", error);
+        }
 
         // Toggle product details
         function toggleDetails(button) {
@@ -1108,16 +1114,24 @@
         // Load bestsellers from Firebase
         async function loadBestsellers() {
             try {
+                console.log("Loading bestsellers...");
                 const productsSnapshot = await db.collection('products')
                     .orderBy('rating', 'desc')
                     .limit(3)
                     .get();
                 
+                console.log("Bestsellers loaded:", productsSnapshot.size);
                 const bestsellersContainer = document.getElementById('bestsellers-container');
                 bestsellersContainer.innerHTML = '';
                 
+                if (productsSnapshot.empty) {
+                    bestsellersContainer.innerHTML = '<div class="loading">No bestsellers found</div>';
+                    return;
+                }
+                
                 productsSnapshot.forEach((doc) => {
                     const product = doc.data();
+                    console.log("Bestseller product:", product);
                     const bestsellerItem = `
                         <div class="bestseller-item">
                             <img src="${product.imageUrl}" alt="${product.name}" class="bestseller-img">
@@ -1132,22 +1146,30 @@
                 });
             } catch (error) {
                 console.error("Error loading bestsellers: ", error);
-                document.getElementById('bestsellers-container').innerHTML = '<div class="loading">Failed to load bestsellers</div>';
+                document.getElementById('bestsellers-container').innerHTML = '<div class="loading">Failed to load bestsellers. Check console for details.</div>';
             }
         }
 
         // Load featured products from Firebase
         async function loadFeaturedProducts() {
             try {
+                console.log("Loading featured products...");
                 const productsSnapshot = await db.collection('products')
                     .limit(6)
                     .get();
                 
+                console.log("Featured products loaded:", productsSnapshot.size);
                 const productsContainer = document.getElementById('featured-products');
                 productsContainer.innerHTML = '';
                 
+                if (productsSnapshot.empty) {
+                    productsContainer.innerHTML = '<div class="loading">No products found</div>';
+                    return;
+                }
+                
                 productsSnapshot.forEach((doc) => {
                     const product = doc.data();
+                    console.log("Featured product:", product);
                     const productCard = `
                         <div class="product-card">
                             <img src="${product.imageUrl}" alt="${product.name}" class="product-img">
@@ -1173,17 +1195,19 @@
                 });
             } catch (error) {
                 console.error("Error loading featured products: ", error);
-                document.getElementById('featured-products').innerHTML = '<div class="loading">Failed to load products</div>';
+                document.getElementById('featured-products').innerHTML = '<div class="loading">Failed to load products. Check console for details.</div>';
             }
         }
 
         // Load products for a specific category
         async function loadCategoryProducts(category, containerId) {
             try {
+                console.log(`Loading ${category} products...`);
                 const productsSnapshot = await db.collection('products')
                     .where('category', '==', category)
                     .get();
                 
+                console.log(`${category} products loaded:`, productsSnapshot.size);
                 const container = document.getElementById(containerId);
                 container.innerHTML = '';
                 
@@ -1194,6 +1218,7 @@
                 
                 productsSnapshot.forEach((doc) => {
                     const product = doc.data();
+                    console.log(`${category} product:`, product);
                     const productItem = `
                         <div class="product-item">
                             <img src="${product.imageUrl}" alt="${product.name}">
@@ -1210,7 +1235,7 @@
                 });
             } catch (error) {
                 console.error(`Error loading ${category} products: `, error);
-                document.getElementById(containerId).innerHTML = '<div class="loading">Failed to load products</div>';
+                document.getElementById(containerId).innerHTML = '<div class="loading">Failed to load products. Check console for details.</div>';
             }
         }
 
@@ -1267,8 +1292,15 @@
 
         // Load data when page loads
         document.addEventListener('DOMContentLoaded', function() {
-            loadBestsellers();
-            loadFeaturedProducts();
+            // Check if Firebase is initialized
+            if (typeof firebase !== 'undefined' && db) {
+                loadBestsellers();
+                loadFeaturedProducts();
+            } else {
+                console.error("Firebase not initialized");
+                document.getElementById('bestsellers-container').innerHTML = '<div class="loading">Failed to connect to database</div>';
+                document.getElementById('featured-products').innerHTML = '<div class="loading">Failed to connect to database</div>';
+            }
         });
     </script>
 </body>
