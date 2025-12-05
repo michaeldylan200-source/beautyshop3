@@ -5,6 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Adani Beauty and Wellness - Glow From Within</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-firestore-compat.js"></script>
     <style>
         * {
             margin: 0;
@@ -729,6 +732,14 @@
             color: var(--gold);
         }
 
+        /* Loading indicator */
+        .loading {
+            text-align: center;
+            padding: 50px;
+            color: var(--gold);
+            font-size: 1.2rem;
+        }
+
         /* Responsive Design */
         @media (max-width: 768px) {
             .header-top {
@@ -803,31 +814,9 @@
     <!-- Bestsellers Section -->
     <section class="bestsellers" id="bestsellers">
         <h2 class="section-title">BESTSELLERS</h2>
-        <div class="bestsellers-container">
-            <div class="bestseller-item">
-                <img src="https://i.imgur.com/FR302Pv.jpg" alt="Bestseller Product" class="bestseller-img">
-                <div class="bestseller-info">
-                    <h3>Radiant Glow Serum</h3>
-                    <p>For luminous, healthy-looking skin</p>
-                    <div class="price">KSh 4,599</div>
-                </div>
-            </div>
-            <div class="bestseller-item">
-                <img src="https://i.imgur.com/DCiCP0c.jpg" alt="Bestseller Product" class="bestseller-img">
-                <div class="bestseller-info">
-                    <h3>Hydrating Facial Mist</h3>
-                    <p>Refresh and moisturize anytime</p>
-                    <div class="price">KSh 2,850</div>
-                </div>
-            </div>
-            <div class="bestseller-item">
-                <img src="https://i.imgur.com/NQ9761Y.jpg" alt="Bestseller Product" class="bestseller-img">
-                <div class="bestseller-info">
-                    <h3>Nourishing Body Butter</h3>
-                    <p>Intensive moisture for soft skin</p>
-                    <div class="price">KSh 3,675</div>
-                </div>
-            </div>
+        <div class="bestsellers-container" id="bestsellers-container">
+            <!-- Bestsellers will be loaded from Firebase -->
+            <div class="loading">Loading bestsellers...</div>
         </div>
     </section>
 
@@ -888,76 +877,9 @@
     <!-- Featured Products -->
     <section class="featured-products" id="featured">
         <h2 class="section-title">FEATURED PRODUCTS</h2>
-        <div class="products-container">
-            <div class="product-card">
-                <img src="https://i.imgur.com/jm8yiRE.jpg" alt="Featured Product" class="product-img">
-                <div class="product-info">
-                    <h3>Vitamin C Brightening Serum</h3>
-                    <div class="price">KSh 3,999</div>
-                    <button class="view-details" onclick="toggleDetails(this)">VIEW DETAILS</button>
-                </div>
-                <div class="product-details">
-                    <p class="size">Size: 30ml</p>
-                    <p class="description">Advanced formula with 15% Vitamin C to brighten and even skin tone.</p>
-                    <div class="reviews">
-                        <div class="stars">
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star-half-alt"></i>
-                        </div>
-                        <p>4.5 (128 reviews)</p>
-                    </div>
-                    <button class="order-btn" onclick="placeOrder()">ORDER NOW</button>
-                </div>
-            </div>
-            <div class="product-card">
-                <img src="https://i.imgur.com/q6TyLDJ.jpg" alt="Featured Product" class="product-img">
-                <div class="product-info">
-                    <h3>Hydrating Night Cream</h3>
-                    <div class="price">KSh 4,250</div>
-                    <button class="view-details" onclick="toggleDetails(this)">VIEW DETAILS</button>
-                </div>
-                <div class="product-details">
-                    <p class="size">Size: 50ml</p>
-                    <p class="description">Rich overnight treatment that deeply hydrates and repairs skin while you sleep.</p>
-                    <div class="reviews">
-                        <div class="stars">
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="far fa-star"></i>
-                        </div>
-                        <p>4.0 (96 reviews)</p>
-                    </div>
-                    <button class="order-btn" onclick="placeOrder()">ORDER NOW</button>
-                </div>
-            </div>
-            <div class="product-card">
-                <img src="https://i.imgur.com/gLRj47g.jpg" alt="Featured Product" class="product-img">
-                <div class="product-info">
-                    <h3>Exfoliating Body Scrub</h3>
-                    <div class="price">KSh 2,999</div>
-                    <button class="view-details" onclick="toggleDetails(this)">VIEW DETAILS</button>
-                </div>
-                <div class="product-details">
-                    <p class="size">Size: 250ml</p>
-                    <p class="description">Gentle exfoliation with natural sea salt and essential oils for smooth skin.</p>
-                    <div class="reviews">
-                        <div class="stars">
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                        </div>
-                        <p>5.0 (210 reviews)</p>
-                    </div>
-                    <button class="order-btn" onclick="placeOrder()">ORDER NOW</button>
-                </div>
-            </div>
+        <div class="products-container" id="featured-products">
+            <!-- Products will be loaded from Firebase -->
+            <div class="loading">Loading products...</div>
         </div>
     </section>
 
@@ -1077,37 +999,9 @@
             <h1>SKIN CARE PRODUCTS</h1>
         </div>
         <div class="page-content">
-            <div class="product-grid">
-                <div class="product-item">
-                    <img src="https://i.imgur.com/LUVXc1I.jpg" alt="Skin Care Product">
-                    <div class="product-details-content">
-                        <h3>Anti-Aging Cream</h3>
-                        <div class="price">KSh 5,299</div>
-                        <div class="size">Size: 50ml</div>
-                        <p class="description">Advanced formula to reduce fine lines and wrinkles.</p>
-                        <button class="order-btn" onclick="placeOrder()">ORDER NOW</button>
-                    </div>
-                </div>
-                <div class="product-item">
-                    <img src="https://i.imgur.com/Qzthb3A.jpg" alt="Skin Care Product">
-                    <div class="product-details-content">
-                        <h3>Brightening Mask</h3>
-                        <div class="price">KSh 3,450</div>
-                        <div class="size">Size: 100ml</div>
-                        <p class="description">Weekly treatment to even skin tone and reduce dark spots.</p>
-                        <button class="order-btn" onclick="placeOrder()">ORDER NOW</button>
-                    </div>
-                </div>
-                <div class="product-item">
-                    <img src="https://i.imgur.com/xPHT9AB.jpg" alt="Skin Care Product">
-                    <div class="product-details-content">
-                        <h3>Hydrating Toner</h3>
-                        <div class="price">KSh 2,799</div>
-                        <div class="size">Size: 200ml</div>
-                        <p class="description">Alcohol-free toner that preps skin for better absorption.</p>
-                        <button class="order-btn" onclick="placeOrder()">ORDER NOW</button>
-                    </div>
-                </div>
+            <div class="product-grid" id="skin-care-products">
+                <!-- Products will be loaded from Firebase -->
+                <div class="loading">Loading products...</div>
             </div>
         </div>
     </div>
@@ -1118,27 +1012,9 @@
             <h1>BODY CARE PRODUCTS</h1>
         </div>
         <div class="page-content">
-            <div class="product-grid">
-                <div class="product-item">
-                    <img src="https://i.imgur.com/hznXvPO.jpg" alt="Body Care Product">
-                    <div class="product-details-content">
-                        <h3>Moisturizing Lotion</h3>
-                        <div class="price">KSh 2,499</div>
-                        <div class="size">Size: 400ml</div>
-                        <p class="description">Lightweight formula for all-day hydration without greasiness.</p>
-                        <button class="order-btn" onclick="placeOrder()">ORDER NOW</button>
-                    </div>
-                </div>
-                <div class="product-item">
-                    <img src="https://i.imgur.com/Nyn0ooH.jpg" alt="Body Care Product">
-                    <div class="product-details-content">
-                        <h3>Exfoliating Gloves</h3>
-                        <div class="price">KSh 1,850</div>
-                        <div class="size">Size: One Size</div>
-                        <p class="description">Natural sisal gloves for gentle exfoliation and smoother skin.</p>
-                        <button class="order-btn" onclick="placeOrder()">ORDER NOW</button>
-                    </div>
-                </div>
+            <div class="product-grid" id="body-care-products">
+                <!-- Products will be loaded from Firebase -->
+                <div class="loading">Loading products...</div>
             </div>
         </div>
     </div>
@@ -1149,42 +1025,29 @@
             <h1>FACE CARE PRODUCTS</h1>
         </div>
         <div class="page-content">
-            <div class="product-grid">
-                <div class="product-item">
-                    <img src="https://i.imgur.com/FR302Pv.jpg" alt="Face Care Product">
-                    <div class="product-details-content">
-                        <h3>Radiant Glow Serum</h3>
-                        <div class="price">KSh 4,599</div>
-                        <div class="size">Size: 30ml</div>
-                        <p class="description">Concentrated formula to brighten and even skin tone.</p>
-                        <button class="order-btn" onclick="placeOrder()">ORDER NOW</button>
-                    </div>
-                </div>
-                <div class="product-item">
-                    <img src="https://i.imgur.com/DCiCP0c.jpg" alt="Face Care Product">
-                    <div class="product-details-content">
-                        <h3>Hydrating Facial Mist</h3>
-                        <div class="price">KSh 2,850</div>
-                        <div class="size">Size: 100ml</div>
-                        <p class="description">Refreshing mist with hyaluronic acid for instant hydration.</p>
-                        <button class="order-btn" onclick="placeOrder()">ORDER NOW</button>
-                    </div>
-                </div>
-                <div class="product-item">
-                    <img src="https://i.imgur.com/NQ9761Y.jpg" alt="Face Care Product">
-                    <div class="product-details-content">
-                        <h3>Nourishing Body Butter</h3>
-                        <div class="price">KSh 3,675</div>
-                        <div class="size">Size: 200ml</div>
-                        <p class="description">Rich cream for intensive moisture and soft skin.</p>
-                        <button class="order-btn" onclick="placeOrder()">ORDER NOW</button>
-                    </div>
-                </div>
+            <div class="product-grid" id="face-care-products">
+                <!-- Products will be loaded from Firebase -->
+                <div class="loading">Loading products...</div>
             </div>
         </div>
     </div>
 
     <script>
+        // Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyAl8Iefq-noM4yHujACaHpU89jGSTe5YX8",
+            authDomain: "beauty3-d73b8.firebaseapp.com",
+            projectId: "beauty3-d73b8",
+            storageBucket: "beauty3-d73b8.firebasestorage.app",
+            messagingSenderId: "614052078876",
+            appId: "1:614052078876:web:192ee35fc9ab32868586d9",
+            measurementId: "G-0C3SYTCFLH"
+        };
+
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+
         // Toggle product details
         function toggleDetails(button) {
             const productCard = button.closest('.product-card');
@@ -1220,6 +1083,137 @@
             // window.location.href = "https://www.google.com/maps";
         }
 
+        // Generate star ratings
+        function generateStars(rating) {
+            let stars = '';
+            const fullStars = Math.floor(rating);
+            const hasHalfStar = rating % 1 >= 0.5;
+            
+            for (let i = 0; i < fullStars; i++) {
+                stars += '<i class="fas fa-star"></i>';
+            }
+            
+            if (hasHalfStar) {
+                stars += '<i class="fas fa-star-half-alt"></i>';
+            }
+            
+            const emptyStars = 5 - fullStars - (hasHalfStar ? 1 : 0);
+            for (let i = 0; i < emptyStars; i++) {
+                stars += '<i class="far fa-star"></i>';
+            }
+            
+            return stars;
+        }
+
+        // Load bestsellers from Firebase
+        async function loadBestsellers() {
+            try {
+                const productsSnapshot = await db.collection('products')
+                    .orderBy('rating', 'desc')
+                    .limit(3)
+                    .get();
+                
+                const bestsellersContainer = document.getElementById('bestsellers-container');
+                bestsellersContainer.innerHTML = '';
+                
+                productsSnapshot.forEach((doc) => {
+                    const product = doc.data();
+                    const bestsellerItem = `
+                        <div class="bestseller-item">
+                            <img src="${product.imageUrl}" alt="${product.name}" class="bestseller-img">
+                            <div class="bestseller-info">
+                                <h3>${product.name}</h3>
+                                <p>${product.description}</p>
+                                <div class="price">KSh ${product.price.toLocaleString()}</div>
+                            </div>
+                        </div>
+                    `;
+                    bestsellersContainer.innerHTML += bestsellerItem;
+                });
+            } catch (error) {
+                console.error("Error loading bestsellers: ", error);
+                document.getElementById('bestsellers-container').innerHTML = '<div class="loading">Failed to load bestsellers</div>';
+            }
+        }
+
+        // Load featured products from Firebase
+        async function loadFeaturedProducts() {
+            try {
+                const productsSnapshot = await db.collection('products')
+                    .limit(6)
+                    .get();
+                
+                const productsContainer = document.getElementById('featured-products');
+                productsContainer.innerHTML = '';
+                
+                productsSnapshot.forEach((doc) => {
+                    const product = doc.data();
+                    const productCard = `
+                        <div class="product-card">
+                            <img src="${product.imageUrl}" alt="${product.name}" class="product-img">
+                            <div class="product-info">
+                                <h3>${product.name}</h3>
+                                <div class="price">KSh ${product.price.toLocaleString()}</div>
+                                <button class="view-details" onclick="toggleDetails(this)">VIEW DETAILS</button>
+                            </div>
+                            <div class="product-details">
+                                <p class="size">Size: ${product.size}</p>
+                                <p class="description">${product.description}</p>
+                                <div class="reviews">
+                                    <div class="stars">
+                                        ${generateStars(product.rating)}
+                                    </div>
+                                    <p>${product.rating} Rating</p>
+                                </div>
+                                <button class="order-btn" onclick="placeOrder()">ORDER NOW</button>
+                            </div>
+                        </div>
+                    `;
+                    productsContainer.innerHTML += productCard;
+                });
+            } catch (error) {
+                console.error("Error loading featured products: ", error);
+                document.getElementById('featured-products').innerHTML = '<div class="loading">Failed to load products</div>';
+            }
+        }
+
+        // Load products for a specific category
+        async function loadCategoryProducts(category, containerId) {
+            try {
+                const productsSnapshot = await db.collection('products')
+                    .where('category', '==', category)
+                    .get();
+                
+                const container = document.getElementById(containerId);
+                container.innerHTML = '';
+                
+                if (productsSnapshot.empty) {
+                    container.innerHTML = '<div class="loading">No products found in this category</div>';
+                    return;
+                }
+                
+                productsSnapshot.forEach((doc) => {
+                    const product = doc.data();
+                    const productItem = `
+                        <div class="product-item">
+                            <img src="${product.imageUrl}" alt="${product.name}">
+                            <div class="product-details-content">
+                                <h3>${product.name}</h3>
+                                <div class="price">KSh ${product.price.toLocaleString()}</div>
+                                <div class="size">Size: ${product.size}</div>
+                                <p class="description">${product.description}</p>
+                                <button class="order-btn" onclick="placeOrder()">ORDER NOW</button>
+                            </div>
+                        </div>
+                    `;
+                    container.innerHTML += productItem;
+                });
+            } catch (error) {
+                console.error(`Error loading ${category} products: `, error);
+                document.getElementById(containerId).innerHTML = '<div class="loading">Failed to load products</div>';
+            }
+        }
+
         // Navigation between pages
         document.querySelectorAll('.nav-links a, .btn').forEach(link => {
             link.addEventListener('click', function(e) {
@@ -1247,7 +1241,14 @@
                 });
                 
                 // Show selected page
-                document.getElementById(category).style.display = 'block';
+                const pageElement = document.getElementById(category);
+                pageElement.style.display = 'block';
+                
+                // Load products for this category if not already loaded
+                const containerId = `${category}-products`;
+                if (document.getElementById(containerId).innerHTML.includes('Loading')) {
+                    loadCategoryProducts(category, containerId);
+                }
                 
                 // Scroll to top
                 window.scrollTo(0, 0);
@@ -1262,6 +1263,12 @@
                 });
                 window.scrollTo(0, 0);
             });
+        });
+
+        // Load data when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            loadBestsellers();
+            loadFeaturedProducts();
         });
     </script>
 </body>
