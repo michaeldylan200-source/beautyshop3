@@ -958,7 +958,7 @@
                 <h2>Featured Products</h2>
             </div>
             <div class="products-container" id="product-list">
-                <div class="loading">Loading products from Firebase...</div>
+                <div class="loading">Connecting to Firebase database...</div>
             </div>
         </div>
     </section>
@@ -1129,9 +1129,11 @@
         };
 
         // Initialize Firebase
+        console.log("Initializing Firebase...");
         const app = initializeApp(firebaseConfig);
         const analytics = getAnalytics(app);
         const db = getFirestore(app);
+        console.log("Firebase initialized successfully");
 
         // DOM Elements
         const productList = document.getElementById('product-list');
@@ -1154,22 +1156,41 @@
         // Load products from Firebase
         async function loadProducts() {
             try {
+                console.log("Loading products from Firebase...");
+                productList.innerHTML = '<div class="loading">Retrieving products from database...</div>';
+                
                 const querySnapshot = await getDocs(collection(db, "products"));
+                console.log(`Found ${querySnapshot.size} products in database`);
+                
                 const products = [];
                 querySnapshot.forEach((doc) => {
+                    console.log(`Product ID: ${doc.id}`, doc.data());
                     products.push({ id: doc.id, ...doc.data() });
                 });
+                
                 displayProducts(products);
             } catch (error) {
                 console.error("Error loading products: ", error);
-                productList.innerHTML = '<div class="error">Failed to load products. Please try again later.</div>';
+                productList.innerHTML = `
+                    <div class="error">
+                        <h3>Failed to Load Products</h3>
+                        <p>Error: ${error.message}</p>
+                        <p>Please check:</p>
+                        <ul style="text-align: left; margin: 15px 0;">
+                            <li>Internet connection</li>
+                            <li>Firebase configuration</li>
+                            <li>Firestore rules permissions</li>
+                            <li>"products" collection exists in Firestore</li>
+                        </ul>
+                    </div>
+                `;
             }
         }
 
         // Display products
         function displayProducts(products) {
             if (products.length === 0) {
-                productList.innerHTML = '<div class="loading">No products found</div>';
+                productList.innerHTML = '<div class="loading">No products found in database</div>';
                 return;
             }
             
@@ -1317,15 +1338,34 @@
         // Load reviews from Firebase
         async function loadReviews() {
             try {
+                console.log("Loading reviews from Firebase...");
+                reviewsContainer.innerHTML = '<div class="loading">Retrieving reviews from database...</div>';
+                
                 const querySnapshot = await getDocs(collection(db, "reviews"));
+                console.log(`Found ${querySnapshot.size} reviews in database`);
+                
                 const reviews = [];
                 querySnapshot.forEach((doc) => {
+                    console.log(`Review ID: ${doc.id}`, doc.data());
                     reviews.push({ id: doc.id, ...doc.data() });
                 });
+                
                 displayReviews(reviews);
             } catch (error) {
                 console.error("Error loading reviews: ", error);
-                reviewsContainer.innerHTML = '<div class="error">Failed to load reviews. Please try again later.</div>';
+                reviewsContainer.innerHTML = `
+                    <div class="error">
+                        <h3>Failed to Load Reviews</h3>
+                        <p>Error: ${error.message}</p>
+                        <p>Please check:</p>
+                        <ul style="text-align: left; margin: 15px 0;">
+                            <li>Internet connection</li>
+                            <li>Firebase configuration</li>
+                            <li>Firestore rules permissions</li>
+                            <li>"reviews" collection exists in Firestore</li>
+                        </ul>
+                    </div>
+                `;
             }
         }
 
@@ -1374,6 +1414,7 @@
             }
             
             try {
+                console.log("Submitting review to Firebase...");
                 await addDoc(collection(db, "reviews"), {
                     name: name,
                     title: title,
@@ -1382,6 +1423,7 @@
                     date: new Date().toISOString().split('T')[0]
                 });
                 
+                console.log("Review submitted successfully");
                 alert('Review submitted successfully!');
                 reviewForm.reset();
                 document.querySelectorAll('#stars-rating i').forEach(star => star.classList.remove('active'));
@@ -1408,6 +1450,7 @@
 
         // Initialize the app
         document.addEventListener('DOMContentLoaded', () => {
+            console.log("DOM loaded, initializing app...");
             loadProducts();
             loadReviews();
         });
