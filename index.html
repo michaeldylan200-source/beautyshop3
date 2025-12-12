@@ -1,347 +1,1250 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Adani Beauty & Wellness</title>
-  <style>
-    :root {
-      --gold: #FFD700;
-      --black: #000;
-      --white: #fff;
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Adani Beauty & Wellness | Glow from Within</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --gold: #D4AF37;
+            --gold-light: #F9E076;
+            --gold-dark: #B8860B;
+            --black: #0a0a0a;
+            --dark-gray: #1a1a1a;
+            --medium-gray: #2a2a2a;
+            --light-gray: #f5f5f5;
+            --white: #ffffff;
+            --transition: all 0.3s ease;
+        }
 
-    body {
-      background-color: var(--black);
-      color: var(--white);
-      font-family: Arial, sans-serif;
-      margin: 0;
-      padding: 0;
-    }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-    header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 15px 30px;
-      background-color: #111;
-      border-bottom: 2px solid var(--gold);
-    }
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--black);
+            color: var(--white);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
 
-    .logo {
-      width: 60px;
-      height: 60px;
-      border-radius: 50%;
-      object-fit: cover;
-    }
+        h1, h2, h3, h4 {
+            font-family: 'Playfair Display', serif;
+            font-weight: 700;
+        }
 
-    .branding h1 {
-      color: var(--gold);
-      margin: 0;
-      font-size: 24px;
-    }
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
 
-    .branding p {
-      color: var(--gold);
-      margin: 0;
-      font-size: 14px;
-    }
+        /* Header Styles */
+        header {
+            background-color: rgba(10, 10, 10, 0.9);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            padding: 15px 0;
+            border-bottom: 1px solid var(--gold-dark);
+            backdrop-filter: blur(10px);
+        }
 
-    nav a {
-      color: var(--gold);
-      margin-left: 20px;
-      text-decoration: none;
-      font-weight: bold;
-    }
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
 
-    section {
-      padding: 40px 20px;
-    }
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
 
-    .brands {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 15px;
-      justify-content: center;
-    }
+        .logo {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid var(--gold);
+        }
 
-    .brand-card {
-      background-color: #222;
-      padding: 15px;
-      border-radius: 8px;
-      cursor: pointer;
-      transition: transform 0.2s;
-    }
+        .branding {
+            display: flex;
+            flex-direction: column;
+        }
 
-    .brand-card:hover {
-      transform: scale(1.05);
-      background-color: var(--gold);
-      color: var(--black);
-    }
+        .branding h1 {
+            color: var(--gold);
+            font-size: 24px;
+            margin: 0;
+        }
 
-    .categories {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 15px;
-      justify-content: center;
-    }
+        .branding p {
+            color: var(--gold-light);
+            font-size: 14px;
+            margin: 0;
+        }
 
-    .category-card {
-      background-color: #222;
-      padding: 15px;
-      border-radius: 8px;
-      cursor: pointer;
-      transition: transform 0.2s;
-    }
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 30px;
+        }
 
-    .category-card:hover {
-      transform: scale(1.05);
-      background-color: var(--gold);
-      color: var(--black);
-    }
+        nav a {
+            color: var(--white);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 16px;
+            transition: var(--transition);
+            position: relative;
+        }
 
-    .featured-products {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      gap: 20px;
-    }
+        nav a:hover {
+            color: var(--gold);
+        }
 
-    .product-card {
-      background-color: #222;
-      padding: 15px;
-      border-radius: 8px;
-      position: relative;
-    }
+        nav a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background-color: var(--gold);
+            transition: var(--transition);
+        }
 
-    .product-card img {
-      width: 100%;
-      height: auto;
-      border-radius: 8px;
-    }
+        nav a:hover::after {
+            width: 100%;
+        }
 
-    .product-details {
-      display: none;
-      margin-top: 10px;
-    }
+        .cart-icon {
+            position: relative;
+            font-size: 24px;
+            color: var(--gold);
+            cursor: pointer;
+        }
 
-    .product-card.expanded .product-details {
-      display: block;
-    }
+        .cart-count {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background-color: var(--gold);
+            color: var(--black);
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 12px;
+            font-weight: bold;
+        }
 
-    .order-btn {
-      background-color: var(--gold);
-      color: var(--black);
-      border: none;
-      padding: 8px 12px;
-      border-radius: 5px;
-      cursor: pointer;
-      margin-top: 10px;
-    }
+        /* Hero Section */
+        .hero {
+            height: 100vh;
+            background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('https://images.unsplash.com/photo-1526947425960-945c6e72858f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1770&q=80') no-repeat center center/cover;
+            display: flex;
+            align-items: center;
+            text-align: center;
+            position: relative;
+        }
 
-    .reviews {
-      display: flex;
-      flex-direction: column;
-      gap: 15px;
-    }
+        .hero-content {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
 
-    .review {
-      background-color: #222;
-      padding: 15px;
-      border-radius: 8px;
-    }
+        .hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 20px;
+            color: var(--gold);
+            text-shadow: 0 0 10px rgba(212, 175, 55, 0.5);
+        }
 
-    .stars {
-      color: var(--gold);
-    }
+        .hero p {
+            font-size: 1.2rem;
+            margin-bottom: 30px;
+            color: var(--light-gray);
+        }
 
-    .social-posts {
-      display: flex;
-      justify-content: space-around;
-      flex-wrap: wrap;
-      gap: 20px;
-    }
+        .btn {
+            display: inline-block;
+            background-color: var(--gold);
+            color: var(--black);
+            padding: 12px 30px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: var(--transition);
+            border: 2px solid var(--gold);
+            font-size: 1rem;
+        }
 
-    iframe {
-      width: 300px;
-      height: 400px;
-    }
+        .btn:hover {
+            background-color: transparent;
+            color: var(--gold);
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(212, 175, 55, 0.4);
+        }
 
-    footer {
-      background-color: #111;
-      text-align: center;
-      padding: 20px;
-      border-top: 2px solid var(--gold);
-    }
+        .btn-outline {
+            background-color: transparent;
+            color: var(--gold);
+            margin-left: 15px;
+        }
 
-    footer h2, footer p {
-      color: var(--gold);
-      margin: 0;
-    }
+        .btn-outline:hover {
+            background-color: var(--gold);
+            color: var(--black);
+        }
 
-    .cart-icon {
-      position: fixed;
-      bottom: 20px;
-      right: 20px;
-      background-color: var(--gold);
-      color: black;
-      padding: 10px 15px;
-      border-radius: 50%;
-      cursor: pointer;
-      font-weight: bold;
-    }
-  </style>
+        /* Section Styles */
+        section {
+            padding: 80px 0;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .section-title h2 {
+            font-size: 2.5rem;
+            color: var(--gold);
+            position: relative;
+            display: inline-block;
+            padding-bottom: 15px;
+        }
+
+        .section-title h2::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 3px;
+            background-color: var(--gold);
+        }
+
+        /* Brands Section */
+        .brands-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 25px;
+        }
+
+        .brand-card {
+            background-color: var(--dark-gray);
+            border-radius: 10px;
+            padding: 25px 15px;
+            text-align: center;
+            transition: var(--transition);
+            cursor: pointer;
+            border: 1px solid transparent;
+        }
+
+        .brand-card:hover {
+            transform: translateY(-10px);
+            border-color: var(--gold);
+            box-shadow: 0 10px 20px rgba(212, 175, 55, 0.2);
+        }
+
+        .brand-card h3 {
+            color: var(--gold-light);
+            margin-top: 15px;
+            font-size: 1.1rem;
+        }
+
+        /* Categories Section */
+        .categories-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 30px;
+        }
+
+        .category-card {
+            background-color: var(--dark-gray);
+            border-radius: 15px;
+            overflow: hidden;
+            transition: var(--transition);
+            position: relative;
+            height: 250px;
+        }
+
+        .category-card:hover {
+            transform: scale(1.03);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        }
+
+        .category-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0.8;
+        }
+
+        .category-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            padding: 20px;
+            background: linear-gradient(transparent, rgba(0, 0, 0, 0.8));
+        }
+
+        .category-overlay h3 {
+            color: var(--gold);
+            font-size: 1.4rem;
+        }
+
+        /* Featured Products */
+        .products-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+        }
+
+        .product-card {
+            background-color: var(--dark-gray);
+            border-radius: 15px;
+            overflow: hidden;
+            transition: var(--transition);
+            position: relative;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .product-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(212, 175, 55, 0.2);
+        }
+
+        .product-img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+
+        .product-info {
+            padding: 20px;
+        }
+
+        .product-info h3 {
+            color: var(--gold);
+            margin-bottom: 10px;
+        }
+
+        .product-price {
+            color: var(--gold-light);
+            font-weight: 600;
+            font-size: 1.2rem;
+            margin-bottom: 15px;
+        }
+
+        .product-actions {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .view-details {
+            background-color: transparent;
+            color: var(--gold);
+            border: 1px solid var(--gold);
+            padding: 8px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .view-details:hover {
+            background-color: var(--gold);
+            color: var(--black);
+        }
+
+        .add-to-cart {
+            background-color: var(--gold);
+            color: var(--black);
+            border: none;
+            padding: 8px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .add-to-cart:hover {
+            background-color: var(--gold-dark);
+            color: var(--white);
+        }
+
+        /* Product Details Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background-color: var(--dark-gray);
+            border-radius: 15px;
+            width: 90%;
+            max-width: 800px;
+            padding: 30px;
+            position: relative;
+            border: 1px solid var(--gold);
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            font-size: 24px;
+            color: var(--gold);
+            cursor: pointer;
+        }
+
+        .modal-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+        }
+
+        .modal-img {
+            width: 100%;
+            border-radius: 10px;
+        }
+
+        .modal-details h2 {
+            color: var(--gold);
+            margin-bottom: 15px;
+        }
+
+        .modal-details p {
+            margin-bottom: 15px;
+        }
+
+        .modal-price {
+            color: var(--gold-light);
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin: 20px 0;
+        }
+
+        .order-btn {
+            background-color: var(--gold);
+            color: var(--black);
+            border: none;
+            padding: 12px 30px;
+            border-radius: 30px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            width: 100%;
+            font-size: 1rem;
+            margin-top: 20px;
+        }
+
+        .order-btn:hover {
+            background-color: var(--gold-dark);
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(212, 175, 55, 0.4);
+        }
+
+        /* Reviews Section */
+        .reviews-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        .review-card {
+            background-color: var(--dark-gray);
+            border-radius: 15px;
+            padding: 25px;
+            position: relative;
+            border-left: 3px solid var(--gold);
+        }
+
+        .review-card::before {
+            content: '"';
+            position: absolute;
+            top: 10px;
+            left: 20px;
+            font-size: 5rem;
+            color: var(--gold);
+            opacity: 0.2;
+            font-family: 'Playfair Display', serif;
+        }
+
+        .review-content {
+            margin-top: 20px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .review-author {
+            display: flex;
+            align-items: center;
+            margin-top: 20px;
+        }
+
+        .author-img {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-right: 15px;
+        }
+
+        .author-info h4 {
+            color: var(--gold);
+            margin-bottom: 5px;
+        }
+
+        .stars {
+            color: var(--gold);
+        }
+
+        /* Social Media Section */
+        .social-container {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            gap: 30px;
+        }
+
+        .social-card {
+            background-color: var(--dark-gray);
+            border-radius: 15px;
+            overflow: hidden;
+            width: 100%;
+            max-width: 400px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .social-card iframe {
+            width: 100%;
+            height: 400px;
+            border: none;
+        }
+
+        .social-header {
+            padding: 15px;
+            background-color: var(--medium-gray);
+            display: flex;
+            align-items: center;
+        }
+
+        .social-icon {
+            font-size: 24px;
+            margin-right: 10px;
+        }
+
+        .instagram .social-icon {
+            color: #E1306C;
+        }
+
+        .tiktok .social-icon {
+            color: #69C9D0;
+        }
+
+        /* Footer */
+        footer {
+            background-color: var(--dark-gray);
+            padding: 50px 0 20px;
+            border-top: 1px solid var(--gold-dark);
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        .footer-column h3 {
+            color: var(--gold);
+            margin-bottom: 20px;
+            position: relative;
+            padding-bottom: 10px;
+        }
+
+        .footer-column h3::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 50px;
+            height: 2px;
+            background-color: var(--gold);
+        }
+
+        .footer-column ul {
+            list-style: none;
+        }
+
+        .footer-column ul li {
+            margin-bottom: 10px;
+        }
+
+        .footer-column ul li a {
+            color: var(--light-gray);
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        .footer-column ul li a:hover {
+            color: var(--gold);
+            padding-left: 5px;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .social-links a {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: var(--medium-gray);
+            color: var(--gold);
+            transition: var(--transition);
+        }
+
+        .social-links a:hover {
+            background-color: var(--gold);
+            color: var(--black);
+            transform: translateY(-3px);
+        }
+
+        .copyright {
+            text-align: center;
+            padding-top: 20px;
+            border-top: 1px solid var(--medium-gray);
+            color: var(--light-gray);
+            font-size: 0.9rem;
+        }
+
+        .copyright h2 {
+            color: var(--gold);
+            margin-bottom: 10px;
+        }
+
+        .copyright p {
+            margin: 5px 0;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 992px) {
+            .modal-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .hero h1 {
+                font-size: 2.8rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            nav ul {
+                gap: 15px;
+            }
+            
+            .hero h1 {
+                font-size: 2.2rem;
+            }
+            
+            .hero p {
+                font-size: 1rem;
+            }
+            
+            .btn {
+                padding: 10px 20px;
+                font-size: 0.9rem;
+            }
+            
+            .section-title h2 {
+                font-size: 2rem;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .header-container {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            nav ul {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            
+            .hero {
+                height: 80vh;
+            }
+            
+            .hero h1 {
+                font-size: 1.8rem;
+            }
+            
+            .modal-content {
+                padding: 20px;
+            }
+        }
+    </style>
 </head>
 <body>
-
-<header>
-  <img src="https://i.imgur.com/9Rgu8tm.jpg" alt="Logo" class="logo" />
-  <div class="branding">
-    <h1>Adani Beauty & Wellness</h1>
-    <p>Glow from Within</p>
-  </div>
-  <nav>
-    <a href="#products">Shop Now</a>
-  </nav>
-</header>
-
-<section id="brands">
-  <h2>Brands</h2>
-  <div class="brands">
-    <div class="brand-card" onclick="filterByBrand('aqua rich')">Aqua Rich</div>
-    <div class="brand-card" onclick="filterByBrand('daynee')">Daynee</div>
-    <div class="brand-card" onclick="filterByBrand('wins town')">Wins Town</div>
-    <div class="brand-card" onclick="filterByBrand('sadoer')">Sadoer</div>
-    <div class="brand-card" onclick="filterByBrand('estelin')">Estelin</div>
-    <div class="brand-card" onclick="filterByBrand('dr davey')">Dr Davey</div>
-    <div class="brand-card" onclick="filterByBrand('medix')">Medix</div>
-    <div class="brand-card" onclick="filterByBrand('vaseline golden glow')">Vaseline Golden Glow</div>
-  </div>
-</section>
-
-<section id="categories">
-  <h2>Categories</h2>
-  <div class="categories">
-    <div class="category-card" onclick="filterByCategory('oil')">Oil</div>
-    <div class="category-card" onclick="filterByCategory('lotion')">Lotion</div>
-    <div class="category-card" onclick="filterByCategory('supplements')">Supplements</div>
-    <div class="category-card" onclick="filterByCategory('serum')">Serum</div>
-    <div class="category-card" onclick="filterByCategory('toners')">Toners</div>
-    <div class="category-card" onclick="filterByCategory('sunscreen')">Sunscreen</div>
-    <div class="category-card" onclick="filterByCategory('creams')">Creams</div>
-  </div>
-</section>
-
-<section id="featured-products">
-  <h2>Featured Products</h2>
-  <div class="featured-products" id="product-list">
-    <!-- Dynamically populated -->
-  </div>
-</section>
-
-<section id="reviews">
-  <h2>What Our Customers Say</h2>
-  <div class="reviews">
-    <div class="review">
-      <p>"Amazing products!"</p>
-      <div class="stars">★★★★★</div>
-    </div>
-    <div class="review">
-      <p>"Love the serum!"</p>
-      <div class="stars">★★★★☆</div>
-    </div>
-  </div>
-</section>
-
-<section id="social">
-  <h2>Latest News</h2>
-  <div class="social-posts">
-    <iframe src="https://www.instagram.com/p/DRSmG1kDePI/embed" frameborder="0"></iframe>
-    <iframe src="https://www.tiktok.com/embed/v2/7358972030479528966" frameborder="0"></iframe>
-  </div>
-</section>
-
-<footer>
-  <h2>Adani Beauty & Wellness</h2>
-  <p>Glow from Within</p>
-</footer>
-
-<div class="cart-icon">🛒</div>
-
-<script type="module">
-  // Firebase Config
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js";
-  import { getFirestore, collection, getDocs, doc, updateDoc } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js";
-
-  const firebaseConfig = {
-    apiKey: "AIzaSyAl8Iefq-noM4yHujACaHpU89jGSTe5YX8",
-    authDomain: "beauty3-d73b8.firebaseapp.com",
-    projectId: "beauty3-d73b8",
-    storageBucket: "beauty3-d73b8.firebasestorage.app",
-    messagingSenderId: "614052078876",
-    appId: "1:614052078876:web:192ee35fc9ab32868586d9",
-    measurementId: "G-0C3SYTCFLH"
-  };
-
-  const app = initializeApp(firebaseConfig);
-  const db = getFirestore(app);
-
-  const productList = document.getElementById("product-list");
-
-  async function loadProducts() {
-    const querySnapshot = await getDocs(collection(db, "products"));
-    productList.innerHTML = "";
-    querySnapshot.forEach((doc) => {
-      const data = doc.data();
-      const card = document.createElement("div");
-      card.className = "product-card";
-      card.innerHTML = `
-        <img src="${data.image}" alt="${data.name}" />
-        <h3>${data.name}</h3>
-        <button onclick="toggleDetails(this)">View Details</button>
-        <div class="product-details">
-          <p><strong>Price:</strong> $${data.price}</p>
-          <p><strong>Size:</strong> ${data.size}</p>
-          <p>${data.description}</p>
-          <button class="order-btn" onclick="placeOrder('${doc.id}')">Order</button>
+    <!-- Header -->
+    <header>
+        <div class="container header-container">
+            <div class="logo-container">
+                <img src="https://i.imgur.com/9Rgu8tm.jpg" alt="Adani Beauty Logo" class="logo">
+                <div class="branding">
+                    <h1>Adani Beauty & Wellness</h1>
+                    <p>Glow from Within</p>
+                </div>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="#brands">Brands</a></li>
+                    <li><a href="#categories">Categories</a></li>
+                    <li><a href="#products">Products</a></li>
+                    <li><a href="#reviews">Reviews</a></li>
+                    <li><a href="#social">Social</a></li>
+                </ul>
+            </nav>
+            <div class="cart-icon">
+                <i class="fas fa-shopping-cart"></i>
+                <span class="cart-count">0</span>
+            </div>
         </div>
-      `;
-      productList.appendChild(card);
-    });
-  }
+    </header>
 
-  window.toggleDetails = function(btn) {
-    const card = btn.closest(".product-card");
-    card.classList.toggle("expanded");
-  };
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <h1>Discover Your Natural Glow</h1>
+            <p>Experience premium beauty and wellness products crafted for your unique radiance. Adani Beauty & Wellness brings you the finest formulations for glowing skin and inner wellness.</p>
+            <a href="#products" class="btn">Shop Now</a>
+            <a href="#categories" class="btn btn-outline">Explore Categories</a>
+        </div>
+    </section>
 
-  window.placeOrder = async function(productId) {
-    const location = prompt("Enter your delivery location:");
-    if (location) {
-      const url = `https://www.google.com/maps?q=${encodeURIComponent(location)}`;
-      window.open(url, '_blank');
-      const productRef = doc(db, "products", productId);
-      const productSnap = await getDocs(collection(db, "products")).then(snapshot => {
-        return snapshot.docs.find(d => d.id === productId)?.data();
-      });
-      if (productSnap && productSnap.stock > 0) {
-        await updateDoc(productRef, { stock: productSnap.stock - 1 });
-        alert("Order placed successfully! Stock updated.");
-      } else {
-        alert("Product out of stock.");
-      }
-    }
-  };
+    <!-- Brands Section -->
+    <section id="brands">
+        <div class="container">
+            <div class="section-title">
+                <h2>Our Premium Brands</h2>
+            </div>
+            <div class="brands-container">
+                <div class="brand-card" onclick="filterBrand('aqua rich')">
+                    <i class="fas fa-spa fa-2x" style="color: var(--gold);"></i>
+                    <h3>Aqua Rich</h3>
+                </div>
+                <div class="brand-card" onclick="filterBrand('daynee')">
+                    <i class="fas fa-seedling fa-2x" style="color: var(--gold);"></i>
+                    <h3>Daynee</h3>
+                </div>
+                <div class="brand-card" onclick="filterBrand('wins town')">
+                    <i class="fas fa-crown fa-2x" style="color: var(--gold);"></i>
+                    <h3>Wins Town</h3>
+                </div>
+                <div class="brand-card" onclick="filterBrand('sadoer')">
+                    <i class="fas fa-leaf fa-2x" style="color: var(--gold);"></i>
+                    <h3>Sadoer</h3>
+                </div>
+                <div class="brand-card" onclick="filterBrand('estelin')">
+                    <i class="fas fa-star fa-2x" style="color: var(--gold);"></i>
+                    <h3>Estelin</h3>
+                </div>
+                <div class="brand-card" onclick="filterBrand('dr davey')">
+                    <i class="fas fa-user-md fa-2x" style="color: var(--gold);"></i>
+                    <h3>Dr Davey</h3>
+                </div>
+                <div class="brand-card" onclick="filterBrand('medix')">
+                    <i class="fas fa-capsules fa-2x" style="color: var(--gold);"></i>
+                    <h3>Medix</h3>
+                </div>
+                <div class="brand-card" onclick="filterBrand('vaseline golden glow')">
+                    <i class="fas fa-sun fa-2x" style="color: var(--gold);"></i>
+                    <h3>Vaseline Golden Glow</h3>
+                </div>
+            </div>
+        </div>
+    </section>
 
-  window.filterByBrand = function(brand) {
-    alert(`Showing products for brand: ${brand}`);
-  };
+    <!-- Categories Section -->
+    <section id="categories">
+        <div class="container">
+            <div class="section-title">
+                <h2>Shop by Category</h2>
+            </div>
+            <div class="categories-container">
+                <div class="category-card" onclick="filterCategory('oil')">
+                    <img src="https://images.unsplash.com/photo-1601042879364-f3947d3f9c16?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=774&q=80" alt="Oils" class="category-img">
+                    <div class="category-overlay">
+                        <h3>Oils</h3>
+                    </div>
+                </div>
+                <div class="category-card" onclick="filterCategory('lotion')">
+                    <img src="https://images.unsplash.com/photo-1596462502278-27bfdc403348?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1780&q=80" alt="Lotions" class="category-img">
+                    <div class="category-overlay">
+                        <h3>Lotions</h3>
+                    </div>
+                </div>
+                <div class="category-card" onclick="filterCategory('supplements')">
+                    <img src="https://images.unsplash.com/photo-1628464260365-9c7d92a0d64d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1770&q=80" alt="Supplements" class="category-img">
+                    <div class="category-overlay">
+                        <h3>Supplements</h3>
+                    </div>
+                </div>
+                <div class="category-card" onclick="filterCategory('serum')">
+                    <img src="https://images.unsplash.com/photo-1600857062241-98c0a9ed8f5f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1770&q=80" alt="Serums" class="category-img">
+                    <div class="category-overlay">
+                        <h3>Serums</h3>
+                    </div>
+                </div>
+                <div class="category-card" onclick="filterCategory('toners')">
+                    <img src="https://images.unsplash.com/photo-1596462502278-27bfdc403348?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1780&q=80" alt="Toners" class="category-img">
+                    <div class="category-overlay">
+                        <h3>Toners</h3>
+                    </div>
+                </div>
+                <div class="category-card" onclick="filterCategory('sunscreen')">
+                    <img src="https://images.unsplash.com/photo-1596462502278-27bfdc403348?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1780&q=80" alt="Sunscreens" class="category-img">
+                    <div class="category-overlay">
+                        <h3>Sunscreens</h3>
+                    </div>
+                </div>
+                <div class="category-card" onclick="filterCategory('creams')">
+                    <img src="https://images.unsplash.com/photo-1596462502278-27bfdc403348?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1780&q=80" alt="Creams" class="category-img">
+                    <div class="category-overlay">
+                        <h3>Creams</h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 
-  window.filterByCategory = function(category) {
-    alert(`Showing products in category: ${category}`);
-  };
+    <!-- Featured Products -->
+    <section id="products">
+        <div class="container">
+            <div class="section-title">
+                <h2>Featured Products</h2>
+            </div>
+            <div class="products-container" id="product-list">
+                <!-- Products will be loaded here -->
+            </div>
+        </div>
+    </section>
 
-  loadProducts();
-</script>
+    <!-- Product Details Modal -->
+    <div class="modal" id="product-modal">
+        <div class="modal-content">
+            <span class="close-modal" id="close-modal">&times;</span>
+            <div class="modal-grid">
+                <div class="modal-img-container">
+                    <img src="" alt="" class="modal-img" id="modal-img">
+                </div>
+                <div class="modal-details">
+                    <h2 id="modal-title">Product Title</h2>
+                    <p id="modal-description">Product description will appear here.</p>
+                    <p><strong>Size:</strong> <span id="modal-size">50ml</span></p>
+                    <p class="modal-price" id="modal-price">$0.00</p>
+                    <button class="order-btn" id="order-btn">Place Order</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
+    <!-- Reviews Section -->
+    <section id="reviews">
+        <div class="container">
+            <div class="section-title">
+                <h2>What Our Customers Say</h2>
+            </div>
+            <div class="reviews-container">
+                <div class="review-card">
+                    <div class="review-content">
+                        <p>"The serum transformed my skin in just two weeks! I've never felt more confident."</p>
+                        <div class="stars">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                        </div>
+                    </div>
+                    <div class="review-author">
+                        <img src="https://randomuser.me/api/portraits/women/32.jpg" alt="Sarah Johnson" class="author-img">
+                        <div class="author-info">
+                            <h4>Sarah Johnson</h4>
+                            <p>Verified Customer</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="review-card">
+                    <div class="review-content">
+                        <p>"Adani's supplements have improved my energy levels significantly. Highly recommend!"</p>
+                        <div class="stars">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star-half-alt"></i>
+                        </div>
+                    </div>
+                    <div class="review-author">
+                        <img src="https://randomuser.me/api/portraits/men/44.jpg" alt="Michael Chen" class="author-img">
+                        <div class="author-info">
+                            <h4>Michael Chen</h4>
+                            <p>Verified Customer</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="review-card">
+                    <div class="review-content">
+                        <p>"The oils are incredibly nourishing and smell divine. My skin has never been softer!"</p>
+                        <div class="stars">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                        </div>
+                    </div>
+                    <div class="review-author">
+                        <img src="https://randomuser.me/api/portraits/women/68.jpg" alt="Emma Rodriguez" class="author-img">
+                        <div class="author-info">
+                            <h4>Emma Rodriguez</h4>
+                            <p>Verified Customer</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Social Media Section -->
+    <section id="social">
+        <div class="container">
+            <div class="section-title">
+                <h2>Latest from Social</h2>
+            </div>
+            <div class="social-container">
+                <div class="social-card instagram">
+                    <div class="social-header">
+                        <i class="fab fa-instagram social-icon"></i>
+                        <h3>Instagram</h3>
+                    </div>
+                    <iframe src="https://www.instagram.com/p/DRSmG1kDePI/embed" frameborder="0"></iframe>
+                </div>
+                <div class="social-card tiktok">
+                    <div class="social-header">
+                        <i class="fab fa-tiktok social-icon"></i>
+                        <h3>TikTok</h3>
+                    </div>
+                    <iframe src="https://www.tiktok.com/embed/v2/7358972030479528966" frameborder="0"></iframe>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <h3>Adani Beauty & Wellness</h3>
+                    <p>Your journey to natural radiance starts here. Premium beauty and wellness products for every skin type.</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-pinterest"></i></a>
+                        <a href="#"><i class="fab fa-tiktok"></i></a>
+                    </div>
+                </div>
+                <div class="footer-column">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="#brands">Brands</a></li>
+                        <li><a href="#categories">Categories</a></li>
+                        <li><a href="#products">Products</a></li>
+                        <li><a href="#reviews">Testimonials</a></li>
+                        <li><a href="#social">Social Media</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Categories</h3>
+                    <ul>
+                        <li><a href="#" onclick="filterCategory('oil')">Oils</a></li>
+                        <li><a href="#" onclick="filterCategory('lotion')">Lotions</a></li>
+                        <li><a href="#" onclick="filterCategory('supplements')">Supplements</a></li>
+                        <li><a href="#" onclick="filterCategory('serum')">Serums</a></li>
+                        <li><a href="#" onclick="filterCategory('toners')">Toners</a></li>
+                        <li><a href="#" onclick="filterCategory('sunscreen')">Sunscreens</a></li>
+                        <li><a href="#" onclick="filterCategory('creams')">Creams</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Contact Us</h3>
+                    <ul>
+                        <li><i class="fas fa-map-marker-alt"></i> 123 Beauty Street, Glamour City</li>
+                        <li><i class="fas fa-phone"></i> +1 (555) 123-4567</li>
+                        <li><i class="fas fa-envelope"></i> info@adanibeauty.com</li>
+                        <li><i class="fas fa-clock"></i> Mon-Sat: 9AM - 8PM</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="copyright">
+                <h2>Adani Beauty & Wellness</h2>
+                <p>Glow from Within</p>
+                <p>&copy; 2023 Adani Beauty & Wellness. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Firebase Configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyAl8Iefq-noM4yHujACaHpU89jGSTe5YX8",
+            authDomain: "beauty3-d73b8.firebaseapp.com",
+            projectId: "beauty3-d73b8",
+            storageBucket: "beauty3-d73b8.firebasestorage.app",
+            messagingSenderId: "614052078876",
+            appId: "1:614052078876:web:192ee35fc9ab32868586d9",
+            measurementId: "G-0C3SYTCFLH"
+        };
+
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+
+        // DOM Elements
+        const productList = document.getElementById('product-list');
+        const productModal = document.getElementById('product-modal');
+        const closeModal = document.getElementById('close-modal');
+        const modalImg = document.getElementById('modal-img');
+        const modalTitle = document.getElementById('modal-title');
+        const modalDescription = document.getElementById('modal-description');
+        const modalSize = document.getElementById('modal-size');
+        const modalPrice = document.getElementById('modal-price');
+        const orderBtn = document.getElementById('order-btn');
+        const cartCount = document.querySelector('.cart-count');
+
+        // Sample Products Data (in a real app, this would come from Firebase)
+        const sampleProducts = [
+            {
+                id: '1',
+                name: 'Golden Glow Serum',
+                description: 'A luxurious serum enriched with 24K gold particles and hyaluronic acid for ultimate hydration and radiance.',
+                price: 49.99,
+                size: '30ml',
+                image: 'https://images.unsplash.com/photo-1596462502278-27bfdc403348?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1780&q=80',
+                category: 'serum',
+                brand: 'aqua rich',
+                stock: 15
+            },
+            {
+                id: '2',
+                name: 'Vitamin C Radiance Oil',
+                description: 'Lightweight facial oil infused with vitamin C to brighten skin and reduce dark spots.',
+                price: 34.99,
+                size: '50ml',
+                image: 'https://images.unsplash.com/photo-1601042879364-f3947d3f9c16?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=774&q=80',
+                category: 'oil',
+                brand: 'daynee',
+                stock: 8
+            },
+            {
+                id: '3',
+                name: 'Collagen Boosting Cream',
+                description: 'Anti-aging cream that boosts collagen production for firmer, more youthful skin.',
+                price: 59.99,
+                size: '50ml',
+                image: 'https://images.unsplash.com/photo-1596462502278-27bfdc403348?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1780&q=80',
+                category: 'creams',
+                brand: 'wins town',
+                stock: 12
+            },
+            {
+                id: '4',
+                name: 'Hydrating Toner',
+                description: 'Alcohol-free toner that balances pH and preps skin for better absorption of serums.',
+                price: 24.99,
+                size: '200ml',
+                image: 'https://images.unsplash.com/photo-1596462502278-27bfdc403348?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1780&q=80',
+                category: 'toners',
+                brand: 'sadoer',
+                stock: 20
+            },
+            {
+                id: '5',
+                name: 'SPF 50+ Sunscreen',
+                description: 'Broad-spectrum sunscreen with anti-aging benefits and a lightweight, non-greasy formula.',
+                price: 29.99,
+                size: '100ml',
+                image: 'https://images.unsplash.com/photo-1596462502278-27bfdc403348?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1780&q=80',
+                category: 'sunscreen',
+                brand: 'estelin',
+                stock: 25
+            },
+            {
+                id: '6',
+                name: 'Beauty Sleep Supplement',
+                description: 'Advanced supplement with collagen, biotin, and vitamins to support skin health from within.',
+                price: 39.99,
+                size: '60 capsules',
+                image: 'https://images.unsplash.com/photo-1628464260365-9c7d92a0d64d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1770&q=80',
+                category: 'supplements',
+                brand: 'dr davey',
+                stock: 30
+            }
+        ];
+
+        // Load products
+        function loadProducts(products = sampleProducts) {
+            productList.innerHTML = '';
+            products.forEach(product => {
+                const productCard = document.createElement('div');
+                productCard.className = 'product-card';
+                productCard.innerHTML = `
+                    <img src="${product.image}" alt="${product.name}" class="product-img">
+                    <div class="product-info">
+                        <h3>${product.name}</h3>
+                        <p class="product-price">$${product.price.toFixed(2)}</p>
+                        <div class="product-actions">
+                            <button class="view-details" data-id="${product.id}">View Details</button>
+                            <button class="add-to-cart" data-id="${product.id}">Add to Cart</button>
+                        </div>
+                    </div>
+                `;
+                productList.appendChild(productCard);
+            });
+
+            // Add event listeners to view details buttons
+            document.querySelectorAll('.view-details').forEach(button => {
+                button.addEventListener('click', (e) => {
+                    const productId = e.target.getAttribute('data-id');
+                    showProductDetails(productId, products);
+                });
+            });
+
+            // Add event listeners to add to cart buttons
+            document.querySelectorAll('.add-to-cart').forEach(button => {
+                button.addEventListener('click', (e) => {
+                    const productId = e.target.getAttribute('data-id');
+                    addToCart(productId, products);
+                });
+            });
+        }
+
+        // Show product details in modal
+        function showProductDetails(productId, products) {
+            const product = products.find(p => p.id === productId);
+            if (product) {
+                modalImg.src = product.image;
+                modalImg.alt = product.name;
+                modalTitle.textContent = product.name;
+                modalDescription.textContent = product.description;
+                modalSize.textContent = product.size;
+                modalPrice.textContent = `$${product.price.toFixed(2)}`;
+                
+                // Set order button functionality
+                orderBtn.onclick = () => placeOrder(product);
+                
+                productModal.style.display = 'flex';
+            }
+        }
+
+        // Close modal
+        closeModal.addEventListener('click', () => {
+            productModal.style.display = 'none';
+        });
+
+        // Close modal when clicking outside
+        window.addEventListener('click', (e) => {
+            if (e.target === productModal) {
+                productModal.style.display = 'none';
+            }
+        });
+
+        // Place order function
+        function placeOrder(product) {
+            const location = prompt("Please enter your delivery location:");
+            if (location) {
+                // In a real app, this would send the order to Firebase
+                alert(`Order placed for ${product.name}!\nDelivery location: ${location}\n\nRedirecting to Google Maps...`);
+                
+                // Open Google Maps with the location
+                const encodedLocation = encodeURIComponent(location);
+                window.open(`https://www.google.com/maps/search/?api=1&query=${encodedLocation}`, '_blank');
+                
+                // Update stock (in a real app, this would update Firebase)
+                product.stock -= 1;
+                alert(`Stock updated. Remaining stock: ${product.stock}`);
+                
+                // Close modal
+                productModal.style.display = 'none';
+            }
+        }
+
+        // Add to cart function
+        let cartItems = 0;
+        function addToCart(productId, products) {
+            const product = products.find(p => p.id === productId);
+            if (product && product.stock > 0) {
+                cartItems++;
+                cartCount.textContent = cartItems;
+                alert(`${product.name} added to cart!`);
+            } else {
+                alert('Sorry, this product is out of stock.');
+            }
+        }
+
+        // Filter by brand
+        function filterBrand(brand) {
+            alert(`Showing products for brand: ${brand}`);
+            // In a real app, this would filter products from Firebase
+        }
+
+        // Filter by category
+        function filterCategory(category) {
+            alert(`Showing products in category: ${category}`);
+            // In a real app, this would filter products from Firebase
+        }
+
+        // Initialize the app
+        document.addEventListener('DOMContentLoaded', () => {
+            loadProducts();
+        });
+    </script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
 </body>
 </html>
