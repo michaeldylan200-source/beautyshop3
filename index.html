@@ -1674,4 +1674,122 @@
                             <h3>Database Connection Error</h3>
                             <p>Error: ${error.message}</p>
                             <p>Possible causes:</p>
-                            <ul style="text-align: left; margin: 15px 
+                            <ul style="text-align: left; margin: 15px 0;">
+                                <li>Incorrect Firebase configuration</li>
+                                <li>Network connectivity issues</li>
+                                <li>Firestore security rules preventing read access</li>
+                                <li>"reviews" collection doesn't exist</li>
+                            </ul>
+                            <p>Please check your Firebase console and security rules.</p>
+                        </div>
+                    `;
+                });
+            } catch (error) {
+                console.error("Error loading reviews: ", error);
+                reviewsContainer.innerHTML = `
+                    <div class="error">
+                        <h3>Failed to Load Reviews</h3>
+                        <p>Error: ${error.message}</p>
+                        <p>Please check:</p>
+                        <ul style="text-align: left; margin: 15px 0;">
+                            <li>Internet connection</li>
+                            <li>Firebase configuration</li>
+                            <li>Firestore rules permissions</li>
+                            <li>"reviews" collection exists in Firestore</li>
+                        </ul>
+                    </div>
+                `;
+            }
+        }
+
+        // Display reviews
+        function displayReviews(reviews) {
+            if (reviews.length === 0) {
+                reviewsContainer.innerHTML = '<div class="loading">No reviews yet. Be the first to review!</div>';
+                return;
+            }
+            
+            reviewsContainer.innerHTML = '';
+            reviews.forEach(review => {
+                const rating = review.rating || 0;
+                const stars = '★'.repeat(rating) + '☆'.repeat(5 - rating);
+                const reviewCard = document.createElement('div');
+                reviewCard.className = 'review-card';
+                reviewCard.innerHTML = `
+                    <div class="review-content">
+                        <h4>${review.title || 'Customer Review'}</h4>
+                        <p>${review.content || 'No review content'}</p>
+                        <div class="stars">${stars}</div>
+                    </div>
+                    <div class="review-author">
+                        <div class="author-info">
+                            <h4>${review.name || 'Anonymous'}</h4>
+                            <p>${review.date || 'Date not available'}</p>
+                        </div>
+                    </div>
+                `;
+                reviewsContainer.appendChild(reviewCard);
+            });
+        }
+
+        // Handle review form submission
+        reviewForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const name = document.getElementById('reviewer-name').value;
+            const title = document.getElementById('review-title').value;
+            const content = document.getElementById('review-content').value;
+            const rating = document.querySelectorAll('#stars-rating .active').length;
+            
+            if (rating === 0) {
+                alert('Please select a rating');
+                return;
+            }
+            
+            try {
+                console.log("Submitting review to Firebase...");
+                db.collection("reviews").add({
+                    name: name,
+                    title: title,
+                    content: content,
+                    rating: rating,
+                    date: new Date().toISOString().split('T')[0]
+                }).then(() => {
+                    console.log("Review submitted successfully");
+                    alert('Review submitted successfully!');
+                    reviewForm.reset();
+                    document.querySelectorAll('#stars-rating i').forEach(star => star.classList.remove('active'));
+                    loadReviews(); // Reload reviews
+                }).catch((error) => {
+                    console.error("Error adding review: ", error);
+                    alert('Failed to submit review. Please try again later.');
+                });
+            } catch (error) {
+                console.error("Error adding review: ", error);
+                alert('Failed to submit review. Please try again later.');
+            }
+        });
+
+        // Handle star rating selection
+        starsRating.addEventListener('click', (e) => {
+            if (e.target.classList.contains('fa-star')) {
+                const rating = parseInt(e.target.getAttribute('data-rating'));
+                document.querySelectorAll('#stars-rating i').forEach((star, index) => {
+                    if (index < rating) {
+                        star.classList.add('active');
+                    } else {
+                        star.classList.remove('active');
+                    }
+                });
+            }
+        });
+
+        // Initialize the app
+        document.addEventListener('DOMContentLoaded', () => {
+            console.log("DOM loaded, initializing app...");
+            loadProducts();
+            loadReviews();
+        });
+    </script>
+</body>
+</html>
