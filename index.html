@@ -1,1417 +1,347 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Adani Beauty and Wellness</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Arial', sans-serif;
-        }
-
-        body {
-            background-color: #000;
-            color: #fff;
-        }
-
-        /* Header Styles */
-        header {
-            background: #000;
-            padding: 20px;
-            border-bottom: 2px solid gold;
-            position: relative;
-        }
-
-        .header-content {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        .logo {
-            display: flex;
-            align-items: center;
-        }
-
-        .logo-img {
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
-            object-fit: cover;
-            margin-right: 15px;
-            border: 2px solid gold;
-        }
-
-        .logo-text {
-            color: gold;
-        }
-
-        .logo-text h1 {
-            font-size: 24px;
-            margin-bottom: 5px;
-        }
-
-        .logo-text p {
-            font-size: 14px;
-            font-style: italic;
-        }
-
-        nav ul {
-            display: flex;
-            list-style: none;
-        }
-
-        nav ul li {
-            margin-left: 30px;
-            position: relative;
-        }
-
-        nav ul li a {
-            color: gold;
-            text-decoration: none;
-            font-weight: bold;
-            transition: all 0.3s ease;
-        }
-
-        nav ul li a:hover {
-            color: #fff;
-            text-shadow: 0 0 10px gold;
-        }
-
-        /* Cart Icon */
-        .cart-icon {
-            position: relative;
-            cursor: pointer;
-        }
-
-        .cart-count {
-            position: absolute;
-            top: -10px;
-            right: -10px;
-            background: gold;
-            color: #000;
-            border-radius: 50%;
-            width: 20px;
-            height: 20px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 12px;
-            font-weight: bold;
-        }
-
-        /* Hero Section */
-        .hero {
-            background: linear-gradient(rgba(0,0,0,0.8), rgba(0,0,0,0.8)), url('https://images.unsplash.com/photo-1596462502278-27bfdc403348?ixlib=rb-4.0.3') center/cover;
-            height: 500px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            color: white;
-        }
-
-        .hero-content h2 {
-            font-size: 3rem;
-            margin-bottom: 20px;
-            color: gold;
-            text-shadow: 0 0 10px rgba(255,215,0,0.5);
-        }
-
-        .hero-content p {
-            font-size: 1.2rem;
-            margin-bottom: 30px;
-        }
-
-        .btn {
-            background: gold;
-            color: #000;
-            padding: 12px 30px;
-            border: none;
-            border-radius: 25px;
-            font-size: 1.1rem;
-            font-weight: bold;
-            cursor: pointer;
-            text-decoration: none;
-            transition: all 0.3s ease;
-            border: 2px solid gold;
-        }
-
-        .btn:hover {
-            background: transparent;
-            color: gold;
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(255,215,0,0.3);
-        }
-
-        /* Brands Section */
-        .brands {
-            padding: 60px 20px;
-            text-align: center;
-            background: #111;
-        }
-
-        .brands h2 {
-            font-size: 2.5rem;
-            margin-bottom: 40px;
-            color: gold;
-        }
-
-        .brand-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 20px;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        .brand-card {
-            background: #222;
-            padding: 25px 15px;
-            border-radius: 15px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            border: 1px solid #333;
-        }
-
-        .brand-card:hover {
-            background: gold;
-            color: #000;
-            transform: translateY(-5px);
-            border-color: gold;
-        }
-
-        .brand-card h3 {
-            font-size: 1.3rem;
-            margin-bottom: 10px;
-        }
-
-        /* Categories Section */
-        .categories {
-            padding: 60px 20px;
-            text-align: center;
-            background: #000;
-        }
-
-        .categories h2 {
-            font-size: 2.5rem;
-            margin-bottom: 40px;
-            color: gold;
-        }
-
-        .category-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 20px;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        .category-card {
-            background: #222;
-            padding: 30px 20px;
-            border-radius: 15px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            border: 1px solid #333;
-        }
-
-        .category-card:hover {
-            background: gold;
-            color: #000;
-            transform: translateY(-5px);
-            border-color: gold;
-        }
-
-        .category-card i {
-            font-size: 2rem;
-            margin-bottom: 15px;
-            color: gold;
-        }
-
-        .category-card:hover i {
-            color: #000;
-        }
-
-        .category-card h3 {
-            font-size: 1.3rem;
-            margin-bottom: 10px;
-        }
-
-        /* Featured Products */
-        .featured-products {
-            padding: 60px 20px;
-            text-align: center;
-            background: #111;
-        }
-
-        .featured-products h2 {
-            font-size: 2.5rem;
-            margin-bottom: 40px;
-            color: gold;
-        }
-
-        .products-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 30px;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        .product-card {
-            background: #222;
-            border-radius: 15px;
-            overflow: hidden;
-            transition: all 0.3s ease;
-            border: 1px solid #333;
-        }
-
-        .product-card:hover {
-            transform: translateY(-5px);
-            border-color: gold;
-            box-shadow: 0 10px 25px rgba(255,215,0,0.2);
-        }
-
-        .product-image {
-            height: 200px;
-            background: #333;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            overflow: hidden;
-        }
-
-        .product-image img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        .product-info {
-            padding: 20px;
-        }
-
-        .product-info h3 {
-            font-size: 1.3rem;
-            margin-bottom: 10px;
-            color: gold;
-        }
-
-        .product-info p {
-            color: #ccc;
-            margin-bottom: 15px;
-            font-size: 0.9rem;
-        }
-
-        .product-info .price {
-            font-size: 1.2rem;
-            font-weight: bold;
-            color: gold;
-            margin-bottom: 15px;
-        }
-
-        /* Cart Modal */
-        .cart-modal {
-            display: none;
-            position: fixed;
-            z-index: 1000;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0,0,0,0.8);
-        }
-
-        .cart-content {
-            background: #222;
-            margin: 5% auto;
-            padding: 30px;
-            border-radius: 15px;
-            width: 90%;
-            max-width: 800px;
-            position: relative;
-            border: 2px solid gold;
-            color: white;
-            max-height: 80vh;
-            overflow-y: auto;
-        }
-
-        .cart-close {
-            color: gold;
-            float: right;
-            font-size: 28px;
-            font-weight: bold;
-            cursor: pointer;
-        }
-
-        .cart-close:hover {
-            color: white;
-        }
-
-        .cart-header {
-            color: gold;
-            margin-bottom: 20px;
-            text-align: center;
-        }
-
-        .cart-items {
-            margin-bottom: 20px;
-        }
-
-        .cart-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 15px;
-            background: #333;
-            margin-bottom: 10px;
-            border-radius: 10px;
-        }
-
-        .cart-item-info {
-            flex: 1;
-        }
-
-        .cart-item-info h4 {
-            color: gold;
-            margin-bottom: 5px;
-        }
-
-        .cart-item-price {
-            color: gold;
-            font-weight: bold;
-        }
-
-        .cart-item-remove {
-            background: #ff4444;
-            color: white;
-            border: none;
-            padding: 5px 10px;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-
-        .cart-total {
-            text-align: right;
-            font-size: 1.3rem;
-            font-weight: bold;
-            color: gold;
-            margin: 20px 0;
-        }
-
-        .checkout-btn {
-            background: gold;
-            color: #000;
-            padding: 15px 30px;
-            border: none;
-            border-radius: 25px;
-            font-size: 1.1rem;
-            font-weight: bold;
-            cursor: pointer;
-            width: 100%;
-            margin-top: 20px;
-            transition: all 0.3s ease;
-        }
-
-        .checkout-btn:hover {
-            background: transparent;
-            color: gold;
-            border: 2px solid gold;
-        }
-
-        /* Testimonials */
-        .testimonials {
-            padding: 60px 20px;
-            text-align: center;
-            background: #000;
-        }
-
-        .testimonials h2 {
-            font-size: 2.5rem;
-            margin-bottom: 40px;
-            color: gold;
-        }
-
-        .testimonial-form {
-            max-width: 600px;
-            margin: 0 auto 40px;
-            background: #222;
-            padding: 30px;
-            border-radius: 15px;
-            border: 1px solid #333;
-        }
-
-        .rating {
-            margin-bottom: 20px;
-        }
-
-        .stars {
-            display: flex;
-            justify-content: center;
-            gap: 5px;
-        }
-
-        .star {
-            font-size: 2rem;
-            color: #ddd;
-            cursor: pointer;
-            transition: all 0.2s ease;
-        }
-
-        .star:hover,
-        .star.active {
-            color: gold;
-            transform: scale(1.2);
-        }
-
-        textarea {
-            width: 100%;
-            height: 100px;
-            padding: 15px;
-            border: 1px solid #444;
-            border-radius: 10px;
-            margin-bottom: 20px;
-            background: #333;
-            color: white;
-            resize: vertical;
-        }
-
-        textarea:focus {
-            outline: none;
-            border-color: gold;
-        }
-
-        .submit-review {
-            background: gold;
-            color: #000;
-            padding: 12px 30px;
-            border: none;
-            border-radius: 25px;
-            font-size: 1rem;
-            font-weight: bold;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .submit-review:hover {
-            background: transparent;
-            color: gold;
-            border: 2px solid gold;
-        }
-
-        .reviews-container {
-            max-width: 800px;
-            margin: 40px auto 0;
-        }
-
-        .review {
-            background: #222;
-            padding: 20px;
-            border-radius: 10px;
-            margin-bottom: 20px;
-            border: 1px solid #333;
-            text-align: left;
-        }
-
-        .review-rating {
-            color: gold;
-            margin-bottom: 10px;
-            font-size: 1.2rem;
-        }
-
-        .review-comment {
-            color: #ccc;
-            margin-bottom: 10px;
-        }
-
-        .review-date {
-            color: #888;
-            font-size: 0.8rem;
-        }
-
-        /* Social Media */
-        .social-media {
-            padding: 60px 20px;
-            text-align: center;
-            background: #111;
-        }
-
-        .social-media h2 {
-            font-size: 2.5rem;
-            margin-bottom: 40px;
-            color: gold;
-        }
-
-        .social-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 30px;
-            max-width: 800px;
-            margin: 0 auto;
-        }
-
-        .social-card {
-            background: #222;
-            padding: 30px;
-            border-radius: 15px;
-            border: 1px solid #333;
-        }
-
-        .social-card h3 {
-            margin-bottom: 20px;
-            color: gold;
-        }
-
-        .social-card a {
-            display: inline-block;
-            background: gold;
-            color: #000;
-            padding: 12px 25px;
-            text-decoration: none;
-            border-radius: 25px;
-            font-weight: bold;
-            transition: all 0.3s ease;
-        }
-
-        .social-card a:hover {
-            background: transparent;
-            color: gold;
-            border: 2px solid gold;
-        }
-
-        /* Footer */
-        footer {
-            background: #000;
-            color: gold;
-            text-align: center;
-            padding: 40px 20px;
-            border-top: 2px solid gold;
-        }
-
-        footer h2 {
-            font-size: 2rem;
-            margin-bottom: 10px;
-        }
-
-        footer p {
-            font-size: 1.2rem;
-            font-style: italic;
-        }
-
-        /* Product Detail Modal */
-        .modal {
-            display: none;
-            position: fixed;
-            z-index: 1000;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0,0,0,0.8);
-        }
-
-        .modal-content {
-            background: #222;
-            margin: 5% auto;
-            padding: 30px;
-            border-radius: 15px;
-            width: 90%;
-            max-width: 600px;
-            position: relative;
-            border: 2px solid gold;
-            color: white;
-        }
-
-        .close {
-            color: gold;
-            float: right;
-            font-size: 28px;
-            font-weight: bold;
-            cursor: pointer;
-        }
-
-        .close:hover {
-            color: white;
-        }
-
-        .product-detail-image {
-            width: 100%;
-            height: 300px;
-            background: #333;
-            margin-bottom: 20px;
-            border-radius: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            overflow: hidden;
-        }
-
-        .product-detail-image img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        .product-detail-info h2 {
-            color: gold;
-            margin-bottom: 15px;
-        }
-
-        .product-detail-info p {
-            margin-bottom: 10px;
-            color: #ccc;
-        }
-
-        .product-detail-info strong {
-            color: gold;
-        }
-
-        .order-btn {
-            background: gold;
-            color: #000;
-            padding: 15px 30px;
-            border: none;
-            border-radius: 25px;
-            font-size: 1.1rem;
-            font-weight: bold;
-            cursor: pointer;
-            width: 100%;
-            margin-top: 20px;
-            transition: all 0.3s ease;
-        }
-
-        .order-btn:hover {
-            background: transparent;
-            color: gold;
-            border: 2px solid gold;
-        }
-
-        /* Add to Cart Button */
-        .add-to-cart-btn {
-            background: #666;
-            color: white;
-            padding: 10px 20px;
-            border: none;
-            border-radius: 20px;
-            font-size: 0.9rem;
-            cursor: pointer;
-            margin-top: 10px;
-            transition: all 0.3s ease;
-        }
-
-        .add-to-cart-btn:hover {
-            background: gold;
-            color: #000;
-        }
-
-        /* Responsive */
-        @media (max-width: 768px) {
-            .header-content {
-                flex-direction: column;
-                text-align: center;
-            }
-
-            nav ul {
-                margin-top: 20px;
-                flex-wrap: wrap;
-                justify-content: center;
-            }
-
-            nav ul li {
-                margin: 5px 10px;
-            }
-
-            .hero-content h2 {
-                font-size: 2rem;
-            }
-
-            .hero {
-                height: 400px;
-            }
-
-            .brand-grid,
-            .category-grid {
-                grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-            }
-        }
-
-        /* Image fallback styles */
-        img {
-            max-width: 100%;
-            max-height: 100%;
-            object-fit: cover;
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Adani Beauty & Wellness</title>
+  <style>
+    :root {
+      --gold: #FFD700;
+      --black: #000;
+      --white: #fff;
+    }
+
+    body {
+      background-color: var(--black);
+      color: var(--white);
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 15px 30px;
+      background-color: #111;
+      border-bottom: 2px solid var(--gold);
+    }
+
+    .logo {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+
+    .branding h1 {
+      color: var(--gold);
+      margin: 0;
+      font-size: 24px;
+    }
+
+    .branding p {
+      color: var(--gold);
+      margin: 0;
+      font-size: 14px;
+    }
+
+    nav a {
+      color: var(--gold);
+      margin-left: 20px;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    section {
+      padding: 40px 20px;
+    }
+
+    .brands {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 15px;
+      justify-content: center;
+    }
+
+    .brand-card {
+      background-color: #222;
+      padding: 15px;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: transform 0.2s;
+    }
+
+    .brand-card:hover {
+      transform: scale(1.05);
+      background-color: var(--gold);
+      color: var(--black);
+    }
+
+    .categories {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 15px;
+      justify-content: center;
+    }
+
+    .category-card {
+      background-color: #222;
+      padding: 15px;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: transform 0.2s;
+    }
+
+    .category-card:hover {
+      transform: scale(1.05);
+      background-color: var(--gold);
+      color: var(--black);
+    }
+
+    .featured-products {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 20px;
+    }
+
+    .product-card {
+      background-color: #222;
+      padding: 15px;
+      border-radius: 8px;
+      position: relative;
+    }
+
+    .product-card img {
+      width: 100%;
+      height: auto;
+      border-radius: 8px;
+    }
+
+    .product-details {
+      display: none;
+      margin-top: 10px;
+    }
+
+    .product-card.expanded .product-details {
+      display: block;
+    }
+
+    .order-btn {
+      background-color: var(--gold);
+      color: var(--black);
+      border: none;
+      padding: 8px 12px;
+      border-radius: 5px;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+
+    .reviews {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+
+    .review {
+      background-color: #222;
+      padding: 15px;
+      border-radius: 8px;
+    }
+
+    .stars {
+      color: var(--gold);
+    }
+
+    .social-posts {
+      display: flex;
+      justify-content: space-around;
+      flex-wrap: wrap;
+      gap: 20px;
+    }
+
+    iframe {
+      width: 300px;
+      height: 400px;
+    }
+
+    footer {
+      background-color: #111;
+      text-align: center;
+      padding: 20px;
+      border-top: 2px solid var(--gold);
+    }
+
+    footer h2, footer p {
+      color: var(--gold);
+      margin: 0;
+    }
+
+    .cart-icon {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background-color: var(--gold);
+      color: black;
+      padding: 10px 15px;
+      border-radius: 50%;
+      cursor: pointer;
+      font-weight: bold;
+    }
+  </style>
 </head>
 <body>
-    <!-- Header -->
-    <header>
-        <div class="header-content">
-            <div class="logo">
-                <img src="https://i.imgur.com/9Rgu8tm.jpg" alt="Logo" class="logo-img" onerror="this.src='https://via.placeholder.com/60/000000/FFD700?text=Logo'">
-                <div class="logo-text">
-                    <h1>Adani Beauty and Wellness</h1>
-                    <p>glow from within</p>
-                </div>
-            </div>
-            <nav>
-                <ul>
-                    <li><a href="#brands">Brands</a></li>
-                    <li><a href="#categories">Shop</a></li>
-                    <li><a href="#products">Products</a></li>
-                    <li><a href="#testimonials">Reviews</a></li>
-                    <li class="cart-icon" onclick="openCart()">
-                        <i class="fas fa-shopping-cart"></i>
-                        <span class="cart-count" id="cart-count">0</span>
-                    </li>
-                </ul>
-            </nav>
-        </div>
-    </header>
 
-    <!-- Hero Section -->
-    <section class="hero">
-        <div class="hero-content">
-            <h2>Discover Your Natural Beauty</h2>
-            <p>Experience premium skincare and wellness products</p>
-            <a href="#categories" class="btn">Shop Now</a>
-        </div>
-    </section>
+<header>
+  <img src="https://i.imgur.com/9Rgu8tm.jpg" alt="Logo" class="logo" />
+  <div class="branding">
+    <h1>Adani Beauty & Wellness</h1>
+    <p>Glow from Within</p>
+  </div>
+  <nav>
+    <a href="#products">Shop Now</a>
+  </nav>
+</header>
 
-    <!-- Brands Section -->
-    <section id="brands" class="brands">
-        <h2>Our Premium Brands</h2>
-        <div class="brand-grid">
-            <div class="brand-card" onclick="filterByBrand('aqua rich')">
-                <h3>Aqua Rich</h3>
-            </div>
-            <div class="brand-card" onclick="filterByBrand('daynee')">
-                <h3>Daynee</h3>
-            </div>
-            <div class="brand-card" onclick="filterByBrand('wins town')">
-                <h3>Wins Town</h3>
-            </div>
-            <div class="brand-card" onclick="filterByBrand('sadoer')">
-                <h3>Sadoer</h3>
-            </div>
-            <div class="brand-card" onclick="filterByBrand('estelin')">
-                <h3>Estelin</h3>
-            </div>
-            <div class="brand-card" onclick="filterByBrand('dr davey')">
-                <h3>Dr Davey</h3>
-            </div>
-            <div class="brand-card" onclick="filterByBrand('medix')">
-                <h3>Medix</h3>
-            </div>
-            <div class="brand-card" onclick="filterByBrand('vaseline golden glow')">
-                <h3>Vaseline Golden Glow</h3>
-            </div>
-        </div>
-    </section>
+<section id="brands">
+  <h2>Brands</h2>
+  <div class="brands">
+    <div class="brand-card" onclick="filterByBrand('aqua rich')">Aqua Rich</div>
+    <div class="brand-card" onclick="filterByBrand('daynee')">Daynee</div>
+    <div class="brand-card" onclick="filterByBrand('wins town')">Wins Town</div>
+    <div class="brand-card" onclick="filterByBrand('sadoer')">Sadoer</div>
+    <div class="brand-card" onclick="filterByBrand('estelin')">Estelin</div>
+    <div class="brand-card" onclick="filterByBrand('dr davey')">Dr Davey</div>
+    <div class="brand-card" onclick="filterByBrand('medix')">Medix</div>
+    <div class="brand-card" onclick="filterByBrand('vaseline golden glow')">Vaseline Golden Glow</div>
+  </div>
+</section>
 
-    <!-- Categories Section -->
-    <section id="categories" class="categories">
-        <h2>Shop By Category</h2>
-        <div class="category-grid">
-            <div class="category-card" onclick="filterByCategory('oil')">
-                <i class="fas fa-oil-can"></i>
-                <h3>Oil</h3>
-            </div>
-            <div class="category-card" onclick="filterByCategory('lotion')">
-                <i class="fas fa-hand-holding-water"></i>
-                <h3>Lotion</h3>
-            </div>
-            <div class="category-card" onclick="filterByCategory('supplements')">
-                <i class="fas fa-capsules"></i>
-                <h3>Supplements</h3>
-            </div>
-            <div class="category-card" onclick="filterByCategory('serum')">
-                <i class="fas fa-vial"></i>
-                <h3>Serum</h3>
-            </div>
-            <div class="category-card" onclick="filterByCategory('toners')">
-                <i class="fas fa-spray-can"></i>
-                <h3>Toners</h3>
-            </div>
-            <div class="category-card" onclick="filterByCategory('sunscreen')">
-                <i class="fas fa-sun"></i>
-                <h3>Sunscreen</h3>
-            </div>
-            <div class="category-card" onclick="filterByCategory('creams')">
-                <i class="fas fa-jar"></i>
-                <h3>Creams</h3>
-            </div>
-        </div>
-    </section>
+<section id="categories">
+  <h2>Categories</h2>
+  <div class="categories">
+    <div class="category-card" onclick="filterByCategory('oil')">Oil</div>
+    <div class="category-card" onclick="filterByCategory('lotion')">Lotion</div>
+    <div class="category-card" onclick="filterByCategory('supplements')">Supplements</div>
+    <div class="category-card" onclick="filterByCategory('serum')">Serum</div>
+    <div class="category-card" onclick="filterByCategory('toners')">Toners</div>
+    <div class="category-card" onclick="filterByCategory('sunscreen')">Sunscreen</div>
+    <div class="category-card" onclick="filterByCategory('creams')">Creams</div>
+  </div>
+</section>
 
-    <!-- Featured Products -->
-    <section id="products" class="featured-products">
-        <h2>Featured Products</h2>
-        <div class="products-grid" id="products-container">
-            <!-- Products will be loaded here -->
-        </div>
-    </section>
+<section id="featured-products">
+  <h2>Featured Products</h2>
+  <div class="featured-products" id="product-list">
+    <!-- Dynamically populated -->
+  </div>
+</section>
 
-    <!-- Testimonials -->
-    <section id="testimonials" class="testimonials">
-        <h2>What Our Customers Say</h2>
-        
-        <!-- Review Form -->
-        <div class="testimonial-form">
-            <h3>Leave a Review</h3>
-            <div class="rating">
-                <div class="stars" id="rating-stars">
-                    <span class="star" data-rating="1">★</span>
-                    <span class="star" data-rating="2">★</span>
-                    <span class="star" data-rating="3">★</span>
-                    <span class="star" data-rating="4">★</span>
-                    <span class="star" data-rating="5">★</span>
-                </div>
-            </div>
-            <textarea id="review-comment" placeholder="Share your experience..."></textarea>
-            <button class="submit-review" onclick="submitReview()">Submit Review</button>
-        </div>
-
-        <!-- Reviews Display -->
-        <div class="reviews-container" id="reviews-container">
-            <!-- Reviews will be loaded here -->
-        </div>
-    </section>
-
-    <!-- Social Media -->
-    <section class="social-media">
-        <h2>Latest News</h2>
-        <div class="social-grid">
-            <div class="social-card">
-                <h3><i class="fab fa-instagram"></i> Instagram</h3>
-                <a href="https://www.instagram.com/p/DRSmG1kDePI/?igsh=MTB4MGp4aHVqZGx3aA==" target="_blank">View Post</a>
-            </div>
-            <div class="social-card">
-                <h3><i class="fab fa-tiktok"></i> TikTok</h3>
-                <a href="https://vm.tiktok.com/ZMAogdYh6/" target="_blank">View Video</a>
-            </div>
-        </div>
-    </section>
-
-    <!-- Footer -->
-    <footer>
-        <h2>Adani Beauty and Wellness</h2>
-        <p>glow from within</p>
-    </footer>
-
-    <!-- Cart Modal -->
-    <div id="cartModal" class="cart-modal">
-        <div class="cart-content">
-            <span class="cart-close" onclick="closeCart()">&times;</span>
-            <h2 class="cart-header">Your Shopping Cart</h2>
-            <div class="cart-items" id="cart-items">
-                <!-- Cart items will be loaded here -->
-                <p id="empty-cart-message">Your cart is empty</p>
-            </div>
-            <div class="cart-total" id="cart-total">Total: Ksh 0</div>
-            <button class="checkout-btn" onclick="checkoutCart()">Checkout</button>
-        </div>
+<section id="reviews">
+  <h2>What Our Customers Say</h2>
+  <div class="reviews">
+    <div class="review">
+      <p>"Amazing products!"</p>
+      <div class="stars">★★★★★</div>
     </div>
-
-    <!-- Product Detail Modal -->
-    <div id="productModal" class="modal">
-        <div class="modal-content">
-            <span class="close">&times;</span>
-            <div id="product-detail-content">
-                <!-- Product details will be loaded here -->
-            </div>
-        </div>
+    <div class="review">
+      <p>"Love the serum!"</p>
+      <div class="stars">★★★★☆</div>
     </div>
+  </div>
+</section>
 
-    <!-- Firebase SDK -->
-    <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-analytics-compat.js"></script>
+<section id="social">
+  <h2>Latest News</h2>
+  <div class="social-posts">
+    <iframe src="https://www.instagram.com/p/DRSmG1kDePI/embed" frameborder="0"></iframe>
+    <iframe src="https://www.tiktok.com/embed/v2/7358972030479528966" frameborder="0"></iframe>
+  </div>
+</section>
 
-    <script>
-        // Your web app's Firebase configuration
-        const firebaseConfig = {
-            apiKey: "AIzaSyAl8Iefq-noM4yHujACaHpU89jGSTe5YX8",
-            authDomain: "beauty3-d73b8.firebaseapp.com",
-            projectId: "beauty3-d73b8",
-            storageBucket: "beauty3-d73b8.firebasestorage.app",
-            messagingSenderId: "614052078876",
-            appId: "1:614052078876:web:192ee35fc9ab32868586d9",
-            measurementId: "G-0C3SYTCFLH"
-        };
+<footer>
+  <h2>Adani Beauty & Wellness</h2>
+  <p>Glow from Within</p>
+</footer>
 
-        // Initialize Firebase
-        firebase.initializeApp(firebaseConfig);
-        const db = firebase.firestore();
-        const analytics = firebase.analytics();
+<div class="cart-icon">🛒</div>
 
-        // Global variables
-        let currentRating = 0;
-        let products = [];
-        let cart = [];
+<script type="module">
+  // Firebase Config
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js";
+  import { getFirestore, collection, getDocs, doc, updateDoc } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js";
 
-        // Initialize the app
-        document.addEventListener('DOMContentLoaded', function() {
-            loadProducts();
-            loadReviews();
-            setupEventListeners();
-            loadCart(); // Load cart from localStorage
-        });
+  const firebaseConfig = {
+    apiKey: "AIzaSyAl8Iefq-noM4yHujACaHpU89jGSTe5YX8",
+    authDomain: "beauty3-d73b8.firebaseapp.com",
+    projectId: "beauty3-d73b8",
+    storageBucket: "beauty3-d73b8.firebasestorage.app",
+    messagingSenderId: "614052078876",
+    appId: "1:614052078876:web:192ee35fc9ab32868586d9",
+    measurementId: "G-0C3SYTCFLH"
+  };
 
-        // Setup event listeners
-        function setupEventListeners() {
-            // Close modals
-            document.querySelector('.close').onclick = function() {
-                document.getElementById('productModal').style.display = 'none';
-            };
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
 
-            document.querySelector('.cart-close').onclick = function() {
-                closeCart();
-            };
+  const productList = document.getElementById("product-list");
 
-            // Close modals when clicking outside
-            window.onclick = function(event) {
-                const productModal = document.getElementById('productModal');
-                const cartModal = document.getElementById('cartModal');
-                
-                if (event.target == productModal) {
-                    productModal.style.display = 'none';
-                }
-                if (event.target == cartModal) {
-                    closeCart();
-                }
-            };
+  async function loadProducts() {
+    const querySnapshot = await getDocs(collection(db, "products"));
+    productList.innerHTML = "";
+    querySnapshot.forEach((doc) => {
+      const data = doc.data();
+      const card = document.createElement("div");
+      card.className = "product-card";
+      card.innerHTML = `
+        <img src="${data.image}" alt="${data.name}" />
+        <h3>${data.name}</h3>
+        <button onclick="toggleDetails(this)">View Details</button>
+        <div class="product-details">
+          <p><strong>Price:</strong> $${data.price}</p>
+          <p><strong>Size:</strong> ${data.size}</p>
+          <p>${data.description}</p>
+          <button class="order-btn" onclick="placeOrder('${doc.id}')">Order</button>
+        </div>
+      `;
+      productList.appendChild(card);
+    });
+  }
 
-            // Star rating
-            const stars = document.querySelectorAll('.star');
-            stars.forEach(star => {
-                star.addEventListener('click', function() {
-                    currentRating = parseInt(this.getAttribute('data-rating'));
-                    updateStars(currentRating);
-                });
-            });
-        }
+  window.toggleDetails = function(btn) {
+    const card = btn.closest(".product-card");
+    card.classList.toggle("expanded");
+  };
 
-        // Update star display
-        function updateStars(rating) {
-            const stars = document.querySelectorAll('.star');
-            stars.forEach((star, index) => {
-                if (index < rating) {
-                    star.classList.add('active');
-                } else {
-                    star.classList.remove('active');
-                }
-            });
-        }
+  window.placeOrder = async function(productId) {
+    const location = prompt("Enter your delivery location:");
+    if (location) {
+      const url = `https://www.google.com/maps?q=${encodeURIComponent(location)}`;
+      window.open(url, '_blank');
+      const productRef = doc(db, "products", productId);
+      const productSnap = await getDocs(collection(db, "products")).then(snapshot => {
+        return snapshot.docs.find(d => d.id === productId)?.data();
+      });
+      if (productSnap && productSnap.stock > 0) {
+        await updateDoc(productRef, { stock: productSnap.stock - 1 });
+        alert("Order placed successfully! Stock updated.");
+      } else {
+        alert("Product out of stock.");
+      }
+    }
+  };
 
-        // Process image URL for proper display
-        function processImageUrl(url) {
-            if (!url) return 'https://via.placeholder.com/300/000000/FFD700?text=Product';
-            
-            // Handle different image URL formats
-            let processedUrl = url.trim();
-            
-            // Handle Imgur URLs
-            if (processedUrl.includes('imgur.com')) {
-                // Convert imgur.com links to direct image links
-                if (processedUrl.includes('imgur.com/') && !processedUrl.includes('i.imgur.com')) {
-                    processedUrl = processedUrl.replace('imgur.com/', 'i.imgur.com/');
-                }
-                // Handle gallery links
-                if (processedUrl.includes('/gallery/')) {
-                    processedUrl = processedUrl.replace('/gallery/', '/');
-                }
-                // Handle album links
-                if (processedUrl.includes('/a/')) {
-                    processedUrl = processedUrl.replace('/a/', '/');
-                }
-                // Ensure proper file extension for direct links
-                if (!processedUrl.match(/\.(jpg|jpeg|png|gif|webp)/i)) {
-                    // Try to extract image ID and add .jpg
-                    const urlParts = processedUrl.split('/');
-                    const lastPart = urlParts[urlParts.length - 1];
-                    if (lastPart && !lastPart.includes('.')) {
-                        processedUrl = processedUrl + '.jpg';
-                    }
-                }
-            }
-            
-            // Handle other common image hosting services
-            if (processedUrl.includes('drive.google.com')) {
-                // Convert Google Drive sharing links
-                const fileIdMatch = processedUrl.match(/\/file\/d\/([^\/]+)/) || processedUrl.match(/id=([^&]+)/);
-                if (fileIdMatch && fileIdMatch[1]) {
-                    processedUrl = `https://drive.google.com/uc?id=${fileIdMatch[1]}`;
-                }
-            }
-            
-            return processedUrl;
-        }
+  window.filterByBrand = function(brand) {
+    alert(`Showing products for brand: ${brand}`);
+  };
 
-        // Load products from Firebase
-        async function loadProducts() {
-            try {
-                const querySnapshot = await db.collection('products').get();
-                products = [];
-                const productsContainer = document.getElementById('products-container');
-                productsContainer.innerHTML = '';
+  window.filterByCategory = function(category) {
+    alert(`Showing products in category: ${category}`);
+  };
 
-                querySnapshot.forEach((doc) => {
-                    const product = { id: doc.id, ...doc.data() };
-                    products.push(product);
-                    displayProduct(product);
-                });
-            } catch (error) {
-                console.error('Error loading products:', error);
-            }
-        }
+  loadProducts();
+</script>
 
-        // Display a product
-        function displayProduct(product) {
-            const container = document.getElementById('products-container');
-            const productCard = document.createElement('div');
-            productCard.className = 'product-card';
-            
-            // Process image URL
-            const imageUrl = processImageUrl(product.image);
-            
-            productCard.innerHTML = `
-                <div class="product-image">
-                    <img src="${imageUrl}" alt="${product.name}" onerror="this.src='https://via.placeholder.com/200/000000/FFD700?text=Product'">
-                </div>
-                <div class="product-info">
-                    <h3>${product.name}</h3>
-                    <p>${product.brand || ''}</p>
-                    <div class="price">Ksh ${product.price || 0}</div>
-                    <button class="btn" onclick="showProductDetails('${product.id}')">View Details</button>
-                    <button class="add-to-cart-btn" onclick="addToCart('${product.id}')">Add to Cart</button>
-                </div>
-            `;
-            container.appendChild(productCard);
-        }
-
-        // Filter products by brand
-        function filterByBrand(brand) {
-            const container = document.getElementById('products-container');
-            container.innerHTML = '';
-            
-            const filteredProducts = products.filter(product => 
-                product.brand && product.brand.toLowerCase().includes(brand.toLowerCase())
-            );
-            
-            if (filteredProducts.length === 0) {
-                container.innerHTML = '<p style="color: gold; grid-column: 1/-1; text-align: center;">No products found for this brand.</p>';
-                return;
-            }
-            
-            filteredProducts.forEach(product => displayProduct(product));
-        }
-
-        // Filter products by category
-        function filterByCategory(category) {
-            const container = document.getElementById('products-container');
-            container.innerHTML = '';
-            
-            const filteredProducts = products.filter(product => 
-                product.category && product.category.toLowerCase().includes(category.toLowerCase())
-            );
-            
-            if (filteredProducts.length === 0) {
-                container.innerHTML = '<p style="color: gold; grid-column: 1/-1; text-align: center;">No products found in this category.</p>';
-                return;
-            }
-            
-            filteredProducts.forEach(product => displayProduct(product));
-        }
-
-        // Show product details
-        function showProductDetails(productId) {
-            const product = products.find(p => p.id === productId);
-            if (!product) return;
-
-            const modal = document.getElementById('productModal');
-            const content = document.getElementById('product-detail-content');
-            
-            // Process image URL
-            const imageUrl = processImageUrl(product.image);
-            
-            // Determine category (General Products if not specified)
-            const displayCategory = product.category || 'General Products';
-            
-            content.innerHTML = `
-                <div class="product-detail-image">
-                    <img src="${imageUrl}" alt="${product.name}" onerror="this.src='https://via.placeholder.com/300/000000/FFD700?text=Product'">
-                </div>
-                <div class="product-detail-info">
-                    <h2>${product.name}</h2>
-                    <p><strong>Brand:</strong> ${product.brand || 'N/A'}</p>
-                    <p><strong>Category:</strong> ${displayCategory}</p>
-                    <p><strong>Price:</strong> Ksh ${product.price || 0}</p>
-                    <p><strong>Size:</strong> ${product.size || 'N/A'}</p>
-                    <p><strong>Description:</strong> ${product.description || 'No description available.'}</p>
-                    <p><strong>Stock:</strong> ${product.stock || 0} available</p>
-                    <button class="order-btn" onclick="placeOrder('${product.id}', ${product.stock || 0})">Place Order</button>
-                    <button class="add-to-cart-btn" onclick="addToCart('${product.id}'); document.getElementById('productModal').style.display = 'none';">Add to Cart</button>
-                </div>
-            `;
-            
-            modal.style.display = 'block';
-        }
-
-        // Cart Functions
-        function addToCart(productId) {
-            const product = products.find(p => p.id === productId);
-            if (!product) return;
-
-            // Check if product is already in cart
-            const existingItem = cart.find(item => item.id === productId);
-            
-            if (existingItem) {
-                // Increase quantity if already in cart
-                existingItem.quantity += 1;
-            } else {
-                // Add new item to cart
-                cart.push({
-                    id: product.id,
-                    name: product.name,
-                    price: product.price || 0,
-                    image: product.image,
-                    quantity: 1
-                });
-            }
-            
-            saveCart();
-            updateCartCount();
-            alert(`${product.name} added to cart!`);
-        }
-
-        function removeFromCart(productId) {
-            cart = cart.filter(item => item.id !== productId);
-            saveCart();
-            updateCartCount();
-            displayCart();
-        }
-
-        function saveCart() {
-            localStorage.setItem('cart', JSON.stringify(cart));
-        }
-
-        function loadCart() {
-            const savedCart = localStorage.getItem('cart');
-            if (savedCart) {
-                cart = JSON.parse(savedCart);
-            }
-            updateCartCount();
-        }
-
-        function updateCartCount() {
-            const count = cart.reduce((total, item) => total + item.quantity, 0);
-            document.getElementById('cart-count').textContent = count;
-        }
-
-        function openCart() {
-            displayCart();
-            document.getElementById('cartModal').style.display = 'block';
-        }
-
-        function closeCart() {
-            document.getElementById('cartModal').style.display = 'none';
-        }
-
-        function displayCart() {
-            const cartItems = document.getElementById('cart-items');
-            const cartTotal = document.getElementById('cart-total');
-            const emptyCartMessage = document.getElementById('empty-cart-message');
-            
-            if (cart.length === 0) {
-                cartItems.innerHTML = '<p id="empty-cart-message">Your cart is empty</p>';
-                cartTotal.textContent = 'Total: Ksh 0';
-                return;
-            }
-            
-            // Remove empty cart message if it exists
-            if (emptyCartMessage) {
-                emptyCartMessage.remove();
-            }
-            
-            cartItems.innerHTML = '';
-            let total = 0;
-            
-            cart.forEach(item => {
-                const itemTotal = item.price * item.quantity;
-                total += itemTotal;
-                
-                const imageUrl = processImageUrl(item.image);
-                
-                const cartItem = document.createElement('div');
-                cartItem.className = 'cart-item';
-                cartItem.innerHTML = `
-                    <div class="cart-item-info">
-                        <h4>${item.name}</h4>
-                        <p>Quantity: ${item.quantity}</p>
-                        <p class="cart-item-price">Ksh ${item.price} each</p>
-                    </div>
-                    <div>
-                        <p class="cart-item-price">Ksh ${itemTotal}</p>
-                        <button class="cart-item-remove" onclick="removeFromCart('${item.id}')">Remove</button>
-                    </div>
-                `;
-                cartItems.appendChild(cartItem);
-            });
-            
-            cartTotal.textContent = `Total: Ksh ${total}`;
-        }
-
-        function checkoutCart() {
-            if (cart.length === 0) {
-                alert('Your cart is empty!');
-                return;
-            }
-            
-            // Open Google Maps for location selection
-            const googleMapsUrl = 'https://www.google.com/maps';
-            window.open(googleMapsUrl, '_blank');
-            
-            // Update stock for each item in cart
-            cart.forEach(async (item) => {
-                const product = products.find(p => p.id === item.id);
-                if (product && product.stock >= item.quantity) {
-                    try {
-                        await db.collection('products').doc(item.id).update({
-                            stock: product.stock - item.quantity
-                        });
-                        
-                        // Update local products array
-                        const productIndex = products.findIndex(p => p.id === item.id);
-                        if (productIndex !== -1) {
-                            products[productIndex].stock = product.stock - item.quantity;
-                        }
-                    } catch (error) {
-                        console.error('Error updating stock:', error);
-                    }
-                }
-            });
-            
-            // Clear cart
-            cart = [];
-            saveCart();
-            updateCartCount();
-            closeCart();
-            
-            alert('Order placed! Please select your location on Google Maps for delivery.');
-        }
-
-        // Place order (direct order from product details)
-        function placeOrder(productId, currentStock) {
-            if (currentStock <= 0) {
-                alert('Sorry, this product is out of stock!');
-                return;
-            }
-
-            // Open Google Maps for location selection
-            const googleMapsUrl = 'https://www.google.com/maps';
-            window.open(googleMapsUrl, '_blank');
-            
-            // Update stock in Firebase
-            updateStock(productId, currentStock - 1);
-            
-            // Close modal
-            document.getElementById('productModal').style.display = 'none';
-            alert('Order placed! Please select your location on Google Maps for delivery.');
-        }
-
-        // Update stock in Firebase
-        async function updateStock(productId, newStock) {
-            try {
-                await db.collection('products').doc(productId).update({
-                    stock: newStock
-                });
-                
-                // Update local products array
-                const productIndex = products.findIndex(p => p.id === productId);
-                if (productIndex !== -1) {
-                    products[productIndex].stock = newStock;
-                }
-                
-                console.log('Stock updated successfully');
-            } catch (error) {
-                console.error('Error updating stock:', error);
-            }
-        }
-
-        // Submit review
-        async function submitReview() {
-            const comment = document.getElementById('review-comment').value.trim();
-            
-            if (currentRating === 0) {
-                alert('Please select a rating!');
-                return;
-            }
-            
-            if (!comment) {
-                alert('Please enter your review comment!');
-                return;
-            }
-
-            try {
-                await db.collection('reviews').add({
-                    rating: currentRating,
-                    comment: comment,
-                    timestamp: firebase.firestore.FieldValue.serverTimestamp()
-                });
-                
-                alert('Review submitted successfully!');
-                document.getElementById('review-comment').value = '';
-                currentRating = 0;
-                updateStars(0);
-                loadReviews(); // Reload reviews
-            } catch (error) {
-                console.error('Error submitting review:', error);
-                alert('Error submitting review. Please try again.');
-            }
-        }
-
-        // Load reviews
-        async function loadReviews() {
-            try {
-                const querySnapshot = await db.collection('reviews')
-                    .orderBy('timestamp', 'desc')
-                    .limit(10)
-                    .get();
-                
-                const container = document.getElementById('reviews-container');
-                container.innerHTML = '';
-                
-                querySnapshot.forEach((doc) => {
-                    const review = doc.data();
-                    const reviewElement = document.createElement('div');
-                    reviewElement.className = 'review';
-                    
-                    // Create star rating display
-                    let stars = '';
-                    for (let i = 1; i <= 5; i++) {
-                        stars += i <= review.rating ? '★' : '☆';
-                    }
-                    
-                    reviewElement.innerHTML = `
-                        <div class="review-rating">${stars}</div>
-                        <div class="review-comment">${review.comment}</div>
-                        <div class="review-date">${review.timestamp ? new Date(review.timestamp.toDate()).toLocaleDateString() : ''}</div>
-                    `;
-                    
-                    container.appendChild(reviewElement);
-                });
-            } catch (error) {
-                console.error('Error loading reviews:', error);
-            }
-        }
-    </script>
 </body>
 </html>
