@@ -535,14 +535,6 @@
             margin-top: 20px;
         }
 
-        .author-img {
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            object-fit: cover;
-            margin-right: 15px;
-        }
-
         .author-info h4 {
             color: var(--gold);
             margin-bottom: 5px;
@@ -765,6 +757,18 @@
             margin: 5px 0;
         }
 
+        /* Loading and Error States */
+        .loading, .error {
+            text-align: center;
+            padding: 40px;
+            font-size: 1.2rem;
+            color: var(--gold-light);
+        }
+
+        .error {
+            color: #ff6b6b;
+        }
+
         /* Responsive Design */
         @media (max-width: 992px) {
             .modal-grid {
@@ -954,8 +958,7 @@
                 <h2>Featured Products</h2>
             </div>
             <div class="products-container" id="product-list">
-                <!-- Products will be loaded from Firebase -->
-                <div class="loading">Loading products...</div>
+                <div class="loading">Loading products from Firebase...</div>
             </div>
         </div>
     </section>
@@ -991,8 +994,7 @@
                 <h2>What Our Customers Say</h2>
             </div>
             <div class="reviews-container" id="reviews-container">
-                <!-- Reviews will be loaded from Firebase -->
-                <div class="loading">Loading reviews...</div>
+                <div class="loading">Loading reviews from Firebase...</div>
             </div>
             
             <!-- Review Form -->
@@ -1107,11 +1109,18 @@
         </div>
     </footer>
 
-    <script>
-        // Firebase Configuration
+    <!-- Firebase SDK -->
+    <script type="module">
+        // Import the functions you need from the SDKs you need
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js";
+        import { getFirestore, collection, getDocs, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js";
+        import { getAnalytics } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-analytics.js";
+
+        // Your web app's Firebase configuration
         const firebaseConfig = {
             apiKey: "AIzaSyAl8Iefq-noM4yHujACaHpU89jGSTe5YX8",
             authDomain: "beauty3-d73b8.firebaseapp.com",
+            databaseURL: "https://beauty3-d73b8-default-rtdb.firebaseio.com",
             projectId: "beauty3-d73b8",
             storageBucket: "beauty3-d73b8.firebasestorage.app",
             messagingSenderId: "614052078876",
@@ -1120,8 +1129,9 @@
         };
 
         // Initialize Firebase
-        firebase.initializeApp(firebaseConfig);
-        const db = firebase.firestore();
+        const app = initializeApp(firebaseConfig);
+        const analytics = getAnalytics(app);
+        const db = getFirestore(app);
 
         // DOM Elements
         const productList = document.getElementById('product-list');
@@ -1141,125 +1151,40 @@
         const reviewForm = document.getElementById('review-form');
         const starsRating = document.getElementById('stars-rating');
 
-        // Sample Products Data (in a real app, this would come from Firebase)
-        const sampleProducts = [
-            {
-                id: '1',
-                name: 'Golden Glow Serum',
-                description: 'A luxurious serum enriched with 24K gold particles and hyaluronic acid for ultimate hydration and radiance.',
-                price: 49.99,
-                size: '30ml',
-                image: 'https://images.unsplash.com/photo-1596462502278-27bfdc403348?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1780&q=80',
-                gallery: [
-                    'https://images.unsplash.com/photo-1596462502278-27bfdc403348?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1780&q=80',
-                    'https://images.unsplash.com/photo-1600857062241-98c0a9ed8f5f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1770&q=80',
-                    'https://images.unsplash.com/photo-1526947425960-945c6e72858f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1770&q=80'
-                ],
-                category: 'serum',
-                brand: 'aqua rich',
-                stock: 15
-            },
-            {
-                id: '2',
-                name: 'Vitamin C Radiance Oil',
-                description: 'Lightweight facial oil infused with vitamin C to brighten skin and reduce dark spots.',
-                price: 34.99,
-                size: '50ml',
-                image: 'https://images.unsplash.com/photo-1601042879364-f3947d3f9c16?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=774&q=80',
-                gallery: [
-                    'https://images.unsplash.com/photo-1601042879364-f3947d3f9c16?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=774&q=80',
-                    'https://images.unsplash.com/photo-1596462502278-27bfdc403348?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1780&q=80'
-                ],
-                category: 'oil',
-                brand: 'daynee',
-                stock: 8
-            },
-            {
-                id: '3',
-                name: 'Collagen Boosting Cream',
-                description: 'Anti-aging cream that boosts collagen production for firmer, more youthful skin.',
-                price: 59.99,
-                size: '50ml',
-                image: 'https://images.unsplash.com/photo-1596462502278-27bfdc403348?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1780&q=80',
-                gallery: [
-                    'https://images.unsplash.com/photo-1596462502278-27bfdc403348?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1780&q=80'
-                ],
-                category: 'creams',
-                brand: 'wins town',
-                stock: 12
-            },
-            {
-                id: '4',
-                name: 'Hydrating Toner',
-                description: 'Alcohol-free toner that balances pH and preps skin for better absorption of serums.',
-                price: 24.99,
-                size: '200ml',
-                image: 'https://images.unsplash.com/photo-1596462502278-27bfdc403348?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1780&q=80',
-                gallery: [
-                    'https://images.unsplash.com/photo-1596462502278-27bfdc403348?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1780&q=80'
-                ],
-                category: 'toners',
-                brand: 'sadoer',
-                stock: 20
-            }
-        ];
-
-        // Sample Reviews Data (in a real app, this would come from Firebase)
-        const sampleReviews = [
-            {
-                id: '1',
-                name: 'Sarah Johnson',
-                title: 'Amazing Results!',
-                content: 'The serum transformed my skin in just two weeks! I\'ve never felt more confident.',
-                rating: 5,
-                date: '2023-10-15'
-            },
-            {
-                id: '2',
-                name: 'Michael Chen',
-                title: 'Energy Boost',
-                content: 'Adani\'s supplements have improved my energy levels significantly. Highly recommend!',
-                rating: 4,
-                date: '2023-10-10'
-            },
-            {
-                id: '3',
-                name: 'Emma Rodriguez',
-                title: 'Nourishing Oils',
-                content: 'The oils are incredibly nourishing and smell divine. My skin has never been softer!',
-                rating: 5,
-                date: '2023-10-05'
-            }
-        ];
-
         // Load products from Firebase
-        function loadProducts() {
-            // In a real implementation, this would fetch from Firebase
-            // db.collection("products").get().then((querySnapshot) => {
-            //     const products = [];
-            //     querySnapshot.forEach((doc) => {
-            //         products.push({ id: doc.id, ...doc.data() });
-            //     });
-            //     displayProducts(products);
-            // });
-            
-            // For demo purposes, using sample data
-            setTimeout(() => {
-                displayProducts(sampleProducts);
-            }, 1000);
+        async function loadProducts() {
+            try {
+                const querySnapshot = await getDocs(collection(db, "products"));
+                const products = [];
+                querySnapshot.forEach((doc) => {
+                    products.push({ id: doc.id, ...doc.data() });
+                });
+                displayProducts(products);
+            } catch (error) {
+                console.error("Error loading products: ", error);
+                productList.innerHTML = '<div class="error">Failed to load products. Please try again later.</div>';
+            }
         }
 
         // Display products
         function displayProducts(products) {
+            if (products.length === 0) {
+                productList.innerHTML = '<div class="loading">No products found</div>';
+                return;
+            }
+            
             productList.innerHTML = '';
             products.forEach(product => {
+                // Handle missing image
+                const imageUrl = product.image || 'https://via.placeholder.com/300x200?text=No+Image';
+                
                 const productCard = document.createElement('div');
                 productCard.className = 'product-card';
                 productCard.innerHTML = `
-                    <img src="${product.image}" alt="${product.name}" class="product-img">
+                    <img src="${imageUrl}" alt="${product.name}" class="product-img" onerror="this.src='https://via.placeholder.com/300x200?text=No+Image'">
                     <div class="product-info">
-                        <h3>${product.name}</h3>
-                        <p class="product-price">$${product.price.toFixed(2)}</p>
+                        <h3>${product.name || 'Unnamed Product'}</h3>
+                        <p class="product-price">$${(product.price || 0).toFixed(2)}</p>
                         <div class="product-actions">
                             <button class="view-details" data-id="${product.id}">View Details</button>
                             <button class="add-to-cart" data-id="${product.id}">Add to Cart</button>
@@ -1290,30 +1215,41 @@
         function showProductDetails(productId, products) {
             const product = products.find(p => p.id === productId);
             if (product) {
-                modalMainImg.src = product.image;
-                modalMainImg.alt = product.name;
-                modalTitle.textContent = product.name;
-                modalDescription.textContent = product.description;
-                modalSize.textContent = product.size;
-                modalBrand.textContent = product.brand;
-                modalCategory.textContent = product.category;
-                modalPrice.textContent = `$${product.price.toFixed(2)}`;
+                // Handle missing image
+                const mainImageUrl = product.image || 'https://via.placeholder.com/300x300?text=No+Image';
+                modalMainImg.src = mainImageUrl;
+                modalMainImg.alt = product.name || 'Product Image';
+                modalMainImg.onerror = function() {
+                    this.src = 'https://via.placeholder.com/300x300?text=No+Image';
+                };
+                
+                modalTitle.textContent = product.name || 'Unnamed Product';
+                modalDescription.textContent = product.description || 'No description available';
+                modalSize.textContent = product.size || 'N/A';
+                modalBrand.textContent = product.brand || 'N/A';
+                modalCategory.textContent = product.category || 'General';
+                modalPrice.textContent = `$${(product.price || 0).toFixed(2)}`;
                 
                 // Display gallery images
                 modalGallery.innerHTML = '';
-                if (product.gallery && product.gallery.length > 0) {
+                if (product.gallery && Array.isArray(product.gallery) && product.gallery.length > 0) {
                     product.gallery.forEach((imgUrl, index) => {
-                        const img = document.createElement('img');
-                        img.src = imgUrl;
-                        img.alt = `Gallery image ${index + 1}`;
-                        img.className = 'gallery-img';
-                        if (index === 0) img.classList.add('active');
-                        img.addEventListener('click', () => {
-                            modalMainImg.src = imgUrl;
-                            document.querySelectorAll('.gallery-img').forEach(g => g.classList.remove('active'));
-                            img.classList.add('active');
-                        });
-                        modalGallery.appendChild(img);
+                        if (imgUrl) {
+                            const img = document.createElement('img');
+                            img.src = imgUrl;
+                            img.alt = `Gallery image ${index + 1}`;
+                            img.className = 'gallery-img';
+                            if (index === 0) img.classList.add('active');
+                            img.addEventListener('click', () => {
+                                modalMainImg.src = imgUrl;
+                                document.querySelectorAll('.gallery-img').forEach(g => g.classList.remove('active'));
+                                img.classList.add('active');
+                            });
+                            img.onerror = function() {
+                                this.src = 'https://via.placeholder.com/80x80?text=No+Image';
+                            };
+                            modalGallery.appendChild(img);
+                        }
                     });
                 } else {
                     modalGallery.innerHTML = '<p>No additional images available</p>';
@@ -1342,16 +1278,11 @@
         function placeOrder(product) {
             const location = prompt("Please enter your delivery location:");
             if (location) {
-                // In a real app, this would send the order to Firebase
-                alert(`Order placed for ${product.name}!\nDelivery location: ${location}\n\nRedirecting to Google Maps...`);
+                alert(`Order placed for ${product.name || 'this product'}!\nDelivery location: ${location}\n\nRedirecting to Google Maps...`);
                 
                 // Open Google Maps with the location
                 const encodedLocation = encodeURIComponent(location);
                 window.open(`https://www.google.com/maps/search/?api=1&query=${encodedLocation}`, '_blank');
-                
-                // Update stock (in a real app, this would update Firebase)
-                product.stock -= 1;
-                alert(`Stock updated. Remaining stock: ${product.stock}`);
                 
                 // Close modal
                 productModal.style.display = 'none';
@@ -1362,12 +1293,12 @@
         let cartItems = 0;
         function addToCart(productId, products) {
             const product = products.find(p => p.id === productId);
-            if (product && product.stock > 0) {
+            if (product) {
                 cartItems++;
                 cartCount.textContent = cartItems;
-                alert(`${product.name} added to cart!`);
+                alert(`${product.name || 'Product'} added to cart!`);
             } else {
-                alert('Sorry, this product is out of stock.');
+                alert('Sorry, this product is not available.');
             }
         }
 
@@ -1384,39 +1315,43 @@
         }
 
         // Load reviews from Firebase
-        function loadReviews() {
-            // In a real implementation, this would fetch from Firebase
-            // db.collection("reviews").get().then((querySnapshot) => {
-            //     const reviews = [];
-            //     querySnapshot.forEach((doc) => {
-            //         reviews.push({ id: doc.id, ...doc.data() });
-            //     });
-            //     displayReviews(reviews);
-            // });
-            
-            // For demo purposes, using sample data
-            setTimeout(() => {
-                displayReviews(sampleReviews);
-            }, 1000);
+        async function loadReviews() {
+            try {
+                const querySnapshot = await getDocs(collection(db, "reviews"));
+                const reviews = [];
+                querySnapshot.forEach((doc) => {
+                    reviews.push({ id: doc.id, ...doc.data() });
+                });
+                displayReviews(reviews);
+            } catch (error) {
+                console.error("Error loading reviews: ", error);
+                reviewsContainer.innerHTML = '<div class="error">Failed to load reviews. Please try again later.</div>';
+            }
         }
 
         // Display reviews
         function displayReviews(reviews) {
+            if (reviews.length === 0) {
+                reviewsContainer.innerHTML = '<div class="loading">No reviews yet. Be the first to review!</div>';
+                return;
+            }
+            
             reviewsContainer.innerHTML = '';
             reviews.forEach(review => {
-                const stars = '★'.repeat(review.rating) + '☆'.repeat(5 - review.rating);
+                const rating = review.rating || 0;
+                const stars = '★'.repeat(rating) + '☆'.repeat(5 - rating);
                 const reviewCard = document.createElement('div');
                 reviewCard.className = 'review-card';
                 reviewCard.innerHTML = `
                     <div class="review-content">
-                        <h4>${review.title}</h4>
-                        <p>${review.content}</p>
+                        <h4>${review.title || 'Customer Review'}</h4>
+                        <p>${review.content || 'No review content'}</p>
                         <div class="stars">${stars}</div>
                     </div>
                     <div class="review-author">
                         <div class="author-info">
-                            <h4>${review.name}</h4>
-                            <p>${review.date}</p>
+                            <h4>${review.name || 'Anonymous'}</h4>
+                            <p>${review.date || 'Date not available'}</p>
                         </div>
                     </div>
                 `;
@@ -1425,7 +1360,7 @@
         }
 
         // Handle review form submission
-        reviewForm.addEventListener('submit', (e) => {
+        reviewForm.addEventListener('submit', async (e) => {
             e.preventDefault();
             
             const name = document.getElementById('reviewer-name').value;
@@ -1438,24 +1373,23 @@
                 return;
             }
             
-            // In a real app, this would save to Firebase
-            // db.collection("reviews").add({
-            //     name: name,
-            //     title: title,
-            //     content: content,
-            //     rating: rating,
-            //     date: new Date().toISOString().split('T')[0]
-            // }).then(() => {
-            //     alert('Review submitted successfully!');
-            //     reviewForm.reset();
-            //     document.querySelectorAll('#stars-rating i').forEach(star => star.classList.remove('active'));
-            //     loadReviews(); // Reload reviews
-            // });
-            
-            // For demo purposes
-            alert('Review submitted successfully!');
-            reviewForm.reset();
-            document.querySelectorAll('#stars-rating i').forEach(star => star.classList.remove('active'));
+            try {
+                await addDoc(collection(db, "reviews"), {
+                    name: name,
+                    title: title,
+                    content: content,
+                    rating: rating,
+                    date: new Date().toISOString().split('T')[0]
+                });
+                
+                alert('Review submitted successfully!');
+                reviewForm.reset();
+                document.querySelectorAll('#stars-rating i').forEach(star => star.classList.remove('active'));
+                loadReviews(); // Reload reviews
+            } catch (error) {
+                console.error("Error adding review: ", error);
+                alert('Failed to submit review. Please try again later.');
+            }
         });
 
         // Handle star rating selection
@@ -1478,7 +1412,5 @@
             loadReviews();
         });
     </script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
 </body>
 </html>
