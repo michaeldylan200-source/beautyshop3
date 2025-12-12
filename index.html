@@ -14,13 +14,15 @@
         }
 
         body {
-            background-color: #fff;
+            background-color: #000;
+            color: #fff;
         }
 
         /* Header Styles */
         header {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: #000;
             padding: 20px;
+            border-bottom: 2px solid gold;
             position: relative;
         }
 
@@ -43,6 +45,7 @@
             border-radius: 50%;
             object-fit: cover;
             margin-right: 15px;
+            border: 2px solid gold;
         }
 
         .logo-text {
@@ -69,14 +72,20 @@
         }
 
         nav ul li a {
-            color: white;
+            color: gold;
             text-decoration: none;
             font-weight: bold;
+            transition: all 0.3s ease;
+        }
+
+        nav ul li a:hover {
+            color: #fff;
+            text-shadow: 0 0 10px gold;
         }
 
         /* Hero Section */
         .hero {
-            background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('https://images.unsplash.com/photo-1596462502278-27bfdc403348?ixlib=rb-4.0.3') center/cover;
+            background: linear-gradient(rgba(0,0,0,0.8), rgba(0,0,0,0.8)), url('https://images.unsplash.com/photo-1596462502278-27bfdc403348?ixlib=rb-4.0.3') center/cover;
             height: 500px;
             display: flex;
             align-items: center;
@@ -88,6 +97,8 @@
         .hero-content h2 {
             font-size: 3rem;
             margin-bottom: 20px;
+            color: gold;
+            text-shadow: 0 0 10px rgba(255,215,0,0.5);
         }
 
         .hero-content p {
@@ -97,7 +108,7 @@
 
         .btn {
             background: gold;
-            color: #333;
+            color: #000;
             padding: 12px 30px;
             border: none;
             border-radius: 25px;
@@ -106,27 +117,124 @@
             cursor: pointer;
             text-decoration: none;
             transition: all 0.3s ease;
+            border: 2px solid gold;
         }
 
         .btn:hover {
-            background: #ffd700;
+            background: transparent;
+            color: gold;
             transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            box-shadow: 0 5px 15px rgba(255,215,0,0.3);
         }
 
         /* Brands Section */
         .brands {
             padding: 60px 20px;
             text-align: center;
+            background: #111;
         }
 
         .brands h2 {
             font-size: 2.5rem;
             margin-bottom: 40px;
-            color: #333;
+            color: gold;
         }
 
         .brand-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .brand-card {
+            background: #222;
+            padding: 25px 15px;
+            border-radius: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 1px solid #333;
+        }
+
+        .brand-card:hover {
+            background: gold;
+            color: #000;
+            transform: translateY(-5px);
+            border-color: gold;
+        }
+
+        .brand-card h3 {
+            font-size: 1.3rem;
+            margin-bottom: 10px;
+        }
+
+        /* Categories Section */
+        .categories {
+            padding: 60px 20px;
+            text-align: center;
+            background: #000;
+        }
+
+        .categories h2 {
+            font-size: 2.5rem;
+            margin-bottom: 40px;
+            color: gold;
+        }
+
+        .category-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .category-card {
+            background: #222;
+            padding: 30px 20px;
+            border-radius: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 1px solid #333;
+        }
+
+        .category-card:hover {
+            background: gold;
+            color: #000;
+            transform: translateY(-5px);
+            border-color: gold;
+        }
+
+        .category-card i {
+            font-size: 2rem;
+            margin-bottom: 15px;
+            color: gold;
+        }
+
+        .category-card:hover i {
+            color: #000;
+        }
+
+        .category-card h3 {
+            font-size: 1.3rem;
+            margin-bottom: 10px;
+        }
+
+        /* Featured Products */
+        .featured-products {
+            padding: 60px 20px;
+            text-align: center;
+            background: #111;
+        }
+
+        .featured-products h2 {
+            font-size: 2.5rem;
+            margin-bottom: 40px;
+            color: gold;
+        }
+
+        .products-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
             gap: 30px;
@@ -134,108 +242,23 @@
             margin: 0 auto;
         }
 
-        .brand-card {
-            background: white;
-            padding: 30px;
-            border-radius: 15px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .brand-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
-        }
-
-        .brand-card h3 {
-            font-size: 1.8rem;
-            margin-bottom: 15px;
-            color: #667eea;
-        }
-
-        /* Categories Section */
-        .categories {
-            padding: 60px 20px;
-            background: #f8f9fa;
-            text-align: center;
-        }
-
-        .categories h2 {
-            font-size: 2.5rem;
-            margin-bottom: 40px;
-            color: #333;
-        }
-
-        .category-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 30px;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        .category-card {
-            background: white;
-            padding: 40px 20px;
-            border-radius: 15px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .category-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
-        }
-
-        .category-card i {
-            font-size: 3rem;
-            color: #667eea;
-            margin-bottom: 20px;
-        }
-
-        .category-card h3 {
-            font-size: 1.5rem;
-            margin-bottom: 15px;
-        }
-
-        /* Featured Products */
-        .featured-products {
-            padding: 60px 20px;
-            text-align: center;
-        }
-
-        .featured-products h2 {
-            font-size: 2.5rem;
-            margin-bottom: 40px;
-            color: #333;
-        }
-
-        .products-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 30px;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
         .product-card {
-            background: white;
+            background: #222;
             border-radius: 15px;
             overflow: hidden;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
             transition: all 0.3s ease;
+            border: 1px solid #333;
         }
 
         .product-card:hover {
             transform: translateY(-5px);
-            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+            border-color: gold;
+            box-shadow: 0 10px 25px rgba(255,215,0,0.2);
         }
 
         .product-image {
             height: 200px;
-            background: #f0f0f0;
+            background: #333;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -248,40 +271,42 @@
         .product-info h3 {
             font-size: 1.3rem;
             margin-bottom: 10px;
+            color: gold;
         }
 
         .product-info p {
-            color: #666;
+            color: #ccc;
             margin-bottom: 15px;
+            font-size: 0.9rem;
         }
 
         .product-info .price {
             font-size: 1.2rem;
             font-weight: bold;
-            color: #667eea;
+            color: gold;
             margin-bottom: 15px;
         }
 
         /* Testimonials */
         .testimonials {
             padding: 60px 20px;
-            background: #f8f9fa;
             text-align: center;
+            background: #000;
         }
 
         .testimonials h2 {
             font-size: 2.5rem;
             margin-bottom: 40px;
-            color: #333;
+            color: gold;
         }
 
         .testimonial-form {
             max-width: 600px;
             margin: 0 auto 40px;
-            background: white;
+            background: #222;
             padding: 30px;
             border-radius: 15px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            border: 1px solid #333;
         }
 
         .rating {
@@ -298,30 +323,48 @@
             font-size: 2rem;
             color: #ddd;
             cursor: pointer;
+            transition: all 0.2s ease;
         }
 
+        .star:hover,
         .star.active {
             color: gold;
+            transform: scale(1.2);
         }
 
         textarea {
             width: 100%;
             height: 100px;
             padding: 15px;
-            border: 1px solid #ddd;
+            border: 1px solid #444;
             border-radius: 10px;
             margin-bottom: 20px;
+            background: #333;
+            color: white;
             resize: vertical;
         }
 
+        textarea:focus {
+            outline: none;
+            border-color: gold;
+        }
+
         .submit-review {
-            background: #667eea;
-            color: white;
+            background: gold;
+            color: #000;
             padding: 12px 30px;
             border: none;
             border-radius: 25px;
             font-size: 1rem;
+            font-weight: bold;
             cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .submit-review:hover {
+            background: transparent;
+            color: gold;
+            border: 2px solid gold;
         }
 
         .reviews-container {
@@ -330,59 +373,67 @@
         }
 
         .review {
-            background: white;
+            background: #222;
             padding: 20px;
             border-radius: 10px;
             margin-bottom: 20px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            border: 1px solid #333;
             text-align: left;
         }
 
         .review-rating {
             color: gold;
             margin-bottom: 10px;
+            font-size: 1.2rem;
         }
 
         .review-comment {
-            color: #666;
+            color: #ccc;
+            margin-bottom: 10px;
+        }
+
+        .review-date {
+            color: #888;
+            font-size: 0.8rem;
         }
 
         /* Social Media */
         .social-media {
             padding: 60px 20px;
             text-align: center;
+            background: #111;
         }
 
         .social-media h2 {
             font-size: 2.5rem;
             margin-bottom: 40px;
-            color: #333;
+            color: gold;
         }
 
         .social-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
             gap: 30px;
-            max-width: 1200px;
+            max-width: 800px;
             margin: 0 auto;
         }
 
         .social-card {
-            background: white;
+            background: #222;
             padding: 30px;
             border-radius: 15px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            border: 1px solid #333;
         }
 
         .social-card h3 {
             margin-bottom: 20px;
-            color: #667eea;
+            color: gold;
         }
 
         .social-card a {
             display: inline-block;
-            background: #667eea;
-            color: white;
+            background: gold;
+            color: #000;
             padding: 12px 25px;
             text-decoration: none;
             border-radius: 25px;
@@ -391,16 +442,18 @@
         }
 
         .social-card a:hover {
-            background: #5a67d8;
-            transform: translateY(-2px);
+            background: transparent;
+            color: gold;
+            border: 2px solid gold;
         }
 
         /* Footer */
         footer {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: #000;
             color: gold;
             text-align: center;
             padding: 40px 20px;
+            border-top: 2px solid gold;
         }
 
         footer h2 {
@@ -422,21 +475,23 @@
             top: 0;
             width: 100%;
             height: 100%;
-            background-color: rgba(0,0,0,0.5);
+            background-color: rgba(0,0,0,0.8);
         }
 
         .modal-content {
-            background-color: white;
+            background: #222;
             margin: 5% auto;
             padding: 30px;
             border-radius: 15px;
             width: 90%;
             max-width: 600px;
             position: relative;
+            border: 2px solid gold;
+            color: white;
         }
 
         .close {
-            color: #aaa;
+            color: gold;
             float: right;
             font-size: 28px;
             font-weight: bold;
@@ -444,20 +499,37 @@
         }
 
         .close:hover {
-            color: black;
+            color: white;
         }
 
         .product-detail-image {
             width: 100%;
             height: 300px;
-            background: #f0f0f0;
+            background: #333;
             margin-bottom: 20px;
             border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .product-detail-info h2 {
+            color: gold;
+            margin-bottom: 15px;
+        }
+
+        .product-detail-info p {
+            margin-bottom: 10px;
+            color: #ccc;
+        }
+
+        .product-detail-info strong {
+            color: gold;
         }
 
         .order-btn {
-            background: #667eea;
-            color: white;
+            background: gold;
+            color: #000;
             padding: 15px 30px;
             border: none;
             border-radius: 25px;
@@ -466,10 +538,13 @@
             cursor: pointer;
             width: 100%;
             margin-top: 20px;
+            transition: all 0.3s ease;
         }
 
         .order-btn:hover {
-            background: #5a67d8;
+            background: transparent;
+            color: gold;
+            border: 2px solid gold;
         }
 
         /* Responsive */
@@ -486,7 +561,7 @@
             }
 
             nav ul li {
-                margin: 5px 15px;
+                margin: 5px 10px;
             }
 
             .hero-content h2 {
@@ -495,6 +570,11 @@
 
             .hero {
                 height: 400px;
+            }
+
+            .brand-grid,
+            .category-grid {
+                grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
             }
         }
     </style>
@@ -534,17 +614,29 @@
     <section id="brands" class="brands">
         <h2>Our Premium Brands</h2>
         <div class="brand-grid">
+            <div class="brand-card" onclick="filterByBrand('aqua rich')">
+                <h3>Aqua Rich</h3>
+            </div>
             <div class="brand-card" onclick="filterByBrand('daynee')">
                 <h3>Daynee</h3>
-                <p>Premium skincare solutions</p>
-            </div>
-            <div class="brand-card" onclick="filterByBrand('dr meineir')">
-                <h3>Dr Meineir</h3>
-                <p>Professional beauty care</p>
             </div>
             <div class="brand-card" onclick="filterByBrand('wins town')">
                 <h3>Wins Town</h3>
-                <p>Luxury beauty products</p>
+            </div>
+            <div class="brand-card" onclick="filterByBrand('sadoer')">
+                <h3>Sadoer</h3>
+            </div>
+            <div class="brand-card" onclick="filterByBrand('estelin')">
+                <h3>Estelin</h3>
+            </div>
+            <div class="brand-card" onclick="filterByBrand('dr davey')">
+                <h3>Dr Davey</h3>
+            </div>
+            <div class="brand-card" onclick="filterByBrand('medix')">
+                <h3>Medix</h3>
+            </div>
+            <div class="brand-card" onclick="filterByBrand('vaseline golden glow')">
+                <h3>Vaseline Golden Glow</h3>
             </div>
         </div>
     </section>
@@ -553,20 +645,33 @@
     <section id="categories" class="categories">
         <h2>Shop By Category</h2>
         <div class="category-grid">
-            <div class="category-card" onclick="filterByCategory('skin care')">
-                <i class="fas fa-heart"></i>
-                <h3>Skin Care</h3>
-                <p>Nourish and protect your skin</p>
+            <div class="category-card" onclick="filterByCategory('oil')">
+                <i class="fas fa-oil-can"></i>
+                <h3>Oil</h3>
             </div>
-            <div class="category-card" onclick="filterByCategory('bodycare')">
-                <i class="fas fa-spa"></i>
-                <h3>Body Care</h3>
-                <p>Pamper your entire body</p>
+            <div class="category-card" onclick="filterByCategory('lotion')">
+                <i class="fas fa-hand-holding-water"></i>
+                <h3>Lotion</h3>
             </div>
-            <div class="category-card" onclick="filterByCategory('face care')">
-                <i class="fas fa-smile"></i>
-                <h3>Face Care</h3>
-                <p>Specialized facial treatments</p>
+            <div class="category-card" onclick="filterByCategory('supplements')">
+                <i class="fas fa-capsules"></i>
+                <h3>Supplements</h3>
+            </div>
+            <div class="category-card" onclick="filterByCategory('serum')">
+                <i class="fas fa-vial"></i>
+                <h3>Serum</h3>
+            </div>
+            <div class="category-card" onclick="filterByCategory('toners')">
+                <i class="fas fa-spray-can"></i>
+                <h3>Toners</h3>
+            </div>
+            <div class="category-card" onclick="filterByCategory('sunscreen')">
+                <i class="fas fa-sun"></i>
+                <h3>Sunscreen</h3>
+            </div>
+            <div class="category-card" onclick="filterByCategory('creams')">
+                <i class="fas fa-jar"></i>
+                <h3>Creams</h3>
             </div>
         </div>
     </section>
@@ -753,7 +858,7 @@
             );
             
             if (filteredProducts.length === 0) {
-                container.innerHTML = '<p>No products found for this brand.</p>';
+                container.innerHTML = '<p style="color: gold; grid-column: 1/-1; text-align: center;">No products found for this brand.</p>';
                 return;
             }
             
@@ -770,7 +875,7 @@
             );
             
             if (filteredProducts.length === 0) {
-                container.innerHTML = '<p>No products found in this category.</p>';
+                container.innerHTML = '<p style="color: gold; grid-column: 1/-1; text-align: center;">No products found in this category.</p>';
                 return;
             }
             
@@ -789,14 +894,16 @@
                 <div class="product-detail-image">
                     <img src="${product.image || 'https://via.placeholder.com/300'}" alt="${product.name}" style="width: 100%; height: 100%; object-fit: cover;">
                 </div>
-                <h2>${product.name}</h2>
-                <p><strong>Brand:</strong> ${product.brand || 'N/A'}</p>
-                <p><strong>Category:</strong> ${product.category || 'N/A'}</p>
-                <p><strong>Price:</strong> Ksh ${product.price || 0}</p>
-                <p><strong>Size:</strong> ${product.size || 'N/A'}</p>
-                <p><strong>Stock:</strong> ${product.stock || 0} available</p>
-                <p><strong>Description:</strong> ${product.description || 'No description available.'}</p>
-                <button class="order-btn" onclick="placeOrder('${product.id}', ${product.stock || 0})">Place Order</button>
+                <div class="product-detail-info">
+                    <h2>${product.name}</h2>
+                    <p><strong>Brand:</strong> ${product.brand || 'N/A'}</p>
+                    <p><strong>Category:</strong> ${product.category || 'General Products'}</p>
+                    <p><strong>Price:</strong> Ksh ${product.price || 0}</p>
+                    <p><strong>Size:</strong> ${product.size || 'N/A'}</p>
+                    <p><strong>Description:</strong> ${product.description || 'No description available.'}</p>
+                    <p><strong>Stock:</strong> ${product.stock || 0} available</p>
+                    <button class="order-btn" onclick="placeOrder('${product.id}', ${product.stock || 0})">Place Order</button>
+                </div>
             `;
             
             modal.style.display = 'block';
@@ -810,46 +917,15 @@
             }
 
             // Open Google Maps for location selection
-            if (navigator.geolocation) {
-                navigator.geolocation.getCurrentPosition(
-                    function(position) {
-                        const lat = position.coords.latitude;
-                        const lng = position.coords.longitude;
-                        const googleMapsUrl = `https://www.google.com/maps?q=${lat},${lng}`;
-                        window.open(googleMapsUrl, '_blank');
-                        
-                        // Update stock in Firebase
-                        updateStock(productId, currentStock - 1);
-                        
-                        // Close modal
-                        document.getElementById('productModal').style.display = 'none';
-                        alert('Order placed! Please confirm your location on Google Maps.');
-                    },
-                    function(error) {
-                        // Fallback if location not available
-                        const googleMapsUrl = 'https://www.google.com/maps';
-                        window.open(googleMapsUrl, '_blank');
-                        
-                        // Update stock in Firebase
-                        updateStock(productId, currentStock - 1);
-                        
-                        // Close modal
-                        document.getElementById('productModal').style.display = 'none';
-                        alert('Order placed! Please select your location on Google Maps.');
-                    }
-                );
-            } else {
-                // Fallback if geolocation not supported
-                const googleMapsUrl = 'https://www.google.com/maps';
-                window.open(googleMapsUrl, '_blank');
-                
-                // Update stock in Firebase
-                updateStock(productId, currentStock - 1);
-                
-                // Close modal
-                document.getElementById('productModal').style.display = 'none';
-                alert('Order placed! Please select your location on Google Maps.');
-            }
+            const googleMapsUrl = 'https://www.google.com/maps';
+            window.open(googleMapsUrl, '_blank');
+            
+            // Update stock in Firebase
+            updateStock(productId, currentStock - 1);
+            
+            // Close modal
+            document.getElementById('productModal').style.display = 'none';
+            alert('Order placed! Please select your location on Google Maps for delivery.');
         }
 
         // Update stock in Firebase
@@ -928,7 +1004,7 @@
                     reviewElement.innerHTML = `
                         <div class="review-rating">${stars}</div>
                         <div class="review-comment">${review.comment}</div>
-                        <div class="review-date">${review.timestamp ? review.timestamp.toDate().toLocaleDateString() : ''}</div>
+                        <div class="review-date">${review.timestamp ? new Date(review.timestamp.toDate()).toLocaleDateString() : ''}</div>
                     `;
                     
                     container.appendChild(reviewElement);
