@@ -1404,7 +1404,7 @@
                     return url;
                 }
                 
-                // Add .jpg if no extension
+                // Add .jpg if no extension and not already processed
                 if (!url.includes('?') && !/\.(jpg|jpeg|png|gif|webp)$/i.test(url)) {
                     return url + '.jpg';
                 }
@@ -1541,11 +1541,28 @@
                 
                 // Display gallery images
                 modalGallery.innerHTML = '';
-                if (product.gallery && Array.isArray(product.gallery) && product.gallery.length > 0) {
-                    product.gallery.forEach((imgUrl, index) => {
+                
+                // Handle gallery images - ensure it's an array
+                let galleryImages = [];
+                if (Array.isArray(product.gallery)) {
+                    galleryImages = product.gallery;
+                } else if (typeof product.gallery === 'string') {
+                    // If it's a string, split by comma
+                    galleryImages = product.gallery.split(',').map(url => url.trim());
+                } else if (product.gallery) {
+                    // If it's an object, convert to array
+                    galleryImages = Object.values(product.gallery);
+                }
+                
+                console.log("Gallery images for product:", galleryImages);
+                
+                if (galleryImages && galleryImages.length > 0) {
+                    galleryImages.forEach((imgUrl, index) => {
                         if (imgUrl) {
                             // Fix gallery image URLs
-                            const fixedUrl = fixImageUrl(imgUrl);
+                            const fixedUrl = fixImageUrl(imgUrl.trim());
+                            console.log("Processing gallery image:", fixedUrl);
+                            
                             const img = document.createElement('img');
                             img.src = fixedUrl;
                             img.alt = `Gallery image ${index + 1}`;
@@ -1557,6 +1574,7 @@
                                 img.classList.add('active');
                             });
                             img.onerror = function() {
+                                console.log("Failed to load gallery image:", fixedUrl);
                                 this.src = 'https://via.placeholder.com/80x80?text=No+Image';
                             };
                             modalGallery.appendChild(img);
