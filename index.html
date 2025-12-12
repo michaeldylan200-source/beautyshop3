@@ -616,6 +616,72 @@
             box-shadow: 0 5px 15px rgba(212, 175, 55, 0.4);
         }
 
+        /* Map Modal */
+        .map-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.9);
+            z-index: 3000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .map-content {
+            background-color: var(--dark-gray);
+            border-radius: 15px;
+            width: 90%;
+            max-width: 1000px;
+            height: 80vh;
+            padding: 20px;
+            position: relative;
+            border: 1px solid var(--gold);
+        }
+
+        .map-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .map-header h2 {
+            color: var(--gold);
+            margin: 0;
+        }
+
+        .close-map {
+            font-size: 24px;
+            color: var(--gold);
+            cursor: pointer;
+        }
+
+        #map {
+            width: 100%;
+            height: calc(100% - 60px);
+            border-radius: 10px;
+        }
+
+        .confirm-location {
+            background-color: var(--gold);
+            color: var(--black);
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 15px;
+            display: block;
+            margin-left: auto;
+        }
+
+        .confirm-location:hover {
+            background-color: var(--gold-dark);
+        }
+
         /* Reviews Section */
         .reviews-container {
             display: grid;
@@ -1121,7 +1187,19 @@
                 <span>Total:</span>
                 <span id="cart-total">KSh 0.00</span>
             </div>
-            <button class="checkout-btn" id="checkout-btn">Checkout with Google Maps</button>
+            <button class="checkout-btn" id="checkout-btn">Select Delivery Location</button>
+        </div>
+    </div>
+
+    <!-- Map Modal -->
+    <div class="map-modal" id="map-modal">
+        <div class="map-content">
+            <div class="map-header">
+                <h2>Select Delivery Location</h2>
+                <span class="close-map" id="close-map">&times;</span>
+            </div>
+            <div id="map"></div>
+            <button class="confirm-location" id="confirm-location">Confirm Location</button>
         </div>
     </div>
 
@@ -1293,6 +1371,11 @@
         const emptyCartMessage = document.getElementById('empty-cart-message');
         const reviewForm = document.getElementById('review-form');
         const starsRating = document.getElementById('stars-rating');
+        const mapModal = document.getElementById('map-modal');
+        const closeMap = document.getElementById('close-map');
+        const confirmLocation = document.getElementById('confirm-location');
+        let map;
+        let selectedLocation = null;
 
         // Cart state
         let cart = [];
@@ -1310,24 +1393,27 @@
             return 0;
         }
 
-        // Helper function to fix Imgur URLs
-        function fixImgurUrl(url) {
+        // Enhanced image URL fixer for Imgur and other sources
+        function fixImageUrl(url) {
             if (!url) return 'https://via.placeholder.com/300x200?text=No+Image';
             
-            // If it's already a complete URL, return as is
-            if (url.startsWith('http')) {
-                // For Imgur URLs without extension, add .jpg
-                if (url.includes('imgur.com') && !/\.(jpg|jpeg|png|gif)$/i.test(url)) {
-                    // Check if it's already in the correct format
-                    if (!url.includes('?')) {
-                        return url + '.jpg';
-                    }
+            // Handle Imgur URLs
+            if (url.includes('imgur.com')) {
+                // Already has extension
+                if (/\.(jpg|jpeg|png|gif|webp)$/i.test(url)) {
+                    return url;
                 }
+                
+                // Add .jpg if no extension
+                if (!url.includes('?') && !/\.(jpg|jpeg|png|gif|webp)$/i.test(url)) {
+                    return url + '.jpg';
+                }
+                
                 return url;
             }
             
-            // If it's just an ID, construct the URL
-            return `https://i.imgur.com/${url}.jpg`;
+            // Handle other URLs
+            return url;
         }
 
         // Load products from Firebase
@@ -1393,7 +1479,7 @@
             productList.innerHTML = '';
             products.forEach(product => {
                 // Fix image URLs
-                const imageUrl = fixImgurUrl(product.image);
+                const imageUrl = fixImageUrl(product.image);
                 
                 // Safely parse price
                 const price = parsePrice(product.price);
@@ -1436,7 +1522,7 @@
             const product = products.find(p => p.id === productId);
             if (product) {
                 // Fix image URLs
-                const mainImageUrl = fixImgurUrl(product.image);
+                const mainImageUrl = fixImageUrl(product.image);
                 modalMainImg.src = mainImageUrl;
                 modalMainImg.alt = product.name || 'Product Image';
                 modalMainImg.onerror = function() {
@@ -1459,7 +1545,7 @@
                     product.gallery.forEach((imgUrl, index) => {
                         if (imgUrl) {
                             // Fix gallery image URLs
-                            const fixedUrl = fixImgurUrl(imgUrl);
+                            const fixedUrl = fixImageUrl(imgUrl);
                             const img = document.createElement('img');
                             img.src = fixedUrl;
                             img.alt = `Gallery image ${index + 1}`;
@@ -1501,17 +1587,12 @@
 
         // Place order function
         function placeOrder(product) {
-            const location = prompt("Please enter your delivery location:");
-            if (location) {
-                alert(`Order placed for ${product.name || 'this product'}!\nDelivery location: ${location}\n\nRedirecting to Google Maps...`);
-                
-                // Open Google Maps with the location
-                const encodedLocation = encodeURIComponent(location);
-                window.open(`https://www.google.com/maps/search/?api=1&query=${encodedLocation}`, '_blank');
-                
-                // Close modal
-                productModal.style.display = 'none';
-            }
+            // Add to cart first
+            addToCart(product.id, productsData);
+            
+            // Open cart modal
+            cartModal.style.display = 'flex';
+            productModal.style.display = 'none';
         }
 
         // Add to cart function
@@ -1527,7 +1608,7 @@
                         id: product.id,
                         name: product.name || 'Unnamed Product',
                         price: parsePrice(product.price),
-                        image: fixImgurUrl(product.image),
+                        image: fixImageUrl(product.image),
                         quantity: 1
                     });
                 }
@@ -1616,25 +1697,159 @@
             }
         });
 
-        // Checkout with Google Maps
+        // Checkout with map selection
         checkoutBtn.addEventListener('click', () => {
             if (cart.length === 0) {
                 alert('Your cart is empty!');
                 return;
             }
             
-            const location = prompt("Please enter your delivery location:");
-            if (location) {
-                alert(`Order placed for ${cart.length} items!\nDelivery location: ${location}\n\nRedirecting to Google Maps...`);
+            // Initialize map
+            initMap();
+            mapModal.style.display = 'flex';
+        });
+
+        // Initialize Google Map
+        function initMap() {
+            // Nairobi coordinates as default center
+            const nairobi = { lat: -1.286389, lng: 36.817223 };
+            
+            map = new google.maps.Map(document.getElementById("map"), {
+                zoom: 13,
+                center: nairobi,
+                styles: [
+                    { elementType: "geometry", stylers: [{ color: "#242f3e" }] },
+                    { elementType: "labels.text.stroke", stylers: [{ color: "#242f3e" }] },
+                    { elementType: "labels.text.fill", stylers: [{ color: "#746855" }] },
+                    {
+                        featureType: "administrative.locality",
+                        elementType: "labels.text.fill",
+                        stylers: [{ color: "#d59563" }],
+                    },
+                    {
+                        featureType: "poi",
+                        elementType: "labels.text.fill",
+                        stylers: [{ color: "#d59563" }],
+                    },
+                    {
+                        featureType: "poi.park",
+                        elementType: "geometry",
+                        stylers: [{ color: "#263c3f" }],
+                    },
+                    {
+                        featureType: "poi.park",
+                        elementType: "labels.text.fill",
+                        stylers: [{ color: "#6b9a76" }],
+                    },
+                    {
+                        featureType: "road",
+                        elementType: "geometry",
+                        stylers: [{ color: "#38414e" }],
+                    },
+                    {
+                        featureType: "road",
+                        elementType: "geometry.stroke",
+                        stylers: [{ color: "#212a37" }],
+                    },
+                    {
+                        featureType: "road",
+                        elementType: "labels.text.fill",
+                        stylers: [{ color: "#9ca5b3" }],
+                    },
+                    {
+                        featureType: "road.highway",
+                        elementType: "geometry",
+                        stylers: [{ color: "#746855" }],
+                    },
+                    {
+                        featureType: "road.highway",
+                        elementType: "geometry.stroke",
+                        stylers: [{ color: "#1f2835" }],
+                    },
+                    {
+                        featureType: "road.highway",
+                        elementType: "labels.text.fill",
+                        stylers: [{ color: "#f3d19c" }],
+                    },
+                    {
+                        featureType: "transit",
+                        elementType: "geometry",
+                        stylers: [{ color: "#2f3948" }],
+                    },
+                    {
+                        featureType: "transit.station",
+                        elementType: "labels.text.fill",
+                        stylers: [{ color: "#d59563" }],
+                    },
+                    {
+                        featureType: "water",
+                        elementType: "geometry",
+                        stylers: [{ color: "#17263c" }],
+                    },
+                    {
+                        featureType: "water",
+                        elementType: "labels.text.fill",
+                        stylers: [{ color: "#515c6d" }],
+                    },
+                    {
+                        featureType: "water",
+                        elementType: "labels.text.stroke",
+                        stylers: [{ color: "#17263c" }],
+                    },
+                ]
+            });
+            
+            // Add click listener to get location
+            map.addListener("click", (event) => {
+                // Remove previous marker if exists
+                if (window.marker) {
+                    window.marker.setMap(null);
+                }
                 
-                // Open Google Maps with the location
-                const encodedLocation = encodeURIComponent(location);
-                window.open(`https://www.google.com/maps/search/?api=1&query=${encodedLocation}`, '_blank');
+                // Add new marker
+                window.marker = new google.maps.Marker({
+                    position: event.latLng,
+                    map: map,
+                    draggable: true
+                });
                 
-                // Clear cart after checkout
-                cart = [];
-                updateCartUI();
-                cartModal.style.display = 'none';
+                // Store selected location
+                selectedLocation = {
+                    lat: event.latLng.lat(),
+                    lng: event.latLng.lng()
+                };
+            });
+        }
+
+        // Close map modal
+        closeMap.addEventListener('click', () => {
+            mapModal.style.display = 'none';
+        });
+
+        // Confirm location and place order
+        confirmLocation.addEventListener('click', () => {
+            if (!selectedLocation) {
+                alert('Please select a location on the map first');
+                return;
+            }
+            
+            // Format location for display
+            const locationStr = `Lat: ${selectedLocation.lat.toFixed(6)}, Lng: ${selectedLocation.lng.toFixed(6)}`;
+            
+            // Show confirmation
+            alert(`Order placed for ${cart.length} items!\nDelivery location: ${locationStr}\n\nOur team will contact you shortly for confirmation.`);
+            
+            // Clear cart after checkout
+            cart = [];
+            updateCartUI();
+            mapModal.style.display = 'none';
+            cartModal.style.display = 'none';
+        });
+
+        // Close map modal when clicking outside
+        window.addEventListener('click', (e) => {
+            if (e.target === mapModal) {
+                mapModal.style.display = 'none';
             }
         });
 
@@ -1790,6 +2005,21 @@
             loadProducts();
             loadReviews();
         });
+    </script>
+    
+    <!-- Google Maps API -->
+    <script>
+        // Load Google Maps API asynchronously
+        function loadGoogleMaps() {
+            const script = document.createElement('script');
+            script.src = 'https://maps.googleapis.com/maps/api/js?key=AIzaSyAl8Iefq-noM4yHujACaHpU89jGSTe5YX8&callback=initMap';
+            script.async = true;
+            script.defer = true;
+            document.head.appendChild(script);
+        }
+        
+        // Load Google Maps after page loads
+        window.addEventListener('load', loadGoogleMaps);
     </script>
 </body>
 </html>
