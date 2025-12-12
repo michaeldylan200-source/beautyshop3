@@ -1149,6 +1149,18 @@
         const reviewForm = document.getElementById('review-form');
         const starsRating = document.getElementById('stars-rating');
 
+        // Helper function to safely convert price to number
+        function parsePrice(price) {
+            if (typeof price === 'number') {
+                return price;
+            }
+            if (typeof price === 'string') {
+                const parsed = parseFloat(price);
+                return isNaN(parsed) ? 0 : parsed;
+            }
+            return 0;
+        }
+
         // Load products from Firebase
         async function loadProducts() {
             try {
@@ -1213,13 +1225,16 @@
                 // Handle missing image
                 const imageUrl = product.image || 'https://via.placeholder.com/300x200?text=No+Image';
                 
+                // Safely parse price
+                const price = parsePrice(product.price);
+                
                 const productCard = document.createElement('div');
                 productCard.className = 'product-card';
                 productCard.innerHTML = `
                     <img src="${imageUrl}" alt="${product.name}" class="product-img" onerror="this.src='https://via.placeholder.com/300x200?text=No+Image'">
                     <div class="product-info">
                         <h3>${product.name || 'Unnamed Product'}</h3>
-                        <p class="product-price">$${(product.price || 0).toFixed(2)}</p>
+                        <p class="product-price">$${price.toFixed(2)}</p>
                         <div class="product-actions">
                             <button class="view-details" data-id="${product.id}">View Details</button>
                             <button class="add-to-cart" data-id="${product.id}">Add to Cart</button>
@@ -1263,7 +1278,10 @@
                 modalSize.textContent = product.size || 'N/A';
                 modalBrand.textContent = product.brand || 'N/A';
                 modalCategory.textContent = product.category || 'General';
-                modalPrice.textContent = `$${(product.price || 0).toFixed(2)}`;
+                
+                // Safely parse price
+                const price = parsePrice(product.price);
+                modalPrice.textContent = `$${price.toFixed(2)}`;
                 
                 // Display gallery images
                 modalGallery.innerHTML = '';
