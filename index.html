@@ -1478,8 +1478,21 @@
             
             productList.innerHTML = '';
             products.forEach(product => {
-                // Fix image URLs - now specifically looking for "image" field
-                const imageUrl = fixImageUrl(product.image || product.imageUrl || product.image_url || 'https://via.placeholder.com/300x200?text=No+Image');
+                // Try multiple field names for image
+                let imageUrl = 'https://via.placeholder.com/300x200?text=No+Image';
+                
+                // Check for various image field names
+                if (product.image) {
+                    imageUrl = fixImageUrl(product.image);
+                } else if (product.imageUrl) {
+                    imageUrl = fixImageUrl(product.imageUrl);
+                } else if (product.image_url) {
+                    imageUrl = fixImageUrl(product.image_url);
+                } else if (product.photo) {
+                    imageUrl = fixImageUrl(product.photo);
+                } else if (product.picture) {
+                    imageUrl = fixImageUrl(product.picture);
+                }
                 
                 // Safely parse price
                 const price = parsePrice(product.price);
@@ -1487,7 +1500,7 @@
                 const productCard = document.createElement('div');
                 productCard.className = 'product-card';
                 productCard.innerHTML = `
-                    <img src="${imageUrl}" alt="${product.name}" class="product-img" onerror="this.src='https://via.placeholder.com/300x200?text=No+Image'">
+                    <img src="${imageUrl}" alt="${product.name || 'Product'}" class="product-img" onerror="this.src='https://via.placeholder.com/300x200?text=No+Image'; this.onerror=null;">
                     <div class="product-info">
                         <h3>${product.name || 'Unnamed Product'}</h3>
                         <p class="product-price">KSh ${price.toLocaleString('en-KE', { minimumFractionDigits: 2 })}</p>
@@ -1521,12 +1534,26 @@
         function showProductDetails(productId, products) {
             const product = products.find(p => p.id === productId);
             if (product) {
-                // Fix main image URL
-                const mainImageUrl = fixImageUrl(product.image || product.imageUrl || product.image_url || 'https://via.placeholder.com/300x300?text=No+Image');
+                // Try multiple field names for main image
+                let mainImageUrl = 'https://via.placeholder.com/300x300?text=No+Image';
+                
+                if (product.image) {
+                    mainImageUrl = fixImageUrl(product.image);
+                } else if (product.imageUrl) {
+                    mainImageUrl = fixImageUrl(product.imageUrl);
+                } else if (product.image_url) {
+                    mainImageUrl = fixImageUrl(product.image_url);
+                } else if (product.photo) {
+                    mainImageUrl = fixImageUrl(product.photo);
+                } else if (product.picture) {
+                    mainImageUrl = fixImageUrl(product.picture);
+                }
+                
                 modalMainImg.src = mainImageUrl;
                 modalMainImg.alt = product.name || 'Product Image';
                 modalMainImg.onerror = function() {
                     this.src = 'https://via.placeholder.com/300x300?text=No+Image';
+                    this.onerror = null;
                 };
                 
                 modalTitle.textContent = product.name || 'Unnamed Product';
@@ -1539,13 +1566,13 @@
                 const price = parsePrice(product.price);
                 modalPrice.textContent = `KSh ${price.toLocaleString('en-KE', { minimumFractionDigits: 2 })}`;
                 
-                // Display gallery images - now checking multiple field names
+                // Display gallery images
                 modalGallery.innerHTML = '';
                 
-                // Try different field names for gallery images
+                // Try multiple field names for gallery images
                 let galleryImages = [];
                 
-                // Check for gallery field variations
+                // Check for various gallery field names
                 if (Array.isArray(product.gallery)) {
                     galleryImages = product.gallery;
                 } else if (Array.isArray(product.images)) {
@@ -1553,14 +1580,12 @@
                 } else if (Array.isArray(product.gallery_images)) {
                     galleryImages = product.gallery_images;
                 } else if (typeof product.gallery === 'string') {
-                    // If it's a string, split by comma
                     galleryImages = product.gallery.split(',').map(url => url.trim());
                 } else if (typeof product.images === 'string') {
                     galleryImages = product.images.split(',').map(url => url.trim());
                 } else if (typeof product.gallery_images === 'string') {
                     galleryImages = product.gallery_images.split(',').map(url => url.trim());
                 } else if (product.gallery) {
-                    // If it's an object, convert to array
                     galleryImages = Object.values(product.gallery);
                 } else if (product.images) {
                     galleryImages = Object.values(product.images);
@@ -1590,6 +1615,7 @@
                             img.onerror = function() {
                                 console.log("Failed to load gallery image:", fixedUrl);
                                 this.src = 'https://via.placeholder.com/80x80?text=No+Image';
+                                this.onerror = null;
                             };
                             modalGallery.appendChild(img);
                         }
@@ -1607,6 +1633,7 @@
                     });
                     img.onerror = function() {
                         this.src = 'https://via.placeholder.com/80x80?text=No+Image';
+                        this.onerror = null;
                     };
                     modalGallery.appendChild(img);
                 }
@@ -1649,11 +1676,26 @@
                 if (existingItem) {
                     existingItem.quantity += 1;
                 } else {
+                    // Try multiple field names for image
+                    let imageUrl = 'https://via.placeholder.com/60x60?text=No+Image';
+                    
+                    if (product.image) {
+                        imageUrl = fixImageUrl(product.image);
+                    } else if (product.imageUrl) {
+                        imageUrl = fixImageUrl(product.imageUrl);
+                    } else if (product.image_url) {
+                        imageUrl = fixImageUrl(product.image_url);
+                    } else if (product.photo) {
+                        imageUrl = fixImageUrl(product.photo);
+                    } else if (product.picture) {
+                        imageUrl = fixImageUrl(product.picture);
+                    }
+                    
                     cart.push({
                         id: product.id,
                         name: product.name || 'Unnamed Product',
                         price: parsePrice(product.price),
-                        image: fixImageUrl(product.image || product.imageUrl || product.image_url || 'https://via.placeholder.com/60x60?text=No+Image'),
+                        image: imageUrl,
                         quantity: 1
                     });
                 }
@@ -1694,7 +1736,7 @@
                 cartItem.className = 'cart-item';
                 cartItem.innerHTML = `
                     <div class="cart-item-info">
-                        <img src="${item.image}" alt="${item.name}" class="cart-item-img" onerror="this.src='https://via.placeholder.com/60x60?text=No+Image'">
+                        <img src="${item.image}" alt="${item.name}" class="cart-item-img" onerror="this.src='https://via.placeholder.com/60x60?text=No+Image'; this.onerror=null;">
                         <div class="cart-item-details">
                             <h4>${item.name}</h4>
                             <p class="cart-item-price">KSh ${item.price.toLocaleString('en-KE', { minimumFractionDigits: 2 })} × ${item.quantity}</p>
