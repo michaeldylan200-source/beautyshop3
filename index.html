@@ -1478,8 +1478,8 @@
             
             productList.innerHTML = '';
             products.forEach(product => {
-                // Fix image URLs
-                const imageUrl = fixImageUrl(product.image);
+                // Fix image URLs - now specifically looking for "image" field
+                const imageUrl = fixImageUrl(product.image || product.imageUrl || product.image_url || 'https://via.placeholder.com/300x200?text=No+Image');
                 
                 // Safely parse price
                 const price = parsePrice(product.price);
@@ -1521,8 +1521,8 @@
         function showProductDetails(productId, products) {
             const product = products.find(p => p.id === productId);
             if (product) {
-                // Fix image URLs
-                const mainImageUrl = fixImageUrl(product.image);
+                // Fix main image URL
+                const mainImageUrl = fixImageUrl(product.image || product.imageUrl || product.image_url || 'https://via.placeholder.com/300x300?text=No+Image');
                 modalMainImg.src = mainImageUrl;
                 modalMainImg.alt = product.name || 'Product Image';
                 modalMainImg.onerror = function() {
@@ -1539,19 +1539,33 @@
                 const price = parsePrice(product.price);
                 modalPrice.textContent = `KSh ${price.toLocaleString('en-KE', { minimumFractionDigits: 2 })}`;
                 
-                // Display gallery images
+                // Display gallery images - now checking multiple field names
                 modalGallery.innerHTML = '';
                 
-                // Handle gallery images - ensure it's an array
+                // Try different field names for gallery images
                 let galleryImages = [];
+                
+                // Check for gallery field variations
                 if (Array.isArray(product.gallery)) {
                     galleryImages = product.gallery;
+                } else if (Array.isArray(product.images)) {
+                    galleryImages = product.images;
+                } else if (Array.isArray(product.gallery_images)) {
+                    galleryImages = product.gallery_images;
                 } else if (typeof product.gallery === 'string') {
                     // If it's a string, split by comma
                     galleryImages = product.gallery.split(',').map(url => url.trim());
+                } else if (typeof product.images === 'string') {
+                    galleryImages = product.images.split(',').map(url => url.trim());
+                } else if (typeof product.gallery_images === 'string') {
+                    galleryImages = product.gallery_images.split(',').map(url => url.trim());
                 } else if (product.gallery) {
                     // If it's an object, convert to array
                     galleryImages = Object.values(product.gallery);
+                } else if (product.images) {
+                    galleryImages = Object.values(product.images);
+                } else if (product.gallery_images) {
+                    galleryImages = Object.values(product.gallery_images);
                 }
                 
                 console.log("Gallery images for product:", galleryImages);
@@ -1581,7 +1595,20 @@
                         }
                     });
                 } else {
-                    modalGallery.innerHTML = '<p>No additional images available</p>';
+                    // If no gallery images, show main image as gallery
+                    const img = document.createElement('img');
+                    img.src = mainImageUrl;
+                    img.alt = 'Product Image';
+                    img.className = 'gallery-img active';
+                    img.addEventListener('click', () => {
+                        modalMainImg.src = mainImageUrl;
+                        document.querySelectorAll('.gallery-img').forEach(g => g.classList.remove('active'));
+                        img.classList.add('active');
+                    });
+                    img.onerror = function() {
+                        this.src = 'https://via.placeholder.com/80x80?text=No+Image';
+                    };
+                    modalGallery.appendChild(img);
                 }
                 
                 // Set order button functionality
@@ -1626,7 +1653,7 @@
                         id: product.id,
                         name: product.name || 'Unnamed Product',
                         price: parsePrice(product.price),
-                        image: fixImageUrl(product.image),
+                        image: fixImageUrl(product.image || product.imageUrl || product.image_url || 'https://via.placeholder.com/60x60?text=No+Image'),
                         quantity: 1
                     });
                 }
