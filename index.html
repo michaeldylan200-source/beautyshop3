@@ -809,6 +809,39 @@
         let selectedLocation = null;
         let currentRating = 0;
 
+        // Imgur image URLs you provided
+        const imgurImages = [
+            "https://i.imgur.com/8jg1ugI.jpg",
+            "https://i.imgur.com/QLK6qwk.jpg",
+            "https://i.imgur.com/h4jY6DR.jpg",
+            "https://i.imgur.com/LviXRD2.jpg",
+            "https://i.imgur.com/a/UkoZSz3.jpg",
+            "https://i.imgur.com/WPxtzOE.jpg",
+            "https://i.imgur.com/0G5vtK7.jpg",
+            "https://i.imgur.com/KO0AfTd.jpg",
+            "https://i.imgur.com/XpzQtnQ.jpg",
+            "https://i.imgur.com/dD7qnt0.jpg",
+            "https://i.imgur.com/1oEokUT.jpg",
+            "https://i.imgur.com/qkOXdVw.jpg",
+            "https://i.imgur.com/HKxHzNK.jpg",
+            "https://i.imgur.com/aPCstcI.jpg",
+            "https://i.imgur.com/YS3M62m.jpg",
+            "https://i.imgur.com/et0IKFx.jpg",
+            "https://i.imgur.com/RVsMAQh.jpg",
+            "https://i.imgur.com/paIuwd0.jpg",
+            "https://i.imgur.com/zIuT5cv.jpg",
+            "https://i.imgur.com/9MgMzVw.jpg",
+            "https://i.imgur.com/cxz3d7Q.jpg",
+            "https://i.imgur.com/VzkCrw5.jpg",
+            "https://i.imgur.com/EtHn4CH.jpg",
+            "https://i.imgur.com/cCJ9eaF.jpg",
+            "https://i.imgur.com/a/UkoZSz3.jpg",
+            "https://i.imgur.com/72bIpo1.jpg",
+            "https://i.imgur.com/w0XLRvH.jpg",
+            "https://i.imgur.com/0TccyU4.jpg",
+            "https://i.imgur.com/aJo7Qer.jpg"
+        ];
+
         // Initialize the app
         document.addEventListener('DOMContentLoaded', function() {
             loadProductsFromFirestore();
@@ -826,6 +859,8 @@
                 const querySnapshot = await db.collection('products').get();
                 const products = [];
                 
+                let imageIndex = 0;
+                
                 querySnapshot.forEach((doc) => {
                     const product = doc.data();
                     product.id = doc.id;
@@ -838,11 +873,14 @@
                     product.brand = product.brand || 'general';
                     product.stock = product.stock || 0;
                     
-                    // Use Firestore image if available, otherwise use placeholder
-                    if (product.image) {
-                        product.image = product.image;
+                    // Assign images from your Imgur links sequentially
+                    if (imageIndex < imgurImages.length) {
+                        product.image = imgurImages[imageIndex];
+                        imageIndex++;
                     } else {
-                        product.image = 'https://via.placeholder.com/300x200?text=Product+Image';
+                        // If we run out of images, cycle through them
+                        product.image = imgurImages[imageIndex % imgurImages.length];
+                        imageIndex++;
                     }
                     
                     products.push(product);
@@ -868,10 +906,8 @@
                 const productCard = document.createElement('div');
                 productCard.className = 'product-card';
                 
-                // Only show image if it exists and is not the placeholder
-                const imageHtml = product.image && !product.image.includes('placeholder') 
-                    ? `<img src="${product.image}" alt="${product.name}" class="product-image" onerror="this.src='https://via.placeholder.com/300x200?text=Product+Image'">`
-                    : '';
+                // Always show image since we're assigning from your Imgur links
+                const imageHtml = `<img src="${product.image}" alt="${product.name}" class="product-image" onerror="this.src='https://via.placeholder.com/300x200?text=Product+Image'">`;
                 
                 productCard.innerHTML = `
                     ${imageHtml}
@@ -1076,6 +1112,8 @@
                     .get();
                 
                 const products = [];
+                let imageIndex = 0;
+                
                 querySnapshot.forEach((doc) => {
                     const product = doc.data();
                     product.id = doc.id;
@@ -1088,11 +1126,14 @@
                     product.brand = product.brand || 'general';
                     product.stock = product.stock || 0;
                     
-                    // Use Firestore image if available, otherwise use placeholder
-                    if (product.image) {
-                        product.image = product.image;
+                    // Assign images from your Imgur links sequentially
+                    if (imageIndex < imgurImages.length) {
+                        product.image = imgurImages[imageIndex];
+                        imageIndex++;
                     } else {
-                        product.image = 'https://via.placeholder.com/300x200?text=Product+Image';
+                        // If we run out of images, cycle through them
+                        product.image = imgurImages[imageIndex % imgurImages.length];
+                        imageIndex++;
                     }
                     
                     products.push(product);
@@ -1117,6 +1158,8 @@
                     .get();
                 
                 const products = [];
+                let imageIndex = 0;
+                
                 querySnapshot.forEach((doc) => {
                     const product = doc.data();
                     product.id = doc.id;
@@ -1129,11 +1172,14 @@
                     product.brand = product.brand || 'general';
                     product.stock = product.stock || 0;
                     
-                    // Use Firestore image if available, otherwise use placeholder
-                    if (product.image) {
-                        product.image = product.image;
+                    // Assign images from your Imgur links sequentially
+                    if (imageIndex < imgurImages.length) {
+                        product.image = imgurImages[imageIndex];
+                        imageIndex++;
                     } else {
-                        product.image = 'https://via.placeholder.com/300x200?text=Product+Image';
+                        // If we run out of images, cycle through them
+                        product.image = imgurImages[imageIndex % imgurImages.length];
+                        imageIndex++;
                     }
                     
                     products.push(product);
