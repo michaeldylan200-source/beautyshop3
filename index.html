@@ -1393,41 +1393,48 @@
             return 0;
         }
 
-        // Convert Imgur URLs to direct image URLs
+        // Imgur URL converter - converts Imgur links to direct image URLs
         function convertImgurUrl(url) {
             if (!url) return 'https://via.placeholder.com/300x200?text=No+Image';
             
             // If it's already a direct image URL, return as is
-            if (/\.(jpg|jpeg|png|gif|webp)$/i.test(url)) {
+            if (/\.(jpg|jpeg|png|gif|webp)/i.test(url)) {
                 return url;
             }
             
             // Handle Imgur URLs
             if (url.includes('imgur.com')) {
-                // Handle direct Imgur links
-                if (url.includes('i.imgur.com')) {
-                    // Already a direct link, just ensure it has an extension
-                    if (!/\.(jpg|jpeg|png|gif|webp)$/i.test(url)) {
-                        return url + '.jpg';
+                // Handle album URLs
+                if (url.includes('/a/')) {
+                    // For albums, we can't directly convert, so return placeholder
+                    return 'https://via.placeholder.com/300x200?text=Album+Image';
+                }
+                
+                // Handle gallery URLs
+                if (url.includes('/gallery/')) {
+                    const id = url.split('/gallery/')[1].split('/')[0].split('?')[0].split('#')[0];
+                    return `https://i.imgur.com/${id}.jpg`;
+                }
+                
+                // Handle direct image page URLs
+                if (url.includes('/')) {
+                    const parts = url.split('/');
+                    const lastPart = parts[parts.length - 1];
+                    
+                    // If it's just an ID
+                    if (!lastPart.includes('.')) {
+                        return `https://i.imgur.com/${lastPart}.jpg`;
                     }
+                    
+                    // If it already has extension, return as is
                     return url;
                 }
                 
-                // Handle Imgur gallery links
-                const imgurRegex = /imgur\.com\/(?:a\/|gallery\/)?([a-zA-Z0-9]+)/;
-                const match = url.match(imgurRegex);
-                
-                if (match && match[1]) {
-                    // Convert to direct image URL
-                    return `https://i.imgur.com/${match[1]}.jpg`;
-                }
+                // Handle imgur.com URLs without path
+                return url;
             }
             
-            // For other URLs, try to add extension if missing
-            if (!url.includes('?') && !/\.(jpg|jpeg|png|gif|webp)$/i.test(url)) {
-                return url + '.jpg';
-            }
-            
+            // For all other URLs, return as is
             return url;
         }
 
@@ -1493,7 +1500,7 @@
             
             productList.innerHTML = '';
             products.forEach(product => {
-                // Convert image URL
+                // Convert image URL using our converter
                 let imageUrl = 'https://via.placeholder.com/300x200?text=No+Image';
                 
                 // Check for various image field names
