@@ -809,38 +809,40 @@
         let selectedLocation = null;
         let currentRating = 0;
 
-        // Imgur image URLs you provided
-        const imgurImages = [
-            "https://i.imgur.com/8jg1ugI.jpg",
-            "https://i.imgur.com/QLK6qwk.jpg",
-            "https://i.imgur.com/h4jY6DR.jpg",
-            "https://i.imgur.com/LviXRD2.jpg",
-            "https://i.imgur.com/a/UkoZSz3.jpg",
-            "https://i.imgur.com/WPxtzOE.jpg",
-            "https://i.imgur.com/0G5vtK7.jpg",
-            "https://i.imgur.com/KO0AfTd.jpg",
-            "https://i.imgur.com/XpzQtnQ.jpg",
-            "https://i.imgur.com/dD7qnt0.jpg",
-            "https://i.imgur.com/1oEokUT.jpg",
-            "https://i.imgur.com/qkOXdVw.jpg",
-            "https://i.imgur.com/HKxHzNK.jpg",
-            "https://i.imgur.com/aPCstcI.jpg",
-            "https://i.imgur.com/YS3M62m.jpg",
-            "https://i.imgur.com/et0IKFx.jpg",
-            "https://i.imgur.com/RVsMAQh.jpg",
-            "https://i.imgur.com/paIuwd0.jpg",
-            "https://i.imgur.com/zIuT5cv.jpg",
-            "https://i.imgur.com/9MgMzVw.jpg",
-            "https://i.imgur.com/cxz3d7Q.jpg",
-            "https://i.imgur.com/VzkCrw5.jpg",
-            "https://i.imgur.com/EtHn4CH.jpg",
-            "https://i.imgur.com/cCJ9eaF.jpg",
-            "https://i.imgur.com/a/UkoZSz3.jpg",
-            "https://i.imgur.com/72bIpo1.jpg",
-            "https://i.imgur.com/w0XLRvH.jpg",
-            "https://i.imgur.com/0TccyU4.jpg",
-            "https://i.imgur.com/aJo7Qer.jpg"
-        ];
+        // CUSTOM IMAGE MAPPING - EDIT THIS TO MATCH YOUR FIRESTORE PRODUCT IDs
+        // Map your Firestore product document IDs to specific Imgur images
+        const productImageMap = {
+            // Example mapping - REPLACE THESE WITH YOUR ACTUAL PRODUCT IDs
+            "product_001": "https://i.imgur.com/8jg1ugI.jpg",
+            "product_002": "https://i.imgur.com/QLK6qwk.jpg",
+            "product_003": "https://i.imgur.com/h4jY6DR.jpg",
+            "product_004": "https://i.imgur.com/LviXRD2.jpg",
+            "product_005": "https://i.imgur.com/a/UkoZSz3.jpg",
+            "product_006": "https://i.imgur.com/WPxtzOE.jpg",
+            "product_007": "https://i.imgur.com/0G5vtK7.jpg",
+            "product_008": "https://i.imgur.com/KO0AfTd.jpg",
+            "product_009": "https://i.imgur.com/XpzQtnQ.jpg",
+            "product_010": "https://i.imgur.com/dD7qnt0.jpg",
+            "product_011": "https://i.imgur.com/1oEokUT.jpg",
+            "product_012": "https://i.imgur.com/qkOXdVw.jpg",
+            "product_013": "https://i.imgur.com/HKxHzNK.jpg",
+            "product_014": "https://i.imgur.com/aPCstcI.jpg",
+            "product_015": "https://i.imgur.com/YS3M62m.jpg",
+            "product_016": "https://i.imgur.com/et0IKFx.jpg",
+            "product_017": "https://i.imgur.com/RVsMAQh.jpg",
+            "product_018": "https://i.imgur.com/paIuwd0.jpg",
+            "product_019": "https://i.imgur.com/zIuT5cv.jpg",
+            "product_020": "https://i.imgur.com/9MgMzVw.jpg",
+            "product_021": "https://i.imgur.com/cxz3d7Q.jpg",
+            "product_022": "https://i.imgur.com/VzkCrw5.jpg",
+            "product_023": "https://i.imgur.com/EtHn4CH.jpg",
+            "product_024": "https://i.imgur.com/cCJ9eaF.jpg",
+            "product_025": "https://i.imgur.com/a/UkoZSz3.jpg",
+            "product_026": "https://i.imgur.com/72bIpo1.jpg",
+            "product_027": "https://i.imgur.com/w0XLRvH.jpg",
+            "product_028": "https://i.imgur.com/0TccyU4.jpg",
+            "product_029": "https://i.imgur.com/aJo7Qer.jpg"
+        };
 
         // Initialize the app
         document.addEventListener('DOMContentLoaded', function() {
@@ -850,7 +852,7 @@
             setupEventListeners();
         });
 
-        // Load products from Firestore with image mapping
+        // Load products from Firestore with proper image mapping
         async function loadProductsFromFirestore() {
             try {
                 console.log("Loading products from Firestore...");
@@ -858,8 +860,6 @@
                 
                 const querySnapshot = await db.collection('products').get();
                 const products = [];
-                
-                let imageIndex = 0;
                 
                 querySnapshot.forEach((doc) => {
                     const product = doc.data();
@@ -873,14 +873,12 @@
                     product.brand = product.brand || 'general';
                     product.stock = product.stock || 0;
                     
-                    // Assign images from your Imgur links sequentially
-                    if (imageIndex < imgurImages.length) {
-                        product.image = imgurImages[imageIndex];
-                        imageIndex++;
+                    // Use the custom image mapping
+                    if (productImageMap[product.id]) {
+                        product.image = productImageMap[product.id];
                     } else {
-                        // If we run out of images, cycle through them
-                        product.image = imgurImages[imageIndex % imgurImages.length];
-                        imageIndex++;
+                        // Fallback to Firestore image field or placeholder
+                        product.image = product.image || 'https://via.placeholder.com/300x200?text=Product+Image';
                     }
                     
                     products.push(product);
@@ -906,7 +904,7 @@
                 const productCard = document.createElement('div');
                 productCard.className = 'product-card';
                 
-                // Always show image since we're assigning from your Imgur links
+                // Always show image since we're mapping to your specific images
                 const imageHtml = `<img src="${product.image}" alt="${product.name}" class="product-image" onerror="this.src='https://via.placeholder.com/300x200?text=Product+Image'">`;
                 
                 productCard.innerHTML = `
@@ -1101,7 +1099,7 @@
             });
         }
 
-        // Filter products by brand
+        // Filter products by brand with image mapping
         async function filterProductsByBrand(brand) {
             try {
                 productsGrid.innerHTML = '<div class="loading">Filtering products...</div>';
@@ -1112,7 +1110,6 @@
                     .get();
                 
                 const products = [];
-                let imageIndex = 0;
                 
                 querySnapshot.forEach((doc) => {
                     const product = doc.data();
@@ -1126,14 +1123,12 @@
                     product.brand = product.brand || 'general';
                     product.stock = product.stock || 0;
                     
-                    // Assign images from your Imgur links sequentially
-                    if (imageIndex < imgurImages.length) {
-                        product.image = imgurImages[imageIndex];
-                        imageIndex++;
+                    // Use the custom image mapping
+                    if (productImageMap[product.id]) {
+                        product.image = productImageMap[product.id];
                     } else {
-                        // If we run out of images, cycle through them
-                        product.image = imgurImages[imageIndex % imgurImages.length];
-                        imageIndex++;
+                        // Fallback to Firestore image field or placeholder
+                        product.image = product.image || 'https://via.placeholder.com/300x200?text=Product+Image';
                     }
                     
                     products.push(product);
@@ -1147,7 +1142,7 @@
             }
         }
 
-        // Filter products by category
+        // Filter products by category with image mapping
         async function filterProductsByCategory(category) {
             try {
                 productsGrid.innerHTML = '<div class="loading">Filtering products...</div>';
@@ -1158,7 +1153,6 @@
                     .get();
                 
                 const products = [];
-                let imageIndex = 0;
                 
                 querySnapshot.forEach((doc) => {
                     const product = doc.data();
@@ -1172,14 +1166,12 @@
                     product.brand = product.brand || 'general';
                     product.stock = product.stock || 0;
                     
-                    // Assign images from your Imgur links sequentially
-                    if (imageIndex < imgurImages.length) {
-                        product.image = imgurImages[imageIndex];
-                        imageIndex++;
+                    // Use the custom image mapping
+                    if (productImageMap[product.id]) {
+                        product.image = productImageMap[product.id];
                     } else {
-                        // If we run out of images, cycle through them
-                        product.image = imgurImages[imageIndex % imgurImages.length];
-                        imageIndex++;
+                        // Fallback to Firestore image field or placeholder
+                        product.image = product.image || 'https://via.placeholder.com/300x200?text=Product+Image';
                     }
                     
                     products.push(product);
