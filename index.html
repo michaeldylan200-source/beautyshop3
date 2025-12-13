@@ -817,7 +817,7 @@
             setupEventListeners();
         });
 
-        // Load products from Firestore
+        // Load products from Firestore with image mapping
         async function loadProductsFromFirestore() {
             try {
                 console.log("Loading products from Firestore...");
@@ -837,7 +837,13 @@
                     product.category = product.category || 'general';
                     product.brand = product.brand || 'general';
                     product.stock = product.stock || 0;
-                    product.image = product.image || 'https://via.placeholder.com/300x200?text=Product+Image';
+                    
+                    // Use Firestore image if available, otherwise use placeholder
+                    if (product.image) {
+                        product.image = product.image;
+                    } else {
+                        product.image = 'https://via.placeholder.com/300x200?text=Product+Image';
+                    }
                     
                     products.push(product);
                 });
@@ -850,7 +856,7 @@
             }
         }
 
-        // Render products
+        // Render products with proper image handling
         function renderProducts(productsList) {
             if (productsList.length === 0) {
                 productsGrid.innerHTML = '<div class="loading">No products found in database.</div>';
@@ -861,8 +867,14 @@
             productsList.forEach(product => {
                 const productCard = document.createElement('div');
                 productCard.className = 'product-card';
+                
+                // Only show image if it exists and is not the placeholder
+                const imageHtml = product.image && !product.image.includes('placeholder') 
+                    ? `<img src="${product.image}" alt="${product.name}" class="product-image" onerror="this.src='https://via.placeholder.com/300x200?text=Product+Image'">`
+                    : '';
+                
                 productCard.innerHTML = `
-                    <img src="${product.image}" alt="${product.name}" class="product-image" onerror="this.src='https://via.placeholder.com/300x200?text=Product+Image'">
+                    ${imageHtml}
                     <div class="product-info">
                         <h3>${product.name}</h3>
                         <p>Size: ${product.size}</p>
@@ -938,7 +950,7 @@
             ];
         }
 
-        // Load social posts
+        // Load social posts with corrected images
         function loadSocialPosts() {
             const socialPosts = [
                 {
@@ -1075,7 +1087,13 @@
                     product.category = product.category || 'general';
                     product.brand = product.brand || 'general';
                     product.stock = product.stock || 0;
-                    product.image = product.image || 'https://via.placeholder.com/300x200?text=Product+Image';
+                    
+                    // Use Firestore image if available, otherwise use placeholder
+                    if (product.image) {
+                        product.image = product.image;
+                    } else {
+                        product.image = 'https://via.placeholder.com/300x200?text=Product+Image';
+                    }
                     
                     products.push(product);
                 });
@@ -1110,7 +1128,13 @@
                     product.category = product.category || 'general';
                     product.brand = product.brand || 'general';
                     product.stock = product.stock || 0;
-                    product.image = product.image || 'https://via.placeholder.com/300x200?text=Product+Image';
+                    
+                    // Use Firestore image if available, otherwise use placeholder
+                    if (product.image) {
+                        product.image = product.image;
+                    } else {
+                        product.image = 'https://via.placeholder.com/300x200?text=Product+Image';
+                    }
                     
                     products.push(product);
                 });
