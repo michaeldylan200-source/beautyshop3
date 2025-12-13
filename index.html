@@ -374,6 +374,55 @@
             font-weight: bold;
         }
         
+        /* Review Form */
+        .review-form {
+            background-color: var(--dark-gray);
+            padding: 30px;
+            border-radius: 10px;
+            margin-top: 30px;
+            text-align: left;
+        }
+        
+        .review-form h3 {
+            color: var(--gold);
+            margin-bottom: 20px;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+        }
+        
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #555;
+            background-color: #333;
+            color: white;
+        }
+        
+        .rating-input {
+            display: flex;
+            gap: 5px;
+        }
+        
+        .rating-input i {
+            font-size: 1.5rem;
+            color: #555;
+            cursor: pointer;
+        }
+        
+        .rating-input i.active {
+            color: var(--gold);
+        }
+        
         /* Social Media */
         .social-section {
             padding: 60px 5%;
@@ -468,8 +517,10 @@
             padding: 30px;
             border-radius: 10px;
             width: 90%;
-            max-width: 600px;
+            max-width: 800px;
             position: relative;
+            max-height: 90vh;
+            overflow-y: auto;
         }
         
         .close-modal {
@@ -482,7 +533,7 @@
         }
         
         .map-container {
-            height: 300px;
+            height: 400px;
             margin: 20px 0;
             border-radius: 10px;
             overflow: hidden;
@@ -522,6 +573,11 @@
             
             .brands-grid, .categories-grid, .products-grid {
                 grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+            }
+            
+            .modal-content {
+                width: 95%;
+                padding: 20px;
             }
         }
     </style>
@@ -641,63 +697,40 @@
     <!-- Testimonials -->
     <section class="testimonials-section" id="testimonials">
         <h2 class="section-title">WHAT OUR CUSTOMERS SAY</h2>
-        <div class="testimonials-grid">
-            <div class="testimonial-card">
-                <div class="stars">
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                </div>
-                <p class="testimonial-text">The Aqua Rich moisturizer has transformed my skin! I've never felt so hydrated and glowing.</p>
-                <p class="testimonial-author">- Sarah K.</p>
+        <div class="testimonials-grid" id="testimonialsGrid">
+            <!-- Testimonials will be loaded here -->
+        </div>
+        
+        <!-- Review Form -->
+        <div class="review-form">
+            <h3>Leave a Review</h3>
+            <div class="form-group">
+                <label for="reviewName">Your Name</label>
+                <input type="text" id="reviewName" placeholder="Enter your name">
             </div>
-            <div class="testimonial-card">
-                <div class="stars">
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star-half-alt"></i>
+            <div class="form-group">
+                <label>Rating</label>
+                <div class="rating-input" id="ratingInput">
+                    <i class="fas fa-star" data-rating="1"></i>
+                    <i class="fas fa-star" data-rating="2"></i>
+                    <i class="fas fa-star" data-rating="3"></i>
+                    <i class="fas fa-star" data-rating="4"></i>
+                    <i class="fas fa-star" data-rating="5"></i>
                 </div>
-                <p class="testimonial-text">Adani's supplements really work. I've noticed a significant improvement in my skin health.</p>
-                <p class="testimonial-author">- Michael T.</p>
             </div>
-            <div class="testimonial-card">
-                <div class="stars">
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                </div>
-                <p class="testimonial-text">Fast delivery and amazing products. The Daynee serum is now a staple in my routine!</p>
-                <p class="testimonial-author">- Jessica L.</p>
+            <div class="form-group">
+                <label for="reviewComment">Your Review</label>
+                <textarea id="reviewComment" rows="4" placeholder="Share your experience with us"></textarea>
             </div>
+            <button class="btn" id="submitReview">Submit Review</button>
         </div>
     </section>
 
     <!-- Social Media -->
     <section class="social-section" id="social">
         <h2 class="section-title">LATEST NEWS</h2>
-        <div class="social-grid">
-            <div class="social-card">
-                <img src="https://i.imgur.com/8jg1ugI.jpg" alt="Instagram Post">
-                <div class="social-content">
-                    <h3>NEW ARRIVAL</h3>
-                    <p>Check out our latest Vaseline Golden Glow collection!</p>
-                    <a href="https://www.instagram.com/p/DRSmG1kDePI/?igsh=MTB4MGp4aHVqZGx3aA==" target="_blank" class="btn">View on Instagram</a>
-                </div>
-            </div>
-            <div class="social-card">
-                <img src="https://i.imgur.com/QLK6qwk.jpg" alt="TikTok Post">
-                <div class="social-content">
-                    <h3>BEHIND THE SCENES</h3>
-                    <p>See how we create our premium skincare products</p>
-                    <a href="https://vm.tiktok.com/ZMAogdYh6/" target="_blank" class="btn">View on TikTok</a>
-                </div>
-            </div>
+        <div class="social-grid" id="socialGrid">
+            <!-- Social posts will be loaded here -->
         </div>
     </section>
 
@@ -718,11 +751,12 @@
     <div class="modal" id="orderModal">
         <div class="modal-content">
             <span class="close-modal">&times;</span>
-            <h2>Place Your Order</h2>
-            <p>Select your delivery location on the map:</p>
+            <h2>Select Delivery Location</h2>
+            <p>Click on the map to select your delivery location:</p>
             <div class="map-container">
                 <div id="map"></div>
             </div>
+            <p>Selected Location: <span id="selectedLocation">None</span></p>
             <button class="btn" id="confirmOrder">Confirm Order</button>
         </div>
     </div>
@@ -731,6 +765,9 @@
     <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-firestore-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-analytics-compat.js"></script>
+    
+    <!-- Google Maps API -->
+    <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_GOOGLE_MAPS_API_KEY&callback=initMapScript" async defer></script>
     
     <script>
         // Firebase configuration
@@ -752,6 +789,8 @@
 
         // DOM Elements
         const productsGrid = document.getElementById('productsGrid');
+        const testimonialsGrid = document.getElementById('testimonialsGrid');
+        const socialGrid = document.getElementById('socialGrid');
         const cartIcon = document.getElementById('cartIcon');
         const cartCount = document.querySelector('.cart-count');
         const orderModal = document.getElementById('orderModal');
@@ -759,14 +798,22 @@
         const confirmOrderBtn = document.getElementById('confirmOrder');
         const brandCards = document.querySelectorAll('.brand-card');
         const categoryCards = document.querySelectorAll('.category-card');
+        const ratingInput = document.getElementById('ratingInput');
+        const submitReviewBtn = document.getElementById('submitReview');
+        const selectedLocationElement = document.getElementById('selectedLocation');
 
-        // Cart state
+        // State variables
         let cart = [];
         let selectedProduct = null;
+        let map;
+        let selectedLocation = null;
+        let currentRating = 0;
 
         // Initialize the app
         document.addEventListener('DOMContentLoaded', function() {
             loadProductsFromFirestore();
+            loadTestimonialsFromFirestore();
+            loadSocialPosts();
             setupEventListeners();
         });
 
@@ -834,6 +881,98 @@
             });
         }
 
+        // Load testimonials from Firestore
+        async function loadTestimonialsFromFirestore() {
+            try {
+                const querySnapshot = await db.collection('testimonials').get();
+                const testimonials = [];
+                
+                querySnapshot.forEach((doc) => {
+                    testimonials.push(doc.data());
+                });
+                
+                renderTestimonials(testimonials);
+            } catch (error) {
+                console.error("Error loading testimonials: ", error);
+                // Fallback to sample testimonials
+                renderTestimonials(getSampleTestimonials());
+            }
+        }
+
+        // Render testimonials
+        function renderTestimonials(testimonials) {
+            testimonialsGrid.innerHTML = '';
+            testimonials.forEach(testimonial => {
+                const testimonialCard = document.createElement('div');
+                testimonialCard.className = 'testimonial-card';
+                testimonialCard.innerHTML = `
+                    <div class="stars">
+                        ${'<i class="fas fa-star"></i>'.repeat(testimonial.rating)}
+                        ${testimonial.rating < 5 ? '<i class="far fa-star"></i>'.repeat(5 - testimonial.rating) : ''}
+                    </div>
+                    <p class="testimonial-text">${testimonial.comment}</p>
+                    <p class="testimonial-author">- ${testimonial.name}</p>
+                `;
+                testimonialsGrid.appendChild(testimonialCard);
+            });
+        }
+
+        // Sample testimonials (fallback)
+        function getSampleTestimonials() {
+            return [
+                {
+                    name: "Sarah K.",
+                    rating: 5,
+                    comment: "The Aqua Rich moisturizer has transformed my skin! I've never felt so hydrated and glowing."
+                },
+                {
+                    name: "Michael T.",
+                    rating: 4,
+                    comment: "Adani's supplements really work. I've noticed a significant improvement in my skin health."
+                },
+                {
+                    name: "Jessica L.",
+                    rating: 5,
+                    comment: "Fast delivery and amazing products. The Daynee serum is now a staple in my routine!"
+                }
+            ];
+        }
+
+        // Load social posts
+        function loadSocialPosts() {
+            const socialPosts = [
+                {
+                    image: "https://i.imgur.com/8jg1ugI.jpg",
+                    title: "NEW ARRIVAL",
+                    description: "Check out our latest Vaseline Golden Glow collection!",
+                    link: "https://www.instagram.com/p/DRSmG1kDePI/?igsh=MTB4MGp4aHVqZGx3aA==",
+                    platform: "Instagram"
+                },
+                {
+                    image: "https://i.imgur.com/QLK6qwk.jpg",
+                    title: "BEHIND THE SCENES",
+                    description: "See how we create our premium skincare products",
+                    link: "https://vm.tiktok.com/ZMAogdYh6/",
+                    platform: "TikTok"
+                }
+            ];
+            
+            socialGrid.innerHTML = '';
+            socialPosts.forEach(post => {
+                const socialCard = document.createElement('div');
+                socialCard.className = 'social-card';
+                socialCard.innerHTML = `
+                    <img src="${post.image}" alt="${post.title}">
+                    <div class="social-content">
+                        <h3>${post.title}</h3>
+                        <p>${post.description}</p>
+                        <a href="${post.link}" target="_blank" class="btn">View on ${post.platform}</a>
+                    </div>
+                `;
+                socialGrid.appendChild(socialCard);
+            });
+        }
+
         // Set up event listeners
         function setupEventListeners() {
             // View details buttons
@@ -847,8 +986,15 @@
                 // Order buttons
                 if (e.target.classList.contains('order-btn')) {
                     const productId = e.target.getAttribute('data-id');
-                    // Get the product from the DOM or re-query Firestore
-                    openOrderModal(productId);
+                    selectedProduct = { id: productId };
+                    openOrderModal();
+                }
+                
+                // Rating stars
+                if (e.target.closest('.rating-input i')) {
+                    const star = e.target.closest('.rating-input i');
+                    const rating = parseInt(star.getAttribute('data-rating'));
+                    updateRatingStars(rating);
                 }
             });
 
@@ -872,6 +1018,9 @@
             // Confirm order
             confirmOrderBtn.addEventListener('click', confirmOrder);
 
+            // Submit review
+            submitReviewBtn.addEventListener('click', submitReview);
+
             // Brand filters
             brandCards.forEach(card => {
                 card.addEventListener('click', function() {
@@ -886,6 +1035,21 @@
                     const category = this.getAttribute('data-category');
                     filterProductsByCategory(category);
                 });
+            });
+        }
+
+        // Update rating stars
+        function updateRatingStars(rating) {
+            currentRating = rating;
+            const stars = ratingInput.querySelectorAll('i');
+            stars.forEach((star, index) => {
+                if (index < rating) {
+                    star.classList.remove('far');
+                    star.classList.add('fas');
+                } else {
+                    star.classList.remove('fas');
+                    star.classList.add('far');
+                }
             });
         }
 
@@ -959,10 +1123,37 @@
             }
         }
 
+        // Submit review
+        async function submitReview() {
+            const name = document.getElementById('reviewName').value;
+            const comment = document.getElementById('reviewComment').value;
+            
+            if (!name || !comment || currentRating === 0) {
+                alert('Please fill in all fields and select a rating');
+                return;
+            }
+            
+            try {
+                await db.collection('testimonials').add({
+                    name: name,
+                    rating: currentRating,
+                    comment: comment,
+                    timestamp: firebase.firestore.FieldValue.serverTimestamp()
+                });
+                
+                alert('Thank you for your review!');
+                document.getElementById('reviewName').value = '';
+                document.getElementById('reviewComment').value = '';
+                updateRatingStars(0);
+                loadTestimonialsFromFirestore(); // Reload testimonials
+            } catch (error) {
+                console.error("Error submitting review: ", error);
+                alert('Error submitting review. Please try again.');
+            }
+        }
+
         // Open order modal
-        function openOrderModal(productId) {
-            // In a real implementation, you would get product details from Firestore
-            selectedProduct = { id: productId };
+        function openOrderModal() {
             orderModal.style.display = 'flex';
             initMap();
         }
@@ -970,22 +1161,140 @@
         // Close order modal
         function closeOrderModal() {
             orderModal.style.display = 'none';
+            selectedLocation = null;
+            selectedLocationElement.textContent = 'None';
         }
 
-        // Initialize map (simplified version)
+        // Initialize Google Maps
         function initMap() {
-            // In a real implementation, you would initialize Google Maps here
-            const mapContainer = document.getElementById('map');
-            mapContainer.innerHTML = `
-                <div style="width:100%;height:100%;background:#333;display:flex;align-items:center;justify-content:center;color:#D4AF37;">
-                    <p>Interactive Map for Location Selection<br>
-                    (Google Maps API would be implemented here)</p>
-                </div>
-            `;
+            if (typeof google === 'undefined' || !google.maps) {
+                console.error('Google Maps API not loaded');
+                document.getElementById('map').innerHTML = `
+                    <div style="width:100%;height:100%;background:#333;display:flex;align-items:center;justify-content:center;color:#D4AF37;">
+                        <p>Google Maps API not loaded. Please check your API key.</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            const mapOptions = {
+                center: { lat: -1.286389, lng: 36.817223 }, // Nairobi, Kenya
+                zoom: 12,
+                styles: [
+                    { elementType: "geometry", stylers: [{ color: "#242f3e" }] },
+                    { elementType: "labels.text.stroke", stylers: [{ color: "#242f3e" }] },
+                    { elementType: "labels.text.fill", stylers: [{ color: "#746855" }] },
+                    {
+                        featureType: "administrative.locality",
+                        elementType: "labels.text.fill",
+                        stylers: [{ color: "#d59563" }]
+                    },
+                    {
+                        featureType: "poi",
+                        elementType: "labels.text.fill",
+                        stylers: [{ color: "#d59563" }]
+                    },
+                    {
+                        featureType: "poi.park",
+                        elementType: "geometry",
+                        stylers: [{ color: "#263c3f" }]
+                    },
+                    {
+                        featureType: "poi.park",
+                        elementType: "labels.text.fill",
+                        stylers: [{ color: "#6b9a76" }]
+                    },
+                    {
+                        featureType: "road",
+                        elementType: "geometry",
+                        stylers: [{ color: "#38414e" }]
+                    },
+                    {
+                        featureType: "road",
+                        elementType: "geometry.stroke",
+                        stylers: [{ color: "#212a37" }]
+                    },
+                    {
+                        featureType: "road",
+                        elementType: "labels.text.fill",
+                        stylers: [{ color: "#9ca5b3" }]
+                    },
+                    {
+                        featureType: "road.highway",
+                        elementType: "geometry",
+                        stylers: [{ color: "#746855" }]
+                    },
+                    {
+                        featureType: "road.highway",
+                        elementType: "geometry.stroke",
+                        stylers: [{ color: "#1f2835" }]
+                    },
+                    {
+                        featureType: "road.highway",
+                        elementType: "labels.text.fill",
+                        stylers: [{ color: "#f3d19c" }]
+                    },
+                    {
+                        featureType: "transit",
+                        elementType: "geometry",
+                        stylers: [{ color: "#2f3948" }]
+                    },
+                    {
+                        featureType: "transit.station",
+                        elementType: "labels.text.fill",
+                        stylers: [{ color: "#d59563" }]
+                    },
+                    {
+                        featureType: "water",
+                        elementType: "geometry",
+                        stylers: [{ color: "#17263c" }]
+                    },
+                    {
+                        featureType: "water",
+                        elementType: "labels.text.fill",
+                        stylers: [{ color: "#515c6d" }]
+                    },
+                    {
+                        featureType: "water",
+                        elementType: "labels.text.stroke",
+                        stylers: [{ color: "#17263c" }]
+                    }
+                ]
+            };
+            
+            map = new google.maps.Map(document.getElementById('map'), mapOptions);
+            
+            // Add click listener to select location
+            map.addListener('click', function(event) {
+                selectedLocation = {
+                    lat: event.latLng.lat(),
+                    lng: event.latLng.lng()
+                };
+                
+                selectedLocationElement.textContent = 
+                    `${selectedLocation.lat.toFixed(6)}, ${selectedLocation.lng.toFixed(6)}`;
+                
+                // Add marker
+                new google.maps.Marker({
+                    position: selectedLocation,
+                    map: map,
+                    title: 'Delivery Location'
+                });
+            });
         }
+
+        // Initialize map script callback
+        window.initMapScript = function() {
+            console.log('Google Maps API loaded');
+        };
 
         // Confirm order
         async function confirmOrder() {
+            if (!selectedLocation) {
+                alert('Please select a delivery location on the map');
+                return;
+            }
+            
             if (selectedProduct) {
                 try {
                     // Update stock in Firestore
@@ -994,7 +1303,7 @@
                     });
                     console.log(`Stock updated for product ${selectedProduct.id}`);
                     
-                    alert(`Order placed successfully! Stock has been updated.`);
+                    alert(`Order placed successfully! Stock has been updated.\nDelivery to: ${selectedLocationElement.textContent}`);
                     closeOrderModal();
                 } catch (error) {
                     console.error("Error updating stock: ", error);
