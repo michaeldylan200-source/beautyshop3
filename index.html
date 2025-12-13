@@ -112,7 +112,7 @@
         
         /* Hero Section */
         .hero {
-            background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('https://imgur.com/9Rgu8tm.jpg') center/cover;
+            background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('https://i.imgur.com/9Rgu8tm.jpg') center/cover;
             height: 80vh;
             display: flex;
             flex-direction: column;
@@ -332,6 +332,11 @@
             background-color: var(--dark-gold);
         }
         
+        .order-btn:disabled {
+            background-color: #666;
+            cursor: not-allowed;
+        }
+        
         /* Testimonials */
         .testimonials-section {
             padding: 60px 5%;
@@ -488,6 +493,13 @@
             height: 100%;
         }
         
+        /* Loading indicator */
+        .loading {
+            text-align: center;
+            padding: 50px;
+            color: var(--gold);
+        }
+        
         /* Responsive */
         @media (max-width: 768px) {
             header {
@@ -622,7 +634,7 @@
     <section class="products-section" id="products">
         <h2 class="section-title">FEATURED PRODUCTS</h2>
         <div class="products-grid" id="productsGrid">
-            <!-- Products will be loaded from Firestore -->
+            <div class="loading">Loading products from database...</div>
         </div>
     </section>
 
@@ -761,76 +773,57 @@
         // Load products from Firestore
         async function loadProductsFromFirestore() {
             try {
+                console.log("Loading products from Firestore...");
+                productsGrid.innerHTML = '<div class="loading">Loading products from database...</div>';
+                
                 const querySnapshot = await db.collection('products').get();
                 const products = [];
+                
                 querySnapshot.forEach((doc) => {
                     const product = doc.data();
                     product.id = doc.id;
+                    // Ensure all required fields exist
+                    product.name = product.name || 'Unnamed Product';
+                    product.price = product.price || 0;
+                    product.size = product.size || 'N/A';
+                    product.description = product.description || 'No description available';
+                    product.category = product.category || 'general';
+                    product.brand = product.brand || 'general';
+                    product.stock = product.stock || 0;
+                    product.image = product.image || 'https://via.placeholder.com/300x200?text=Product+Image';
+                    
                     products.push(product);
                 });
+                
+                console.log("Loaded", products.length, "products from Firestore");
                 renderProducts(products);
             } catch (error) {
-                console.error("Error loading products: ", error);
-                // Fallback to sample data if Firestore fails
-                renderProducts(getSampleProducts());
+                console.error("Error loading products from Firestore: ", error);
+                productsGrid.innerHTML = '<div class="loading">Error loading products. Please try again later.</div>';
             }
-        }
-
-        // Sample product data (fallback)
-        function getSampleProducts() {
-            return [
-                {
-                    id: 1,
-                    name: "Aqua Rich Hydrating Oil",
-                    price: 1500,
-                    size: "100ml",
-                    description: "Deeply hydrating oil for all skin types",
-                    category: "oil",
-                    brand: "aqua rich",
-                    image: "https://i.imgur.com/h4jY6DR.jpg",
-                    stock: 10
-                },
-                {
-                    id: 2,
-                    name: "Daynee Brightening Serum",
-                    price: 2200,
-                    size: "30ml",
-                    description: "Vitamin C serum for radiant skin",
-                    category: "serum",
-                    brand: "daynee",
-                    image: "https://i.imgur.com/LviXRD2.jpg",
-                    stock: 5
-                },
-                {
-                    id: 3,
-                    name: "Wins Town Moisturizing Cream",
-                    price: 1800,
-                    size: "50g",
-                    description: "24-hour hydration for soft skin",
-                    category: "creams",
-                    brand: "wins town",
-                    image: "https://i.imgur.com/a/UkoZSz3.jpg",
-                    stock: 8
-                }
-            ];
         }
 
         // Render products
         function renderProducts(productsList) {
+            if (productsList.length === 0) {
+                productsGrid.innerHTML = '<div class="loading">No products found in database.</div>';
+                return;
+            }
+            
             productsGrid.innerHTML = '';
             productsList.forEach(product => {
                 const productCard = document.createElement('div');
                 productCard.className = 'product-card';
                 productCard.innerHTML = `
-                    <img src="${product.image || 'https://via.placeholder.com/300x200?text=Product+Image'}" alt="${product.name}" class="product-image">
+                    <img src="${product.image}" alt="${product.name}" class="product-image" onerror="this.src='https://via.placeholder.com/300x200?text=Product+Image'">
                     <div class="product-info">
                         <h3>${product.name}</h3>
                         <p>Size: ${product.size}</p>
-                        <p class="price">KSh ${product.price ? product.price.toLocaleString() : 'N/A'}</p>
+                        <p class="price">KSh ${parseInt(product.price).toLocaleString()}</p>
                         <button class="view-details-btn" data-id="${product.id}">View Details</button>
                         <div class="product-details" id="details-${product.id}">
-                            <p>${product.description || 'No description available'}</p>
-                            <p>Stock: ${product.stock || 0} available</p>
+                            <p>${product.description}</p>
+                            <p>Stock: ${product.stock} available</p>
                             <button class="order-btn" data-id="${product.id}" ${product.stock <= 0 ? 'disabled' : ''}>
                                 ${product.stock <= 0 ? 'Out of Stock' : 'Order Now'}
                             </button>
@@ -854,21 +847,15 @@
                 // Order buttons
                 if (e.target.classList.contains('order-btn')) {
                     const productId = e.target.getAttribute('data-id');
-                    // In a real app, you would get the product from Firestore
-                    // For now, we'll use sample data
-                    selectedProduct = getSampleProducts().find(p => p.id == productId);
-                    if (selectedProduct && selectedProduct.stock > 0) {
-                        openOrderModal();
-                    } else {
-                        alert('This product is out of stock!');
-                    }
+                    // Get the product from the DOM or re-query Firestore
+                    openOrderModal(productId);
                 }
             });
 
             // Cart icon
             cartIcon.addEventListener('click', function() {
                 if (cart.length > 0) {
-                    openOrderModal();
+                    alert('Cart functionality would open here with your selected items');
                 } else {
                     alert('Your cart is empty!');
                 }
@@ -905,41 +892,77 @@
         // Filter products by brand
         async function filterProductsByBrand(brand) {
             try {
+                productsGrid.innerHTML = '<div class="loading">Filtering products...</div>';
+                console.log("Filtering by brand:", brand);
+                
                 const querySnapshot = await db.collection('products')
                     .where('brand', '==', brand)
                     .get();
+                
                 const products = [];
                 querySnapshot.forEach((doc) => {
                     const product = doc.data();
                     product.id = doc.id;
+                    // Ensure all required fields exist
+                    product.name = product.name || 'Unnamed Product';
+                    product.price = product.price || 0;
+                    product.size = product.size || 'N/A';
+                    product.description = product.description || 'No description available';
+                    product.category = product.category || 'general';
+                    product.brand = product.brand || 'general';
+                    product.stock = product.stock || 0;
+                    product.image = product.image || 'https://via.placeholder.com/300x200?text=Product+Image';
+                    
                     products.push(product);
                 });
+                
+                console.log("Found", products.length, "products for brand:", brand);
                 renderProducts(products);
             } catch (error) {
                 console.error("Error filtering by brand: ", error);
+                productsGrid.innerHTML = '<div class="loading">Error filtering products. Please try again later.</div>';
             }
         }
 
         // Filter products by category
         async function filterProductsByCategory(category) {
             try {
+                productsGrid.innerHTML = '<div class="loading">Filtering products...</div>';
+                console.log("Filtering by category:", category);
+                
                 const querySnapshot = await db.collection('products')
                     .where('category', '==', category)
                     .get();
+                
                 const products = [];
                 querySnapshot.forEach((doc) => {
                     const product = doc.data();
                     product.id = doc.id;
+                    // Ensure all required fields exist
+                    product.name = product.name || 'Unnamed Product';
+                    product.price = product.price || 0;
+                    product.size = product.size || 'N/A';
+                    product.description = product.description || 'No description available';
+                    product.category = product.category || 'general';
+                    product.brand = product.brand || 'general';
+                    product.stock = product.stock || 0;
+                    product.image = product.image || 'https://via.placeholder.com/300x200?text=Product+Image';
+                    
                     products.push(product);
                 });
+                
+                console.log("Found", products.length, "products for category:", category);
                 renderProducts(products);
             } catch (error) {
                 console.error("Error filtering by category: ", error);
+                productsGrid.innerHTML = '<div class="loading">Error filtering products. Please try again later.</div>';
             }
         }
 
         // Open order modal
-        function openOrderModal() {
+        function openOrderModal(productId) {
+            // In a real implementation, you would get product details from Firestore
+            selectedProduct = { id: productId };
             orderModal.style.display = 'flex';
             initMap();
         }
@@ -964,22 +987,19 @@
         // Confirm order
         async function confirmOrder() {
             if (selectedProduct) {
-                // Add to cart
-                cart.push(selectedProduct);
-                updateCartCount();
-                
-                // Update stock in Firestore
                 try {
+                    // Update stock in Firestore
                     await db.collection('products').doc(selectedProduct.id).update({
                         stock: firebase.firestore.FieldValue.increment(-1)
                     });
                     console.log(`Stock updated for product ${selectedProduct.id}`);
+                    
+                    alert(`Order placed successfully! Stock has been updated.`);
+                    closeOrderModal();
                 } catch (error) {
                     console.error("Error updating stock: ", error);
+                    alert("Error placing order. Please try again.");
                 }
-                
-                alert(`Order placed for ${selectedProduct.name}!`);
-                closeOrderModal();
             }
         }
 
