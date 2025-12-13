@@ -38,6 +38,7 @@
             position: sticky;
             top: 0;
             z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
         }
         
         .logo-container {
@@ -52,6 +53,7 @@
             object-fit: cover;
             margin-right: 15px;
             border: 2px solid var(--gold);
+            background-color: var(--white);
         }
         
         .brand-info {
@@ -84,21 +86,31 @@
             text-decoration: none;
             font-weight: 500;
             transition: color 0.3s;
+            padding: 8px 12px;
+            border-radius: 4px;
         }
         
         nav ul li a:hover {
             color: var(--gold);
+            background-color: rgba(212, 175, 55, 0.1);
         }
         
         .cart-icon {
             position: relative;
             cursor: pointer;
+            padding: 8px;
+            border-radius: 50%;
+            transition: background-color 0.3s;
+        }
+        
+        .cart-icon:hover {
+            background-color: rgba(212, 175, 55, 0.1);
         }
         
         .cart-count {
             position: absolute;
-            top: -10px;
-            right: -10px;
+            top: -5px;
+            right: -5px;
             background-color: var(--gold);
             color: var(--black);
             border-radius: 50%;
@@ -127,6 +139,7 @@
             font-size: 3.5rem;
             margin-bottom: 20px;
             color: var(--gold);
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
         }
         
         .hero p {
@@ -147,12 +160,13 @@
             transition: all 0.3s;
             text-decoration: none;
             display: inline-block;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
         
         .btn:hover {
             background-color: var(--dark-gold);
             transform: translateY(-3px);
-            box-shadow: 0 5px 15px rgba(212, 175, 55, 0.4);
+            box-shadow: 0 6px 12px rgba(212, 175, 55, 0.3);
         }
         
         /* Brands Section */
@@ -165,6 +179,16 @@
             color: var(--gold);
             font-size: 2rem;
             margin-bottom: 40px;
+            position: relative;
+        }
+        
+        .section-title::after {
+            content: '';
+            display: block;
+            width: 100px;
+            height: 3px;
+            background-color: var(--gold);
+            margin: 10px auto;
         }
         
         .brands-grid {
@@ -179,23 +203,19 @@
             padding: 20px;
             border-radius: 10px;
             cursor: pointer;
-            transition: transform 0.3s;
+            transition: all 0.3s;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
         
         .brand-card:hover {
             transform: translateY(-10px);
             background-color: #333;
-        }
-        
-        .brand-card img {
-            width: 100px;
-            height: 100px;
-            object-fit: contain;
-            margin-bottom: 15px;
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
         }
         
         .brand-card h3 {
             color: var(--gold);
+            margin-top: 10px;
         }
         
         /* Categories Section */
@@ -218,11 +238,13 @@
             border-radius: 10px;
             cursor: pointer;
             transition: all 0.3s;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
         
         .category-card:hover {
             background-color: #333;
             transform: scale(1.05);
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
         }
         
         .category-card i {
@@ -252,11 +274,13 @@
             background-color: var(--dark-gray);
             border-radius: 10px;
             overflow: hidden;
-            transition: transform 0.3s;
+            transition: all 0.3s;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
         
         .product-card:hover {
             transform: translateY(-10px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
         }
         
         .product-image {
@@ -288,6 +312,7 @@
             border-radius: 5px;
             cursor: pointer;
             transition: all 0.3s;
+            font-weight: 500;
         }
         
         .view-details-btn:hover {
@@ -304,6 +329,12 @@
         
         .product-details.active {
             display: block;
+            animation: fadeIn 0.3s ease-in-out;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
         }
         
         .product-details p {
@@ -327,21 +358,23 @@
             font-weight: bold;
             margin-top: 10px;
             width: 100%;
+            transition: all 0.3s;
         }
         
         .order-btn:hover {
             background-color: var(--dark-gold);
+            transform: translateY(-2px);
         }
         
         .order-btn:disabled {
             background-color: #666;
             cursor: not-allowed;
+            transform: none;
         }
         
         /* Testimonials */
         .testimonials-section {
             padding: 60px 5%;
-            background-color: var(--dark-gray);
             text-align: center;
         }
         
@@ -357,6 +390,7 @@
             padding: 30px;
             border-radius: 10px;
             text-align: left;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
         
         .stars {
@@ -368,6 +402,7 @@
         .testimonial-text {
             margin-bottom: 20px;
             font-style: italic;
+            line-height: 1.6;
         }
         
         .testimonial-author {
@@ -382,6 +417,7 @@
             border-radius: 10px;
             margin-top: 30px;
             text-align: left;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
         
         .review-form h3 {
@@ -396,17 +432,25 @@
         .form-group label {
             display: block;
             margin-bottom: 5px;
+            color: var(--white);
         }
         
         .form-group input,
         .form-group textarea,
         .form-group select {
             width: 100%;
-            padding: 10px;
+            padding: 12px;
             border-radius: 5px;
             border: 1px solid #555;
             background-color: #333;
             color: white;
+            font-size: 1rem;
+        }
+        
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--gold);
         }
         
         .rating-input {
@@ -415,11 +459,13 @@
         }
         
         .rating-input i {
-            font-size: 1.5rem;
+            font-size: 1.8rem;
             color: #555;
             cursor: pointer;
+            transition: color 0.2s;
         }
         
+        .rating-input i:hover,
         .rating-input i.active {
             color: var(--gold);
         }
@@ -451,18 +497,29 @@
         
         .social-icons a {
             color: var(--white);
-            font-size: 1.5rem;
+            font-size: 1.8rem;
             margin: 0 15px;
-            transition: color 0.3s;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background-color: #333;
         }
         
         .social-icons a:hover {
             color: var(--gold);
+            background-color: rgba(212, 175, 55, 0.1);
+            transform: translateY(-5px);
         }
         
         .copyright {
             color: #aaa;
             font-size: 0.9rem;
+            padding-top: 20px;
+            border-top: 1px solid #444;
         }
         
         /* Order Modal */
@@ -473,10 +530,11 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background-color: rgba(0, 0, 0, 0.8);
+            background-color: rgba(0, 0, 0, 0.9);
             z-index: 2000;
             justify-content: center;
             align-items: center;
+            animation: fadeIn 0.3s ease-out;
         }
         
         .order-modal-content {
@@ -484,17 +542,25 @@
             padding: 30px;
             border-radius: 10px;
             width: 90%;
-            max-width: 600px;
+            max-width: 800px;
             position: relative;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
         }
         
         .close-modal {
             position: absolute;
             top: 15px;
             right: 20px;
-            font-size: 1.5rem;
+            font-size: 1.8rem;
             cursor: pointer;
             color: var(--white);
+            transition: color 0.3s;
+        }
+        
+        .close-modal:hover {
+            color: var(--gold);
         }
         
         .map-container {
@@ -502,6 +568,7 @@
             margin: 20px 0;
             border-radius: 10px;
             overflow: hidden;
+            border: 1px solid #444;
         }
         
         #orderMap {
@@ -521,6 +588,22 @@
             text-align: center;
             padding: 50px;
             color: var(--gold);
+            font-size: 1.2rem;
+        }
+        
+        .spinner {
+            border: 4px solid rgba(212, 175, 55, 0.3);
+            border-radius: 50%;
+            border-top: 4px solid var(--gold);
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
         
         /* Responsive */
@@ -528,11 +611,13 @@
             header {
                 flex-direction: column;
                 text-align: center;
+                padding: 15px;
             }
             
             nav ul {
                 margin: 20px 0;
                 flex-wrap: wrap;
+                justify-content: center;
             }
             
             nav ul li {
@@ -550,6 +635,40 @@
             .form-row {
                 grid-template-columns: 1fr;
             }
+            
+            .order-modal-content {
+                width: 95%;
+                padding: 20px;
+            }
+            
+            .map-container {
+                height: 250px;
+            }
+            
+            .social-icons a {
+                width: 40px;
+                height: 40px;
+                font-size: 1.5rem;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .hero h1 {
+                font-size: 2rem;
+            }
+            
+            .section-title {
+                font-size: 1.8rem;
+            }
+            
+            .brands-grid, .categories-grid, .products-grid {
+                grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+                gap: 15px;
+            }
+            
+            .product-card {
+                max-width: 100%;
+            }
         }
     </style>
 </head>
@@ -557,7 +676,7 @@
     <!-- Header -->
     <header>
         <div class="logo-container">
-            <img src="https://i.imgur.com/9Rgu8tm.jpg" alt="Adani Logo" class="logo">
+            <img src="https://i.imgur.com/9Rgu8tm.jpg" alt="Adani Logo" class="logo" onerror="this.src='https://via.placeholder.com/60x60?text=Logo'">
             <div class="brand-info">
                 <div class="brand-name">ADANI BEAUTY & WELLNESS</div>
                 <div class="tagline">GLOW FROM WITHIN</div>
@@ -660,7 +779,10 @@
     <section class="products-section" id="products">
         <h2 class="section-title">FEATURED PRODUCTS</h2>
         <div class="products-grid" id="productsGrid">
-            <div class="loading">Loading products from database...</div>
+            <div class="loading">
+                <div class="spinner"></div>
+                <p>Loading products from database...</p>
+            </div>
         </div>
     </section>
 
@@ -681,11 +803,11 @@
             <div class="form-group">
                 <label>Rating</label>
                 <div class="rating-input" id="ratingInput">
-                    <i class="fas fa-star" data-rating="1"></i>
-                    <i class="fas fa-star" data-rating="2"></i>
-                    <i class="fas fa-star" data-rating="3"></i>
-                    <i class="fas fa-star" data-rating="4"></i>
-                    <i class="fas fa-star" data-rating="5"></i>
+                    <i class="far fa-star" data-rating="1"></i>
+                    <i class="far fa-star" data-rating="2"></i>
+                    <i class="far fa-star" data-rating="3"></i>
+                    <i class="far fa-star" data-rating="4"></i>
+                    <i class="far fa-star" data-rating="5"></i>
                 </div>
             </div>
             <div class="form-group">
@@ -740,8 +862,8 @@
                     <div class="map-container">
                         <div id="orderMap"></div>
                     </div>
-                    <p id="selectedLocationText" style="margin-top: 10px; color: var(--gold);">
-                        Selected location will appear here
+                    <p id="selectedLocationText" style="margin-top: 10px; color: var(--gold); display: none;">
+                        Location selected: <span id="locationCoordinates"></span>
                     </p>
                 </div>
                 
@@ -762,6 +884,29 @@
     <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-firestore-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-analytics-compat.js"></script>
     
+    <!-- Google Maps API - Replace YOUR_API_KEY with your actual Google Maps API key -->
+    <script>
+        // Load Google Maps API
+        function loadGoogleMapsAPI() {
+            const script = document.createElement('script');
+            script.src = 'https://maps.googleapis.com/maps/api/js?key=YOUR_GOOGLE_MAPS_API_KEY&callback=initMap';
+            script.async = true;
+            script.defer = true;
+            document.head.appendChild(script);
+        }
+        
+        // Initialize the app
+        function initApp() {
+            loadProductsFromFirestore();
+            loadTestimonialsFromFirestore();
+            setupEventListeners();
+            loadGoogleMapsAPI(); // Load Google Maps API after the page is ready
+        }
+        
+        // Initialize when DOM is loaded
+        document.addEventListener('DOMContentLoaded', initApp);
+    </script>
+    
     <script>
         // Firebase configuration
         const firebaseConfig = {
@@ -780,7 +925,7 @@
         const db = firebase.firestore();
         const analytics = firebase.analytics();
 
-        // Image mapping
+        // Image mapping - matches product names to Imgur URLs
         const imageMap = {
             "alpha arbutin collagen peptide drink": "https://i.imgur.com/8jg1ugI.jpg",
             "aqua rich hydrating bright body lotion": "https://i.imgur.com/QLK6qwk.jpg",
@@ -817,8 +962,8 @@
         let products = [];
         let selectedProduct = null;
         let selectedLocation = null;
-        let map = null;
-        let marker = null;
+        let orderMap = null;
+        let orderMarker = null;
 
         // DOM Elements
         const productsGrid = document.getElementById('productsGrid');
@@ -826,18 +971,65 @@
         const orderModal = document.getElementById('orderModal');
         const closeModal = document.querySelector('.close-modal');
         const orderForm = document.getElementById('orderForm');
-        const orderMapElement = document.getElementById('orderMap');
-        const selectedLocationText = document.getElementById('selectedLocationText');
-        const orderSummary = document.getElementById('orderSummary');
         const submitOrderBtn = document.getElementById('submitOrder');
+        const selectedLocationText = document.getElementById('selectedLocationText');
+        const locationCoordinates = document.getElementById('locationCoordinates');
+        const orderSummary = document.getElementById('orderSummary');
 
-        // Initialize the app
-        document.addEventListener('DOMContentLoaded', function() {
-            loadProductsFromFirestore();
-            loadTestimonialsFromFirestore();
-            setupEventListeners();
-            initializeOrderModal();
-        });
+        // Initialize Google Maps
+        window.initMap = function() {
+            if (typeof google === 'undefined' || !google.maps) {
+                console.error('Google Maps API not loaded');
+                document.getElementById('orderMap').innerHTML = `
+                    <div style="width:100%;height:100%;background:#333;display:flex;align-items:center;justify-content:center;color:#D4AF37;">
+                        <p>Google Maps API not loaded. Please check your API key.</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            const mapOptions = {
+                center: { lat: -1.286389, lng: 36.817223 }, // Nairobi, Kenya
+                zoom: 12,
+                styles: [
+                    { elementType: "geometry", stylers: [{ color: "#242f3e" }] },
+                    { elementType: "labels.text.stroke", stylers: [{ color: "#242f3e" }] },
+                    { elementType: "labels.text.fill", stylers: [{ color: "#746855" }] }
+                ]
+            };
+            
+            orderMap = new google.maps.Map(document.getElementById('orderMap'), mapOptions);
+            
+            // Add click listener to select location
+            orderMap.addListener('click', function(event) {
+                selectedLocation = {
+                    lat: event.latLng.lat(),
+                    lng: event.latLng.lng()
+                };
+                
+                // Update UI
+                locationCoordinates.textContent = 
+                    `${selectedLocation.lat.toFixed(6)}, ${selectedLocation.lng.toFixed(6)}`;
+                selectedLocationText.style.display = 'block';
+                
+                // Remove previous marker
+                if (orderMarker) {
+                    orderMarker.setMap(null);
+                }
+                
+                // Add new marker
+                orderMarker = new google.maps.Marker({
+                    position: selectedLocation,
+                    map: orderMap,
+                    title: 'Delivery Location'
+                });
+                
+                // Enable submit button if all required fields are filled
+                updateSubmitButton();
+            });
+            
+            console.log('Google Maps initialized successfully');
+        };
 
         // Load products from Firestore
         async function loadProductsFromFirestore() {
@@ -863,4 +1055,374 @@
                     }
                     
                     // Ensure all required fields exist
-                    product.name = product.name || '*
+                    product.name = product.name || 'Unnamed Product';
+                    product.price = product.price || 0;
+                    product.size = product.size || 'N/A';
+                    product.description = product.description || 'No description available';
+                    product.category = product.category || 'general';
+                    product.brand = product.brand || 'general';
+                    product.stock = product.stock || 0;
+                    
+                    products.push(product);
+                });
+                
+                console.log("Loaded", products.length, "products from Firestore");
+                renderProducts(products);
+            } catch (error) {
+                console.error("Error loading products from Firestore: ", error);
+                productsGrid.innerHTML = '<div class="loading"><p>Error loading products. Please try again later.</p></div>';
+            }
+        }
+
+        // Normalize product name for matching
+        function normalizeProductName(name) {
+            if (!name) return '';
+            return name.toLowerCase()
+                .replace(/\s+/g, ' ')
+                .replace(/[^\w\s]/g, '')
+                .trim();
+        }
+
+        // Render products
+        function renderProducts(productsList) {
+            if (productsList.length === 0) {
+                productsGrid.innerHTML = '<div class="loading"><p>No products found in database.</p></div>';
+                return;
+            }
+            
+            productsGrid.innerHTML = '';
+            productsList.forEach(product => {
+                const productCard = document.createElement('div');
+                productCard.className = 'product-card';
+                productCard.innerHTML = `
+                    <img src="${product.image}" alt="${product.name}" class="product-image" onerror="this.src='https://via.placeholder.com/300x200?text=Product+Image'">
+                    <div class="product-info">
+                        <h3>${product.name}</h3>
+                        <p>Size: ${product.size}</p>
+                        <p class="price">KSh ${parseInt(product.price).toLocaleString()}</p>
+                        <button class="view-details-btn" data-id="${product.id}">View Details</button>
+                        <div class="product-details" id="details-${product.id}">
+                            <p>${product.description}</p>
+                            <p>Stock: ${product.stock} available</p>
+                            <button class="order-btn" data-id="${product.id}" ${product.stock <= 0 ? 'disabled' : ''}>
+                                ${product.stock <= 0 ? 'Out of Stock' : 'Order Now'}
+                            </button>
+                        </div>
+                    </div>
+                `;
+                productsGrid.appendChild(productCard);
+            });
+        }
+
+        // Load testimonials from Firestore
+        async function loadTestimonialsFromFirestore() {
+            try {
+                const querySnapshot = await db.collection('testimonials').get();
+                const testimonials = [];
+                
+                querySnapshot.forEach((doc) => {
+                    testimonials.push(doc.data());
+                });
+                
+                renderTestimonials(testimonials);
+            } catch (error) {
+                console.error("Error loading testimonials: ", error);
+                // Fallback to sample testimonials
+                renderTestimonials(getSampleTestimonials());
+            }
+        }
+
+        // Render testimonials
+        function renderTestimonials(testimonials) {
+            testimonialsGrid.innerHTML = '';
+            testimonials.forEach(testimonial => {
+                const testimonialCard = document.createElement('div');
+                testimonialCard.className = 'testimonial-card';
+                testimonialCard.innerHTML = `
+                    <div class="stars">
+                        ${'<i class="fas fa-star"></i>'.repeat(testimonial.rating)}
+                        ${testimonial.rating < 5 ? '<i class="far fa-star"></i>'.repeat(5 - testimonial.rating) : ''}
+                    </div>
+                    <p class="testimonial-text">${testimonial.comment}</p>
+                    <p class="testimonial-author">- ${testimonial.name}</p>
+                `;
+                testimonialsGrid.appendChild(testimonialCard);
+            });
+        }
+
+        // Sample testimonials (fallback)
+        function getSampleTestimonials() {
+            return [
+                {
+                    name: "Sarah K.",
+                    rating: 5,
+                    comment: "The Aqua Rich moisturizer has transformed my skin! I've never felt so hydrated and glowing."
+                },
+                {
+                    name: "Michael T.",
+                    rating: 4,
+                    comment: "Adani's supplements really work. I've noticed a significant improvement in my skin health."
+                },
+                {
+                    name: "Jessica L.",
+                    rating: 5,
+                    comment: "Fast delivery and amazing products. The Daynee serum is now a staple in my routine!"
+                }
+            ];
+        }
+
+        // Set up event listeners
+        function setupEventListeners() {
+            // View details buttons
+            document.addEventListener('click', function(e) {
+                if (e.target.classList.contains('view-details-btn')) {
+                    const productId = e.target.getAttribute('data-id');
+                    const details = document.getElementById(`details-${productId}`);
+                    // Close all other details first
+                    document.querySelectorAll('.product-details.active').forEach(detail => {
+                        if (detail.id !== `details-${productId}`) {
+                            detail.classList.remove('active');
+                        }
+                    });
+                    details.classList.toggle('active');
+                }
+                
+                // Order buttons
+                if (e.target.classList.contains('order-btn')) {
+                    const productId = e.target.getAttribute('data-id');
+                    selectedProduct = products.find(p => p.id === productId);
+                    if (selectedProduct && selectedProduct.stock > 0) {
+                        openOrderModal();
+                    } else {
+                        alert('This product is out of stock!');
+                    }
+                }
+                
+                // Rating stars
+                if (e.target.closest('.rating-input i')) {
+                    const star = e.target.closest('.rating-input i');
+                    const rating = parseInt(star.getAttribute('data-rating'));
+                    updateRatingStars(rating);
+                }
+            });
+
+            // Close modal
+            closeModal.addEventListener('click', closeOrderModal);
+            window.addEventListener('click', function(e) {
+                if (e.target === orderModal) {
+                    closeOrderModal();
+                }
+            });
+
+            // Form validation
+            const customerNameInput = document.getElementById('customerName');
+            const paymentMethodSelect = document.getElementById('paymentMethod');
+            
+            if (customerNameInput) {
+                customerNameInput.addEventListener('input', updateSubmitButton);
+            }
+            
+            if (paymentMethodSelect) {
+                paymentMethodSelect.addEventListener('change', updateSubmitButton);
+            }
+            
+            // Form submission
+            if (orderForm) {
+                orderForm.addEventListener('submit', handleOrderSubmission);
+            }
+
+            // Submit review
+            const submitReviewBtn = document.getElementById('submitReview');
+            if (submitReviewBtn) {
+                submitReviewBtn.addEventListener('click', submitReview);
+            }
+
+            // Brand filters
+            document.querySelectorAll('.brand-card').forEach(card => {
+                card.addEventListener('click', function() {
+                    const brand = this.getAttribute('data-brand');
+                    filterProductsByBrand(brand);
+                });
+            });
+
+            // Category filters
+            document.querySelectorAll('.category-card').forEach(card => {
+                card.addEventListener('click', function() {
+                    const category = this.getAttribute('data-category');
+                    filterProductsByCategory(category);
+                });
+            });
+        }
+
+        // Update rating stars
+        function updateRatingStars(rating) {
+            const stars = document.querySelectorAll('#ratingInput i');
+            stars.forEach((star, index) => {
+                if (index < rating) {
+                    star.classList.remove('far');
+                    star.classList.add('fas');
+                } else {
+                    star.classList.remove('fas');
+                    star.classList.add('far');
+                }
+            });
+        }
+
+        // Update submit button state
+        function updateSubmitButton() {
+            const name = document.getElementById('customerName').value.trim();
+            const paymentMethod = document.getElementById('paymentMethod').value;
+            
+            if (name && paymentMethod && selectedLocation && selectedProduct) {
+                submitOrderBtn.disabled = false;
+                updateOrderSummary();
+            } else {
+                submitOrderBtn.disabled = true;
+            }
+        }
+
+        // Update order summary
+        function updateOrderSummary() {
+            if (!selectedProduct) return;
+            
+            orderSummary.innerHTML = `
+                <h4 style="color: var(--gold); margin-bottom: 10px;">Order Details</h4>
+                <p><strong>Product:</strong> ${selectedProduct.name}</p>
+                <p><strong>Price:</strong> KSh ${selectedProduct.price.toLocaleString()}</p>
+                <p><strong>Size:</strong> ${selectedProduct.size}</p>
+                <p><strong>Customer:</strong> ${document.getElementById('customerName').value}</p>
+                <p><strong>Payment Method:</strong> ${document.getElementById('paymentMethod').value}</p>
+                <p><strong>Delivery Location:</strong> ${selectedLocation ? 
+                    `${selectedLocation.lat.toFixed(6)}, ${selectedLocation.lng.toFixed(6)}` : 'Not selected'}</p>
+            `;
+        }
+
+        // Open order modal
+        function openOrderModal() {
+            orderModal.style.display = 'flex';
+            selectedLocation = null;
+            if (selectedLocationText) {
+                selectedLocationText.style.display = 'none';
+            }
+            if (orderMarker) {
+                orderMarker.setMap(null);
+            }
+            updateOrderSummary();
+            
+            // Reset form
+            document.getElementById('customerName').value = '';
+            document.getElementById('paymentMethod').value = '';
+            updateSubmitButton();
+        }
+
+        // Close order modal
+        function closeOrderModal() {
+            orderModal.style.display = 'none';
+            selectedLocation = null;
+            if (selectedLocationText) {
+                selectedLocationText.style.display = 'none';
+            }
+            if (orderMarker) {
+                orderMarker.setMap(null);
+            }
+            document.getElementById('customerName').value = '';
+            document.getElementById('paymentMethod').value = '';
+            submitOrderBtn.disabled = true;
+        }
+
+        // Handle order submission
+        async function handleOrderSubmission(e) {
+            e.preventDefault();
+            
+            const customerName = document.getElementById('customerName').value.trim();
+            const paymentMethod = document.getElementById('paymentMethod').value;
+            
+            if (!customerName || !paymentMethod || !selectedLocation || !selectedProduct) {
+                alert('Please fill in all required fields');
+                return;
+            }
+
+            submitOrderBtn.disabled = true;
+            submitOrderBtn.textContent = 'Placing Order...';
+
+            try {
+                // Create order in Firestore
+                await db.collection('orders').add({
+                    customerName: customerName,
+                    productName: selectedProduct.name,
+                    price: selectedProduct.price,
+                    paymentMethod: paymentMethod,
+                    deliveryLocation: selectedLocation,
+                    createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+                    status: 'pending'
+                });
+
+                // Update product stock
+                await db.collection('products').doc(selectedProduct.id).update({
+                    stock: firebase.firestore.FieldValue.increment(-1)
+                });
+
+                alert('Order placed successfully! We will contact you soon.');
+                closeOrderModal();
+                
+            } catch (error) {
+                console.error('Error placing order:', error);
+                alert('Error placing order. Please try again.');
+            } finally {
+                submitOrderBtn.disabled = false;
+                submitOrderBtn.textContent = 'Place Order';
+            }
+        }
+
+        // Submit review
+        async function submitReview() {
+            const name = document.getElementById('reviewName').value;
+            const comment = document.getElementById('reviewComment').value;
+            const stars = document.querySelectorAll('#ratingInput .fas').length;
+            
+            if (!name || !comment || stars === 0) {
+                alert('Please fill in all fields and select a rating');
+                return;
+            }
+            
+            try {
+                await db.collection('testimonials').add({
+                    name: name,
+                    rating: stars,
+                    comment: comment,
+                    timestamp: firebase.firestore.FieldValue.serverTimestamp()
+                });
+                
+                alert('Thank you for your review!');
+                document.getElementById('reviewName').value = '';
+                document.getElementById('reviewComment').value = '';
+                updateRatingStars(0);
+                loadTestimonialsFromFirestore();
+            } catch (error) {
+                console.error('Error submitting review:', error);
+                alert('Error submitting review. Please try again.');
+            }
+        }
+
+        // Filter products by brand
+        async function filterProductsByBrand(brand) {
+            try {
+                productsGrid.innerHTML = '<div class="loading"><div class="spinner"></div><p>Filtering products...</p></div>';
+                
+                const querySnapshot = await db.collection('products')
+                    .where('brand', '==', brand)
+                    .get();
+                
+                const filteredProducts = [];
+                querySnapshot.forEach((doc) => {
+                    const product = doc.data();
+                    product.id = doc.id;
+                    
+                    const normalizedName = normalizeProductName(product.name);
+                    product.image = imageMap[normalizedName] || product.image || 'https://via.placeholder.com/300x200?text=Product+Image';
+                    
+                    filteredProducts.push(product);
+                });
+                
+                renderProducts(filteredProducts);
+            } catch (error) {
