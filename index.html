@@ -1393,26 +1393,41 @@
             return 0;
         }
 
-        // Enhanced image URL fixer for Imgur and other sources
-        function fixImageUrl(url) {
+        // Convert Imgur URLs to direct image URLs
+        function convertImgurUrl(url) {
             if (!url) return 'https://via.placeholder.com/300x200?text=No+Image';
             
-            // Handle Imgur URLs
-            if (url.includes('imgur.com')) {
-                // Already has extension
-                if (/\.(jpg|jpeg|png|gif|webp)$/i.test(url)) {
-                    return url;
-                }
-                
-                // Add .jpg if no extension and not already processed
-                if (!url.includes('?') && !/\.(jpg|jpeg|png|gif|webp)$/i.test(url)) {
-                    return url + '.jpg';
-                }
-                
+            // If it's already a direct image URL, return as is
+            if (/\.(jpg|jpeg|png|gif|webp)$/i.test(url)) {
                 return url;
             }
             
-            // Handle other URLs
+            // Handle Imgur URLs
+            if (url.includes('imgur.com')) {
+                // Handle direct Imgur links
+                if (url.includes('i.imgur.com')) {
+                    // Already a direct link, just ensure it has an extension
+                    if (!/\.(jpg|jpeg|png|gif|webp)$/i.test(url)) {
+                        return url + '.jpg';
+                    }
+                    return url;
+                }
+                
+                // Handle Imgur gallery links
+                const imgurRegex = /imgur\.com\/(?:a\/|gallery\/)?([a-zA-Z0-9]+)/;
+                const match = url.match(imgurRegex);
+                
+                if (match && match[1]) {
+                    // Convert to direct image URL
+                    return `https://i.imgur.com/${match[1]}.jpg`;
+                }
+            }
+            
+            // For other URLs, try to add extension if missing
+            if (!url.includes('?') && !/\.(jpg|jpeg|png|gif|webp)$/i.test(url)) {
+                return url + '.jpg';
+            }
+            
             return url;
         }
 
@@ -1478,20 +1493,20 @@
             
             productList.innerHTML = '';
             products.forEach(product => {
-                // Try multiple field names for image
+                // Convert image URL
                 let imageUrl = 'https://via.placeholder.com/300x200?text=No+Image';
                 
                 // Check for various image field names
                 if (product.image) {
-                    imageUrl = fixImageUrl(product.image);
+                    imageUrl = convertImgurUrl(product.image);
                 } else if (product.imageUrl) {
-                    imageUrl = fixImageUrl(product.imageUrl);
+                    imageUrl = convertImgurUrl(product.imageUrl);
                 } else if (product.image_url) {
-                    imageUrl = fixImageUrl(product.image_url);
+                    imageUrl = convertImgurUrl(product.image_url);
                 } else if (product.photo) {
-                    imageUrl = fixImageUrl(product.photo);
+                    imageUrl = convertImgurUrl(product.photo);
                 } else if (product.picture) {
-                    imageUrl = fixImageUrl(product.picture);
+                    imageUrl = convertImgurUrl(product.picture);
                 }
                 
                 // Safely parse price
@@ -1534,19 +1549,19 @@
         function showProductDetails(productId, products) {
             const product = products.find(p => p.id === productId);
             if (product) {
-                // Try multiple field names for main image
+                // Convert main image URL
                 let mainImageUrl = 'https://via.placeholder.com/300x300?text=No+Image';
                 
                 if (product.image) {
-                    mainImageUrl = fixImageUrl(product.image);
+                    mainImageUrl = convertImgurUrl(product.image);
                 } else if (product.imageUrl) {
-                    mainImageUrl = fixImageUrl(product.imageUrl);
+                    mainImageUrl = convertImgurUrl(product.imageUrl);
                 } else if (product.image_url) {
-                    mainImageUrl = fixImageUrl(product.image_url);
+                    mainImageUrl = convertImgurUrl(product.image_url);
                 } else if (product.photo) {
-                    mainImageUrl = fixImageUrl(product.photo);
+                    mainImageUrl = convertImgurUrl(product.photo);
                 } else if (product.picture) {
-                    mainImageUrl = fixImageUrl(product.picture);
+                    mainImageUrl = convertImgurUrl(product.picture);
                 }
                 
                 modalMainImg.src = mainImageUrl;
@@ -1598,22 +1613,22 @@
                 if (galleryImages && galleryImages.length > 0) {
                     galleryImages.forEach((imgUrl, index) => {
                         if (imgUrl) {
-                            // Fix gallery image URLs
-                            const fixedUrl = fixImageUrl(imgUrl.trim());
-                            console.log("Processing gallery image:", fixedUrl);
+                            // Convert gallery image URLs
+                            const convertedUrl = convertImgurUrl(imgUrl.trim());
+                            console.log("Processing gallery image:", convertedUrl);
                             
                             const img = document.createElement('img');
-                            img.src = fixedUrl;
+                            img.src = convertedUrl;
                             img.alt = `Gallery image ${index + 1}`;
                             img.className = 'gallery-img';
                             if (index === 0) img.classList.add('active');
                             img.addEventListener('click', () => {
-                                modalMainImg.src = fixedUrl;
+                                modalMainImg.src = convertedUrl;
                                 document.querySelectorAll('.gallery-img').forEach(g => g.classList.remove('active'));
                                 img.classList.add('active');
                             });
                             img.onerror = function() {
-                                console.log("Failed to load gallery image:", fixedUrl);
+                                console.log("Failed to load gallery image:", convertedUrl);
                                 this.src = 'https://via.placeholder.com/80x80?text=No+Image';
                                 this.onerror = null;
                             };
@@ -1676,19 +1691,19 @@
                 if (existingItem) {
                     existingItem.quantity += 1;
                 } else {
-                    // Try multiple field names for image
+                    // Convert image URL
                     let imageUrl = 'https://via.placeholder.com/60x60?text=No+Image';
                     
                     if (product.image) {
-                        imageUrl = fixImageUrl(product.image);
+                        imageUrl = convertImgurUrl(product.image);
                     } else if (product.imageUrl) {
-                        imageUrl = fixImageUrl(product.imageUrl);
+                        imageUrl = convertImgurUrl(product.imageUrl);
                     } else if (product.image_url) {
-                        imageUrl = fixImageUrl(product.image_url);
+                        imageUrl = convertImgurUrl(product.image_url);
                     } else if (product.photo) {
-                        imageUrl = fixImageUrl(product.photo);
+                        imageUrl = convertImgurUrl(product.photo);
                     } else if (product.picture) {
-                        imageUrl = fixImageUrl(product.picture);
+                        imageUrl = convertImgurUrl(product.picture);
                     }
                     
                     cart.push({
