@@ -1,666 +1,218 @@
-import React, { useState, useEffect, useMemo } from 'react';
-import { ShoppingBag, Search, Menu, X, MapPin, Star, ChevronRight, ArrowLeft, Filter, Instagram, Phone, Video } from 'lucide-react';
-
-// ==========================================
-// 1. DATA LAYER (src/data/products.js)
-// ==========================================
-
-// Raw product data from user request
-const RAW_PRODUCTS = [
-  { id: 101, brand: "55h+", category: "Oil", name: "55H+ Paris Cristaline", price: 500, size: "500ml", image: "https://i.imgur.com/N8KJAoA.jpg", description: "Fine glycerine, eclaircissant intense." },
-  { id: 102, brand: "7d", category: "Supplements", name: "Alpha Arbutin Collagen Peptide Drink", price: 3000, size: "8 pcs 50ml each", image: "https://i.imgur.com/8jg1ugI.jpg", description: "Smooth skin, whitening, anti aging, clear and glow skin." },
-  { id: 103, brand: "Aqua Rich", category: "Lotion", name: "Aqua Rich Hydrating Bright Body Lotion", price: 1500, size: "500ml", image: "https://imgur.com/QLK6qwk.jpg", description: "Contains turmeric and vitamin C." },
-  { id: 104, brand: "Aqua Rich", category: "Lotion", name: "Aqua Rich Bright + Balance Body Lotion", price: 1500, size: "500ml", image: "https://imgur.com/h4jY6DR.jpg", description: "Contains niacinamide, alpha arbutin and TXA." },
-  { id: 105, brand: "Axis-y", category: "Cream", name: "Dark Spot Correcting Glow Cream", price: 1800, size: "50ml", image: "https://imgur.com/LviXRD2.jpg", description: "Alpha arbutin ceramide NP centella asiatica leaf extract." },
-  { id: 106, brand: "Daynee", category: "Supplements", name: "Daynee Apple Cider Vinegar Gummies", price: 1500, size: "60 gummies", image: "https://imgur.com/a/UkoZSz3.jpg", description: "Apple cider vinegar gummies." },
-  { id: 107, brand: "Daynee", category: "Supplements", name: "Daynee Evening Primrose Oil", price: 1200, size: "100 capsules", image: "https://imgur.com/WPxtzOE.jpg", description: "Contains gamma linolic acid 1000mg." },
-  { id: 108, brand: "Daynee", category: "Supplements", name: "Daynee Flat Tummy Gummies", price: 1200, size: "60 gummies", image: "https://imgur.com/0G5vtK7.jpg", description: "Advanced formula with vitamins B. Break down carbohydrates, detoxify and healthy gut, assist metabolism." },
-  { id: 109, brand: "Daynee", category: "Supplements", name: "Daynee Keto ACV Weight Loss Gummies", price: 1500, size: "60 gummies", image: "https://imgur.com/KO0AfTd.jpg", description: "Weight loss gummies." },
-  { id: 110, brand: "Daynee", category: "Supplements", name: "Daynee Omega 3 Fish Oil", price: 1500, size: "100 capsules", image: "https://imgur.com/XpzQtnQ.jpg", description: "1000mg omega 3." },
-  { id: 111, brand: "Daynee", category: "Supplements", name: "Daynee Shilajit 1000mg", price: 1500, size: "60 gummies", image: "https://imgur.com/dD7qnt0.jpg", description: "Shilajit gummies 1000mg." },
-  { id: 112, brand: "Duozi", category: "Supplements", name: "Duozi Sexy Hip Butt Enlargement Drink", price: 3000, size: "10 bottles", image: "https://imgur.com/1oEokUT.jpg", description: "Quick effect hip/butt enlargement maca plus." },
-  { id: 113, brand: "Estelin", category: "Cream", name: "Estelin Alpha Arbutin + Niacinamide", price: 1500, size: "200g", image: "https://imgur.com/qkOXdVw.jpg", description: "Contains niacinamide for brightening skin tone, fade spots and melanin." },
-  { id: 114, brand: "Estelin", category: "Cream", name: "Estelin Hyaluronic Acid + Polyglutamic", price: 1245, size: "200g", image: "https://imgur.com/HKxHzNK.jpg", description: "Reduce fine lines. 24 hour moisture. For youthful and supple skin." },
-  { id: 115, brand: "Estelin", category: "Cream", name: "Estelin Peptide Collagen Firming Cream", price: 1000, size: "200g", image: "https://imgur.com/aPCstcI.jpg", description: "Collagen boosting. Deeply hydrating. Keeps skin firm and resilient." },
-  { id: 116, brand: "Estelin", category: "Cream", name: "Estelin Retinol + Fullerene Age Defying", price: 2999, size: "200g", image: "https://imgur.com/YS3M62m.jpg", description: "Deeply hydrating. Improves skin elasticity. Smooths and firms skin." },
-  { id: 117, brand: "Estelin", category: "Sunscreen", name: "Estelin Sunscreen", price: 500, size: "50g", image: "https://imgur.com/et0IKFx.jpg", description: "Ultra light hydrating invisible." },
-  { id: 118, brand: "Estelin", category: "Sunscreen", name: "Estelin Sunscreen Lotion", price: 700, size: "75g", image: "https://imgur.com/RVsMAQh.jpg", description: "Super moisturizing." },
-  { id: 119, brand: "Estelin", category: "Cream", name: "Estelin Turmeric + Vitamin C Cream", price: 455, size: "400g", image: "https://imgur.com/paIuwd0.jpg", description: "Contains turmeric + vitamin C for fading dark spots and delaying signs of aging." },
-  { id: 120, brand: "Fair and White", category: "Oil", name: "Fair and White Paris Gold Ultimate", price: 1200, size: "200ml", image: "https://imgur.com/zIuT5cv.jpg", description: "Nutri active. Anti stretch marks oil. Protective regenerating." },
-  { id: 121, brand: "Golden Glow", category: "Shower Gel", name: "Golden Glow Shower Gel", price: 1000, size: "1000ml", image: "https://imgur.com/9MgMzVw.jpg", description: "Golden glow shower cream with goat milk vitamin C and niacinamide." },
-  { id: 122, brand: "LifeCell", category: "Supplements", name: "LifeCell Womens Melatonin Gummies", price: 1600, size: "60 gummies", image: "https://imgur.com/cxz3d7Q.jpg", description: "Has collagen and provides 10 essential vitamins and minerals." },
-  { id: 123, brand: "LifeCell", category: "Supplements", name: "LifeCell Marine Collagen", price: 2200, size: "N/A", image: "https://imgur.com/VzkCrw5.jpg", description: "Unflavored collagen with hyaluronic acid, vitamin C and MSM. 8g per serving." },
-  { id: 124, brand: "Medix", category: "Lotion", name: "Medix Vitamin C + Turmeric", price: 1100, size: "444ml", image: "https://imgur.com/EtHn4CH.jpg", description: "Body treatment cream that provides a bright and firm skin." },
-  { id: 125, brand: "Roushun", category: "Shower Gel", name: "Roushun Arbutin & Kojic Acid Scrub", price: 1500, size: "1000ml", image: "https://imgur.com/cCJ9eaF.jpg", description: "Fast action and skin repair shower gel." },
-  { id: 126, brand: "Sadoer", category: "Toner", name: "Sadoer 7% Glycolic Acid + Ceramide", price: 1000, size: "230ml", image: "https://imgur.com/a/UkoZSz3.jpg", description: "Glycolic acid moisturizes facial toner." },
-  { id: 127, brand: "Wins Town", category: "Supplements", name: "Wins Town Breast Enhancement", price: 1200, size: "60 capsules", image: "https://imgur.com/72bIpo1.jpg", description: "A-D boobs enlargement and lifting with pueraria, papaya, angelica, almonds." },
-  { id: 128, brand: "Wins Town", category: "Supplements", name: "Wins Town Frozen Collagen 2in1", price: 1500, size: "60 capsules", image: "https://imgur.com/w0XLRvH.jpg", description: "Premium collagen peptide 30000mg and L-glutathione 10000mg." },
-  { id: 129, brand: "Wins Town", category: "Supplements", name: "Wins Town Sea Moss Black Seed Oil", price: 1500, size: "60 capsules", image: "https://imgur.com/0TccyU4.jpg", description: "16 in 1 supplement for extra strength. Ashwagandha included." },
-  { id: 130, brand: "Wins Town", category: "Supplements", name: "Wins Town Weight Gainer", price: 1500, size: "500g", image: "https://imgur.com/aJo7Qer.jpg", description: "High protein gainer powder supplement." }
-];
-
-// Helper to extract unique values for filters
-const getUniqueValues = (data, key) => [...new Set(data.map(item => item[key]))].sort();
-
-const CATEGORIES = getUniqueValues(RAW_PRODUCTS, 'category');
-const BRANDS = getUniqueValues(RAW_PRODUCTS, 'brand');
-
-// Add rating property for UI consistency (randomized between 4.0 and 5.0 for demo)
-const PRODUCTS = RAW_PRODUCTS.map(p => ({
-  ...p,
-  rating: (4 + Math.random()).toFixed(1)
-}));
-
-// ==========================================
-// 2. SHARED COMPONENTS (src/components/...)
-// ==========================================
-
-const GoldButton = ({ children, onClick, className = "", fullWidth = false, size = "normal" }) => (
-  <button
-    onClick={onClick}
-    className={`
-      ${fullWidth ? 'w-full' : ''}
-      bg-[#D4AF37] hover:bg-[#b5952f] text-black font-semibold 
-      transition-all duration-300 uppercase tracking-wider
-      ${size === "small" ? 'py-2 px-4 text-xs' : 'py-3 px-6 text-sm'}
-      ${className}
-    `}
-  >
-    {children}
-  </button>
-);
-
-const SectionTitle = ({ title, subtitle }) => (
-  <div className="text-center mb-12">
-    {subtitle && <p className="text-[#D4AF37] uppercase tracking-[0.2em] text-sm mb-2">{subtitle}</p>}
-    <h2 className="font-serif text-3xl md:text-4xl text-white">{title}</h2>
-    <div className="w-24 h-0.5 bg-[#D4AF37] mx-auto mt-4"></div>
-  </div>
-);
-
-// ==========================================
-// 3. PAGE COMPONENTS (src/pages/...)
-// ==========================================
-
-// --- NAVBAR ---
-const Navbar = ({ cartCount, onNavigate, currentView }) => {
-  const [isOpen, setIsOpen] = useState(false);
-
-  return (
-    <nav className="sticky top-0 z-50 bg-[#121212]/95 backdrop-blur-md border-b border-[#333]">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center h-20">
-          {/* Logo */}
-          <div 
-            onClick={() => onNavigate('home')}
-            className="flex-shrink-0 cursor-pointer flex items-center"
-          >
-            <img 
-              src="https://i.imgur.com/9Rgu8tm.jpg" 
-              alt="Adani Beauty Logo" 
-              className="h-16 w-auto object-contain rounded-full border border-[#D4AF37]"
-            />
-          </div>
-
-          {/* Desktop Links */}
-          <div className="hidden md:flex space-x-8">
-            {['Home', 'Shop', 'About'].map((item) => (
-              <button
-                key={item}
-                onClick={() => onNavigate(item.toLowerCase())}
-                className={`text-sm uppercase tracking-widest hover:text-[#D4AF37] transition-colors ${
-                  currentView === item.toLowerCase() ? 'text-[#D4AF37]' : 'text-gray-300'
-                }`}
-              >
-                {item}
-              </button>
-            ))}
-          </div>
-
-          {/* Icons */}
-          <div className="flex items-center space-x-6">
-            <div className="relative cursor-pointer" onClick={() => onNavigate('cart')}>
-              <ShoppingBag className="h-5 w-5 text-[#F7E7CE] hover:text-[#D4AF37]" />
-              {cartCount > 0 && (
-                <span className="absolute -top-2 -right-2 bg-[#D4AF37] text-black text-xs font-bold rounded-full h-4 w-4 flex items-center justify-center">
-                  {cartCount}
-                </span>
-              )}
-            </div>
-            
-            {/* Mobile Menu Button */}
-            <div className="md:hidden">
-              <button onClick={() => setIsOpen(!isOpen)} className="text-[#F7E7CE]">
-                {isOpen ? <X /> : <Menu />}
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* Mobile Menu */}
-      {isOpen && (
-        <div className="md:hidden bg-[#1a1a1a] border-b border-[#333]">
-          <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
-            {['Home', 'Shop', 'Cart'].map((item) => (
-              <button
-                key={item}
-                onClick={() => {
-                  onNavigate(item.toLowerCase());
-                  setIsOpen(false);
-                }}
-                className="text-gray-300 hover:text-[#D4AF37] block px-3 py-2 rounded-md text-base font-medium uppercase tracking-wider w-full text-left"
-              >
-                {item}
-              </button>
-            ))}
-          </div>
-        </div>
-      )}
-    </nav>
-  );
-};
-
-// --- HOME PAGE ---
-const HomePage = ({ onNavigate }) => (
-  <div className="animate-fade-in">
-    {/* Hero Section */}
-    <div className="relative h-[80vh] flex items-center justify-center overflow-hidden">
-      <div className="absolute inset-0">
-        <img 
-          src="https://images.unsplash.com/photo-1571781535467-347e30d924d0?auto=format&fit=crop&q=80&w=1920" 
-          alt="Luxury Spa" 
-          className="w-full h-full object-cover opacity-40"
-        />
-        <div className="absolute inset-0 bg-gradient-to-t from-[#121212] via-transparent to-transparent"></div>
-      </div>
-      
-      <div className="relative z-10 text-center px-4 max-w-4xl mx-auto">
-        <p className="text-[#D4AF37] uppercase tracking-[0.3em] mb-4 text-sm md:text-base">Define Your Radiance</p>
-        <h1 className="font-serif text-5xl md:text-7xl text-white mb-4 leading-tight">
-          Adani Beauty <br/> <span className="text-[#F7E7CE] italic">& Wellness</span>
-        </h1>
-        <p className="text-white/80 font-serif italic text-xl mb-8 tracking-wide">
-          "Glow from within with Adani"
-        </p>
-        <GoldButton onClick={() => onNavigate('shop')}>
-          Discover Collection
-        </GoldButton>
-      </div>
-    </div>
-
-    {/* Featured Categories */}
-    <div className="py-20 bg-[#121212] max-w-7xl mx-auto px-4">
-      <SectionTitle title="Shop by Category" subtitle="Curated For You" />
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-        {['Lotion', 'Supplements', 'Cream', 'Oil'].map((cat) => (
-          <div 
-            key={cat}
-            onClick={() => onNavigate('shop', { category: cat })}
-            className="group cursor-pointer relative aspect-square overflow-hidden bg-[#1a1a1a]"
-          >
-            <div className="absolute inset-0 bg-black/40 group-hover:bg-black/20 transition-all z-10"></div>
-            {/* Fallback image logic since some categories might not have generic images */}
-            <img 
-              src={PRODUCTS.find(p => p.category === cat)?.image} 
-              alt={cat}
-              className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700"
-            />
-            <div className="absolute inset-0 flex items-center justify-center z-20 border border-[#333] m-2 group-hover:border-[#D4AF37] transition-colors">
-              <h3 className="text-white font-serif text-xl tracking-widest">{cat}</h3>
-            </div>
-          </div>
-        ))}
-      </div>
-    </div>
-  </div>
-);
-
-// --- SHOP PAGE (With Filtering) ---
-const ShopPage = ({ onNavigate, onAddToCart, initialFilters }) => {
-  const [filters, setFilters] = useState({
-    categories: initialFilters?.category ? [initialFilters.category] : [],
-    brands: []
-  });
-  const [showFilters, setShowFilters] = useState(false);
-
-  const toggleFilter = (type, value) => {
-    setFilters(prev => {
-      const list = prev[type];
-      return {
-        ...prev,
-        [type]: list.includes(value) 
-          ? list.filter(item => item !== value) 
-          : [...list, value]
-      };
-    });
-  };
-
-  const filteredProducts = useMemo(() => {
-    return PRODUCTS.filter(product => {
-      const catMatch = filters.categories.length === 0 || filters.categories.includes(product.category);
-      const brandMatch = filters.brands.length === 0 || filters.brands.includes(product.brand);
-      return catMatch && brandMatch;
-    });
-  }, [filters]);
-
-  return (
-    <div className="max-w-[1600px] mx-auto px-4 py-8 animate-fade-in">
-      <SectionTitle title="The Collection" subtitle="Exclusive Products" />
-      
-      <div className="flex flex-col md:flex-row gap-8">
-        {/* Mobile Filter Toggle */}
-        <button 
-          className="md:hidden flex items-center justify-center space-x-2 text-[#D4AF37] border border-[#333] py-3 mb-4"
-          onClick={() => setShowFilters(!showFilters)}
-        >
-          <Filter size={18} />
-          <span>Filters</span>
-        </button>
-
-        {/* Sidebar Filters */}
-        <div className={`
-          md:w-56 flex-shrink-0 space-y-8
-          ${showFilters ? 'block' : 'hidden md:block'}
-        `}>
-          <div>
-            <h3 className="text-white font-serif text-lg mb-4 border-b border-[#333] pb-2">Categories</h3>
-            <div className="space-y-2 max-h-60 overflow-y-auto custom-scrollbar">
-              {CATEGORIES.map(cat => (
-                <label key={cat} className="flex items-center space-x-3 cursor-pointer group">
-                  <div className={`
-                    w-4 h-4 border flex-shrink-0 flex items-center justify-center
-                    ${filters.categories.includes(cat) ? 'bg-[#D4AF37] border-[#D4AF37]' : 'border-gray-600'}
-                  `}>
-                    {filters.categories.includes(cat) && <div className="w-2 h-2 bg-black"></div>}
-                  </div>
-                  <input 
-                    type="checkbox" 
-                    className="hidden"
-                    checked={filters.categories.includes(cat)}
-                    onChange={() => toggleFilter('categories', cat)}
-                  />
-                  <span className={`text-xs group-hover:text-[#D4AF37] transition-colors ${filters.categories.includes(cat) ? 'text-white' : 'text-gray-400'}`}>
-                    {cat}
-                  </span>
-                </label>
-              ))}
-            </div>
-          </div>
-
-          <div>
-            <h3 className="text-white font-serif text-lg mb-4 border-b border-[#333] pb-2">Brands</h3>
-            <div className="space-y-2 max-h-80 overflow-y-auto custom-scrollbar">
-              {BRANDS.map(brand => (
-                <label key={brand} className="flex items-center space-x-3 cursor-pointer group">
-                  <div className={`
-                    w-4 h-4 border flex-shrink-0 flex items-center justify-center
-                    ${filters.brands.includes(brand) ? 'bg-[#D4AF37] border-[#D4AF37]' : 'border-gray-600'}
-                  `}>
-                    {filters.brands.includes(brand) && <div className="w-2 h-2 bg-black"></div>}
-                  </div>
-                  <input 
-                    type="checkbox" 
-                    className="hidden"
-                    onChange={() => toggleFilter('brands', brand)}
-                  />
-                  <span className={`text-xs group-hover:text-[#D4AF37] transition-colors ${filters.brands.includes(brand) ? 'text-white' : 'text-gray-400'}`}>
-                    {brand}
-                  </span>
-                </label>
-              ))}
-            </div>
-          </div>
-        </div>
-
-        {/* Product Grid - Denser grid for smaller cards */}
-        <div className="flex-1">
-          <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4">
-            {filteredProducts.map(product => (
-              <div key={product.id} className="group bg-[#1a1a1a] border border-[#2a2a2a] hover:border-[#D4AF37] transition-all duration-300 flex flex-col">
-                <div 
-                  className="relative aspect-[4/5] overflow-hidden cursor-pointer"
-                  onClick={() => onNavigate('product', product)}
-                >
-                  <img 
-                    src={product.image} 
-                    alt={product.name}
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                    loading="lazy"
-                  />
-                  <div className="absolute bottom-0 w-full p-2 translate-y-full group-hover:translate-y-0 transition-transform duration-300 bg-black/80 backdrop-blur-sm">
-                     <GoldButton fullWidth size="small" onClick={(e) => {
-                       e.stopPropagation();
-                       onAddToCart(product);
-                     }}>
-                       Add
-                     </GoldButton>
-                  </div>
-                </div>
-                <div className="p-3 text-center flex-1 flex flex-col justify-between">
-                  <div>
-                    <p className="text-[0.65rem] text-gray-500 uppercase tracking-widest mb-1 truncate">{product.brand}</p>
-                    <h3 
-                      className="text-white font-serif text-sm leading-tight cursor-pointer hover:text-[#D4AF37] line-clamp-2 min-h-[2.5em]"
-                      onClick={() => onNavigate('product', product)}
-                    >
-                      {product.name}
-                    </h3>
-                  </div>
-                  <div className="mt-2">
-                    <p className="text-[0.65rem] text-gray-400 mb-1">{product.size}</p>
-                    <p className="text-[#D4AF37] font-semibold text-sm">KSh {product.price}</p>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-          {filteredProducts.length === 0 && (
-             <div className="text-center py-20 text-gray-400">
-               <p>No products match your filters.</p>
-               <button 
-                 onClick={() => setFilters({categories: [], brands: []})}
-                 className="mt-4 text-[#D4AF37] underline"
-               >
-                 Clear all filters
-               </button>
-             </div>
-          )}
-        </div>
-      </div>
-    </div>
-  );
-};
-
-// --- PRODUCT DETAILS PAGE ---
-const ProductDetails = ({ product, onAddToCart, onBack }) => {
-  if (!product) return null;
-
-  return (
-    <div className="max-w-7xl mx-auto px-4 py-12 animate-fade-in">
-      <button onClick={onBack} className="flex items-center text-gray-400 hover:text-[#D4AF37] mb-8 transition-colors">
-        <ArrowLeft size={20} className="mr-2" /> Back to Shop
-      </button>
-      
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
-        <div className="aspect-[4/5] bg-[#1a1a1a] overflow-hidden border border-[#333]">
-          <img src={product.image} alt={product.name} className="w-full h-full object-cover" />
-        </div>
-        
-        <div className="flex flex-col justify-center">
-          <p className="text-[#D4AF37] uppercase tracking-widest mb-2">{product.brand}</p>
-          <h1 className="text-4xl md:text-5xl font-serif text-white mb-4">{product.name}</h1>
-          <div className="flex items-center space-x-2 mb-6">
-            <Star size={18} fill="#D4AF37" className="text-[#D4AF37]" />
-            <span className="text-white">{product.rating} / 5.0</span>
-          </div>
-          
-          <p className="text-3xl text-white mb-2">KSh {product.price}</p>
-          <p className="text-gray-500 text-sm mb-8">Size: {product.size}</p>
-          
-          <p className="text-gray-400 leading-relaxed mb-8 text-lg">
-            {product.description}
-          </p>
-          
-          <div className="flex space-x-4">
-            <GoldButton className="flex-1" onClick={() => onAddToCart(product)}>
-              Add to Cart
-            </GoldButton>
-            <button className="border border-[#D4AF37] text-[#D4AF37] px-6 py-3 hover:bg-[#D4AF37] hover:text-black transition-all uppercase tracking-wider text-sm font-semibold">
-              Wishlist
-            </button>
-          </div>
-
-          <div className="mt-12 border-t border-[#333] pt-6 space-y-4">
-            <div className="flex justify-between text-gray-400 text-sm">
-              <span>Category</span>
-              <span className="text-white">{product.category}</span>
-            </div>
-            <div className="flex justify-between text-gray-400 text-sm">
-              <span>Availability</span>
-              <span className="text-[#D4AF37]">In Stock</span>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-};
-
-// --- CHECKOUT PAGE (With Google Maps Integration) ---
-const CheckoutPage = ({ cart, onBack }) => {
-  const [formData, setFormData] = useState({
-    firstName: '', lastName: '', address: '', city: ''
-  });
-  const [coords, setCoords] = useState(null);
-  
-  const total = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
-
-  const handleMapClick = (e) => {
-    // Simulating random coords near Nairobi for demo
-    const mockLat = -1.2921 + (Math.random() * 0.01 - 0.005);
-    const mockLng = 36.8219 + (Math.random() * 0.01 - 0.005);
-    setCoords({ lat: mockLat.toFixed(4), lng: mockLng.toFixed(4) });
-  };
-
-  return (
-    <div className="max-w-7xl mx-auto px-4 py-12 animate-fade-in">
-       <button onClick={onBack} className="flex items-center text-gray-400 hover:text-[#D4AF37] mb-8 transition-colors">
-        <ArrowLeft size={20} className="mr-2" /> Continue Shopping
-      </button>
-
-      <SectionTitle title="Checkout" subtitle="Secure Delivery" />
-
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
-        {/* Left: Form & Map */}
-        <div className="space-y-8">
-          <div className="bg-[#1a1a1a] p-6 border border-[#333]">
-            <h3 className="text-white font-serif text-xl mb-6">Shipping Details</h3>
-            <div className="grid grid-cols-2 gap-4 mb-4">
-              <input type="text" placeholder="First Name" className="bg-black border border-[#333] text-white p-3 focus:border-[#D4AF37] outline-none" />
-              <input type="text" placeholder="Last Name" className="bg-black border border-[#333] text-white p-3 focus:border-[#D4AF37] outline-none" />
-            </div>
-            <input type="text" placeholder="Address Line 1" className="w-full bg-black border border-[#333] text-white p-3 mb-4 focus:border-[#D4AF37] outline-none" />
-            <input type="text" placeholder="Phone Number" className="w-full bg-black border border-[#333] text-white p-3 focus:border-[#D4AF37] outline-none" />
-          </div>
-
-          {/* GOOGLE MAPS SECTION */}
-          <div className="bg-[#1a1a1a] p-6 border border-[#333]">
-            <div className="flex justify-between items-center mb-4">
-              <h3 className="text-white font-serif text-xl">Pin Delivery Location</h3>
-              {coords && <span className="text-xs text-[#D4AF37]">Selected: {coords.lat}, {coords.lng}</span>}
-            </div>
-            
-            <div 
-              className="relative w-full h-64 bg-[#222] border border-[#333] cursor-crosshair group overflow-hidden"
-              onClick={handleMapClick}
-            >
-              {/* Fake Map Visuals */}
-              <div className="absolute inset-0 opacity-20 bg-[url('https://upload.wikimedia.org/wikipedia/commons/thumb/e/ec/World_map_blank_without_borders.svg/2000px-World_map_blank_without_borders.svg.png')] bg-cover bg-center"></div>
-              <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-                 {!coords && <span className="text-gray-500 text-sm bg-black/50 px-3 py-1 rounded">Click to pin location</span>}
-              </div>
-              
-              {/* Marker */}
-              {coords && (
-                <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-red-500 animate-bounce">
-                  <MapPin size={32} fill="currentColor" />
-                </div>
-              )}
-            </div>
-          </div>
-        </div>
-
-        {/* Right: Order Summary */}
-        <div className="bg-[#1a1a1a] p-6 border border-[#333] h-fit sticky top-24">
-          <h3 className="text-white font-serif text-xl mb-6">Your Order</h3>
-          <div className="space-y-4 mb-6 max-h-60 overflow-y-auto pr-2 custom-scrollbar">
-            {cart.length === 0 ? (
-              <p className="text-gray-500">Your cart is empty.</p>
-            ) : (
-              cart.map((item, idx) => (
-                <div key={`${item.id}-${idx}`} className="flex justify-between items-center border-b border-[#333] pb-4">
-                  <div className="flex items-center space-x-4">
-                    <img src={item.image} alt={item.name} className="w-12 h-12 object-cover" />
-                    <div>
-                      <p className="text-white text-sm truncate max-w-[150px]">{item.name}</p>
-                      <p className="text-gray-500 text-xs">Qty: {item.quantity}</p>
-                    </div>
-                  </div>
-                  <p className="text-[#D4AF37]">KSh {(item.price * item.quantity).toFixed(0)}</p>
-                </div>
-              ))
-            )}
-          </div>
-          
-          <div className="space-y-2 border-t border-[#333] pt-4 mb-6">
-            <div className="flex justify-between text-gray-400">
-              <span>Subtotal</span>
-              <span>KSh {total.toFixed(0)}</span>
-            </div>
-            <div className="flex justify-between text-gray-400">
-              <span>Shipping</span>
-              <span>Calculated at next step</span>
-            </div>
-            <div className="flex justify-between text-white text-xl font-serif pt-4">
-              <span>Total</span>
-              <span>KSh {total.toFixed(0)}</span>
-            </div>
-          </div>
-
-          <GoldButton fullWidth onClick={() => alert("Proceeding to Payment Gateway Integration...")}>
-            Complete Order
-          </GoldButton>
-        </div>
-      </div>
-    </div>
-  );
-};
-
-// ==========================================
-// 4. MAIN APP CONTROLLER (src/App.jsx)
-// ==========================================
-
-export default function App() {
-  const [view, setView] = useState('home'); 
-  const [cart, setCart] = useState([]);
-  const [selectedProduct, setSelectedProduct] = useState(null);
-  const [shopFilters, setShopFilters] = useState({});
-
-  const navigate = (newView, params = {}) => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-    
-    if (newView === 'shop' && params.category) {
-      setShopFilters({ category: params.category });
-    }
-    
-    if (newView === 'product' && params) {
-      setSelectedProduct(params);
-    }
-
-    setView(newView);
-  };
-
-  const addToCart = (product) => {
-    setCart(prev => {
-      const existing = prev.find(item => item.id === product.id);
-      if (existing) {
-        return prev.map(item => item.id === product.id ? { ...item, quantity: item.quantity + 1 } : item);
-      }
-      return [...prev, { ...product, quantity: 1 }];
-    });
-  };
-
-  return (
-    <div className="min-h-screen bg-[#121212] text-gray-300 font-sans selection:bg-[#D4AF37] selection:text-black">
-      <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap');
-        
-        body { font-family: 'Lato', sans-serif; }
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Adani Beauty & Wellness</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- React & Babel for browser execution -->
+    <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Lato', sans-serif; background-color: #121212; color: #d1d5db; }
         .font-serif { font-family: 'Playfair Display', serif; }
-        
-        /* Custom Scrollbar */
-        ::-webkit-scrollbar { width: 8px; }
-        ::-webkit-scrollbar-track { bg: #121212; }
-        ::-webkit-scrollbar-thumb { background: #333; border-radius: 4px; }
-        ::-webkit-scrollbar-thumb:hover { background: #D4AF37; }
-
+        .custom-scrollbar::-webkit-scrollbar { width: 5px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: #121212; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #333; border-radius: 10px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: #D4AF37; }
         .animate-fade-in { animation: fadeIn 0.5s ease-out; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-      `}</style>
+    </style>
+</head>
+<body>
+    <div id="root"></div>
 
-      <Navbar 
-        cartCount={cart.reduce((acc, item) => acc + item.quantity, 0)} 
-        onNavigate={navigate} 
-        currentView={view}
-      />
+    <script type="text/babel">
+        const { useState, useMemo, useEffect } = React;
 
-      <main className="min-h-screen">
-        {view === 'home' && (
-          <HomePage onNavigate={navigate} />
-        )}
-        
-        {view === 'shop' && (
-          <ShopPage 
-            onNavigate={navigate} 
-            onAddToCart={addToCart} 
-            initialFilters={shopFilters}
-          />
-        )}
+        // --- ICON WRAPPER FOR LUCIDE ---
+        const Icon = ({ name, size = 20, className = "" }) => {
+            const [iconHtml, setIconHtml] = useState("");
+            useEffect(() => {
+                if (window.lucide) {
+                    const icon = window.lucide.icons[name];
+                    if (icon) {
+                        const svg = icon.toSvg({ width: size, height: size, class: className });
+                        setIconHtml(svg);
+                    }
+                }
+            }, [name, size, className]);
+            return <span dangerouslySetInnerHTML={{ __html: iconHtml }} />;
+        };
 
-        {view === 'product' && (
-          <ProductDetails 
-            product={selectedProduct} 
-            onAddToCart={addToCart}
-            onBack={() => navigate('shop')} 
-          />
-        )}
+        // --- PRODUCT DATA ---
+        const RAW_PRODUCTS = [
+            { id: 1, brand: "55h+", category: "Oil", name: "55H+ Paris Cristaline", price: 500, size: "500ml", image: "https://i.imgur.com/N8KJAoA.jpg", description: "Fine glycerine, eclaircissant intense." },
+            { id: 2, brand: "7d", category: "Supplements", name: "Alpha Arbutin Collagen Peptide Drink", price: 3000, size: "8 pcs 50ml each", image: "https://i.imgur.com/8jg1ugI.jpg", description: "Smooth skin, whitening, anti aging, clear and glow skin." },
+            { id: 3, brand: "Aqua Rich", category: "Lotion", name: "Aqua Rich Hydrating Bright Body Lotion", price: 1500, size: "500ml", image: "https://i.imgur.com/QLK6qwk.jpg", description: "Contains turmeric and vitamin C." },
+            { id: 4, brand: "Aqua Rich", category: "Lotion", name: "Aqua Rich Bright + Balance Body Lotion", price: 1500, size: "500ml", image: "https://i.imgur.com/h4jY6DR.jpg", description: "Contains niacinamide, alpha arbutin and TXA." },
+            { id: 5, brand: "Axis-y", category: "Cream", name: "Dark Spot Correcting Glow Cream", price: 1800, size: "50ml", image: "https://i.imgur.com/LviXRD2.jpg", description: "Alpha arbutin ceramide NP centella asiatica leaf extract." },
+            { id: 6, brand: "Daynee", category: "Supplements", name: "Daynee Apple Cider Vinegar Gummies", price: 1500, size: "60 gummies", image: "https://i.imgur.com/a/UkoZSz3.jpg", description: "Apple cider vinegar gummies." },
+            { id: 7, brand: "Daynee", category: "Supplements", name: "Daynee Evening Primrose Oil", price: 1200, size: "100 capsules", image: "https://i.imgur.com/WPxtzOE.jpg", description: "Contains gamma linolic acid 1000mg." },
+            { id: 8, brand: "Daynee", category: "Supplements", name: "Daynee Flat Tummy Gummies", price: 1200, size: "60 gummies", image: "https://i.imgur.com/0G5vtK7.jpg", description: "Detoxify and healthy gut, assist metabolism." },
+            { id: 9, brand: "Daynee", category: "Supplements", name: "Daynee Keto ACV Weight Loss Gummies", price: 1500, size: "60 gummies", image: "https://i.imgur.com/KO0AfTd.jpg", description: "Weight loss gummies." },
+            { id: 10, brand: "Daynee", category: "Supplements", name: "Daynee Omega 3 Fish Oil", price: 1500, size: "100 capsules", image: "https://i.imgur.com/XpzQtnQ.jpg", description: "1000mg omega 3." },
+            { id: 11, brand: "Daynee", category: "Supplements", name: "Daynee Shilajit 1000mg", price: 1500, size: "60 gummies", image: "https://i.imgur.com/dD7qnt0.jpg", description: "Shilajit gummies 1000mg." },
+            { id: 12, brand: "Duozi", category: "Supplements", name: "Duozi Sexy Hip Butt enlargement drink", price: 3000, size: "10 bottles", image: "https://i.imgur.com/1oEokUT.jpg", description: "Quick effect hip/butt enlargement." },
+            { id: 13, brand: "Estelin", category: "Cream", name: "Estelin Alpha Arbutin Whitening Cream", price: 1500, size: "200g", image: "https://i.imgur.com/qkOXdVw.jpg", description: "Niacinamide for brightening skin tone." },
+            { id: 14, brand: "Estelin", category: "Cream", name: "Estelin Hyaluronic Acid", price: 1245, size: "200g", image: "https://i.imgur.com/HKxHzNK.jpg", description: "Reduce fine lines. 24 hour moisture." },
+            { id: 15, brand: "Estelin", category: "Cream", name: "Estelin Peptide Collagen Firming", price: 1000, size: "200g", image: "https://i.imgur.com/aPCstcI.jpg", description: "Collagen boosting. Deeply hydrating." },
+            { id: 16, brand: "Estelin", category: "Cream", name: "Estelin Retinol Age Defying", price: 2999, size: "200g", image: "https://i.imgur.com/YS3M62m.jpg", description: "Smooths and firms skin." },
+            { id: 17, brand: "Estelin", category: "Sunscreen", name: "Estelin Sunscreen", price: 500, size: "50g", image: "https://i.imgur.com/et0IKFx.jpg", description: "Ultra light hydrating invisible." },
+            { id: 18, brand: "Estelin", category: "Sunscreen", name: "Estelin Sunscreen Lotion", price: 700, size: "75g", image: "https://i.imgur.com/RVsMAQh.jpg", description: "Super moisturizing." },
+            { id: 19, brand: "Estelin", category: "Cream", name: "Estelin Turmeric Brightening Cream", price: 455, size: "400g", image: "https://i.imgur.com/paIuwd0.jpg", description: "Fading dark spots." },
+            { id: 20, brand: "Fair and White", category: "Oil", name: "Fair and White Paris Gold", price: 1200, size: "200ml", image: "https://i.imgur.com/zIuT5cv.jpg", description: "Anti stretch marks oil." },
+            { id: 21, brand: "Golden Glow", category: "Shower Gel", name: "Golden Glow Shower Gel", price: 1000, size: "1000ml", image: "https://i.imgur.com/9MgMzVw.jpg", description: "With goat milk vitamin C." },
+            { id: 22, brand: "LifeCell", category: "Supplements", name: "LifeCell Womens Melatonin", price: 1600, size: "60 gummies", image: "https://i.imgur.com/cxz3d7Q.jpg", description: "Provides 10 essential vitamins." },
+            { id: 23, brand: "LifeCell", category: "Supplements", name: "LifeCell Marine Collagen", price: 2200, size: "N/A", image: "https://i.imgur.com/VzkCrw5.jpg", description: "Unflavored collagen with hyluronic acid." },
+            { id: 24, brand: "Medix", category: "Lotion", name: "Medix Vitamin C + Turmeric", price: 1100, size: "444ml", image: "https://i.imgur.com/EtHn4CH.jpg", description: "Body treatment cream." },
+            { id: 25, brand: "Roushun", category: "Shower Gel", name: "Roushun Arbutin Scrub Gel", price: 1500, size: "1000ml", image: "https://i.imgur.com/cCJ9eaF.jpg", description: "Fast action and skin repair." },
+            { id: 26, brand: "Sadoer", category: "Toner", name: "Sadoer 7% Glycolic Acid", price: 1000, size: "230ml", image: "https://i.imgur.com/a/UkoZSz3.jpg", description: "Glycolic acid moisturizes." },
+            { id: 27, brand: "Wins Town", category: "Supplements", name: "Wins Town Breast Enhancement", price: 1200, size: "60 capsules", image: "https://i.imgur.com/72bIpo1.jpg", description: "Enlargement and lifting." },
+            { id: 28, brand: "Wins Town", category: "Supplements", name: "Wins Town Frozen Collagen", price: 1500, size: "60 capsules", image: "https://i.imgur.com/w0XLRvH.jpg", description: "Premium collagen peptide." },
+            { id: 29, brand: "Wins Town", category: "Supplements", name: "Wins Town Sea Moss Black Seed", price: 1500, size: "60 capsules", image: "https://i.imgur.com/0TccyU4.jpg", description: "16 in 1 extra strength." },
+            { id: 30, brand: "Wins Town", category: "Supplements", name: "Wins Town Weight Gainer", price: 1500, size: "500g", image: "https://i.imgur.com/aJo7Qer.jpg", description: "High protein gainer powder." }
+        ];
 
-        {(view === 'cart' || view === 'checkout') && (
-          <CheckoutPage 
-            cart={cart} 
-            onBack={() => navigate('shop')} 
-          />
-        )}
-      </main>
+        const CATEGORIES = [...new Set(RAW_PRODUCTS.map(p => p.category))].sort();
 
-      <footer className="bg-black py-12 border-t border-[#333] mt-20">
-        <div className="max-w-7xl mx-auto px-4 text-center">
-          <div className="flex justify-center mb-6">
-            <img src="https://i.imgur.com/9Rgu8tm.jpg" alt="Logo" className="h-12 w-auto object-contain opacity-80" />
-          </div>
-          <p className="text-gray-500 text-sm mb-8 max-w-md mx-auto">Luxury wellness for the modern soul. Experience the finest selection of beauty products curated just for you.</p>
-          
-          <div className="flex justify-center flex-wrap gap-8 text-sm text-gray-400 mb-8">
-            <a 
-              href="https://www.instagram.com/adanii_beautyandwellness?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==" 
-              target="_blank" 
-              rel="noopener noreferrer"
-              className="flex items-center hover:text-[#D4AF37] transition-colors"
-            >
-              <Instagram size={18} className="mr-2" /> Instagram
-            </a>
-            <a 
-              href="https://wa.me/254723619431" 
-              target="_blank" 
-              rel="noopener noreferrer"
-              className="flex items-center hover:text-[#D4AF37] transition-colors"
-            >
-              <Phone size={18} className="mr-2" /> WhatsApp: +254 723 619 431
-            </a>
-            <a 
-              href="https://www.tiktok.com/@adanii.beauty?is_from_webapp=1&sender_device=pc" 
-              target="_blank" 
-              rel="noopener noreferrer"
-              className="flex items-center hover:text-[#D4AF37] transition-colors"
-            >
-              <Video size={18} className="mr-2" /> TikTok
-            </a>
-          </div>
+        // --- COMPONENTS ---
+        const GoldButton = ({ children, onClick, className = "", fullWidth = false, size = "normal" }) => (
+            <button onClick={onClick} className={`${fullWidth ? 'w-full' : ''} bg-[#D4AF37] hover:bg-[#b5952f] text-black font-semibold transition-all duration-300 uppercase tracking-wider ${size === "small" ? 'py-2 px-4 text-xs' : 'py-3 px-6 text-sm'} ${className}`}>
+                {children}
+            </button>
+        );
 
-          <p className="text-gray-700 text-xs">&copy; 2026 Adani Beauty & Wellness. All rights reserved.</p>
-        </div>
-      </footer>
-    </div>
-  );
-}
+        const Navbar = ({ cartCount, setView }) => (
+            <nav className="sticky top-0 z-50 bg-[#121212]/95 backdrop-blur-md border-b border-[#333]">
+                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex justify-between items-center">
+                    <img 
+                        src="https://i.imgur.com/9Rgu8tm.jpg" 
+                        alt="Logo" 
+                        className="h-16 w-16 object-cover rounded-full border border-[#D4AF37] cursor-pointer"
+                        onClick={() => setView('home')}
+                    />
+                    <div className="hidden md:flex space-x-8 text-xs uppercase tracking-[0.2em]">
+                        <button onClick={() => setView('home')} className="hover:text-[#D4AF37]">Home</button>
+                        <button onClick={() => setView('shop')} className="hover:text-[#D4AF37]">Shop</button>
+                    </div>
+                    <div className="flex items-center space-x-6 relative cursor-pointer" onClick={() => setView('cart')}>
+                        <Icon name="ShoppingBag" className="text-[#D4AF37]" />
+                        {cartCount > 0 && <span className="absolute -top-2 -right-2 bg-[#D4AF37] text-black text-[10px] font-bold rounded-full h-4 w-4 flex items-center justify-center">{cartCount}</span>}
+                    </div>
+                </div>
+            </nav>
+        );
+
+        const App = () => {
+            const [view, setView] = useState('home');
+            const [cart, setCart] = useState([]);
+            const [filter, setFilter] = useState("");
+
+            const addToCart = (p) => {
+                setCart(prev => {
+                    const exists = prev.find(i => i.id === p.id);
+                    if (exists) return prev.map(i => i.id === p.id ? {...i, qty: i.qty + 1} : i);
+                    return [...prev, {...p, qty: 1}];
+                });
+            };
+
+            const filteredProducts = RAW_PRODUCTS.filter(p => !filter || p.category === filter);
+
+            return (
+                <div className="min-h-screen">
+                    <Navbar cartCount={cart.reduce((a, b) => a + b.qty, 0)} setView={setView} />
+                    
+                    {view === 'home' && (
+                        <div className="animate-fade-in">
+                            <div className="h-[70vh] relative flex items-center justify-center text-center px-4">
+                                <div className="absolute inset-0 bg-black/60 z-10"></div>
+                                <img src="https://images.unsplash.com/photo-1596462502278-27bfad450526?auto=format&fit=crop&q=80&w=1600" className="absolute inset-0 w-full h-full object-cover" />
+                                <div className="relative z-20">
+                                    <h1 className="font-serif text-5xl md:text-7xl text-white mb-2">Adani Beauty</h1>
+                                    <p className="text-[#D4AF37] font-serif italic text-xl mb-8">"Glow from within with Adani"</p>
+                                    <GoldButton onClick={() => setView('shop')}>Shop Collection</GoldButton>
+                                </div>
+                            </div>
+                        </div>
+                    )}
+
+                    {view === 'shop' && (
+                        <div className="max-w-[1400px] mx-auto px-4 py-12 animate-fade-in">
+                            <div className="flex flex-col md:flex-row gap-8">
+                                <div className="md:w-48 flex-shrink-0">
+                                    <h3 className="text-[#D4AF37] uppercase tracking-widest text-xs mb-4">Categories</h3>
+                                    <div className="space-y-2">
+                                        <button onClick={() => setFilter("")} className={`block text-sm ${!filter ? 'text-[#D4AF37]' : 'text-gray-500'}`}>All Products</button>
+                                        {CATEGORIES.map(c => (
+                                            <button key={c} onClick={() => setFilter(c)} className={`block text-sm ${filter === c ? 'text-[#D4AF37]' : 'text-gray-500'}`}>{c}</button>
+                                        ))}
+                                    </div>
+                                </div>
+                                <div className="flex-1 grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-3">
+                                    {filteredProducts.map(p => (
+                                        <div key={p.id} className="bg-[#1a1a1a] border border-[#2a2a2a] flex flex-col group overflow-hidden">
+                                            <div className="relative aspect-[4/5] overflow-hidden">
+                                                <img src={p.image} className="w-full h-full object-cover group-hover:scale-105 transition-transform" />
+                                                <div className="absolute bottom-0 w-full p-1 translate-y-full group-hover:translate-y-0 transition-transform">
+                                                    <GoldButton fullWidth size="small" onClick={() => addToCart(p)}>Add</GoldButton>
+                                                </div>
+                                            </div>
+                                            <div className="p-2 text-center flex-1 flex flex-col justify-between">
+                                                <div>
+                                                    <p className="text-[9px] text-gray-500 uppercase tracking-tighter">{p.brand}</p>
+                                                    <h3 className="text-white text-[11px] font-serif line-clamp-2 leading-tight h-8">{p.name}</h3>
+                                                </div>
+                                                <p className="text-[#D4AF37] text-xs font-bold mt-1">KSh {p.price}</p>
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+                        </div>
+                    )}
+
+                    {view === 'cart' && (
+                        <div className="max-w-xl mx-auto py-20 px-4 animate-fade-in text-center">
+                            <h2 className="font-serif text-3xl mb-8">Your Cart</h2>
+                            {cart.length === 0 ? <p>Cart is empty</p> : (
+                                <div className="space-y-4 text-left">
+                                    {cart.map(item => (
+                                        <div key={item.id} className="flex justify-between items-center border-b border-[#333] pb-2">
+                                            <span>{item.name} (x{item.qty})</span>
+                                            <span>KSh {item.price * item.qty}</span>
+                                        </div>
+                                    ))}
+                                    <div className="text-xl font-bold pt-4 text-right">Total: KSh {cart.reduce((a, b) => a + (b.price * b.qty), 0)}</div>
+                                    <GoldButton fullWidth onClick={() => window.open(`https://wa.me/254723619431?text=I'd like to order: ${cart.map(i => i.name).join(', ')}`, '_blank')}>Order via WhatsApp</GoldButton>
+                                </div>
+                            )}
+                        </div>
+                    )}
+
+                    <footer className="bg-black py-16 mt-20 border-t border-[#333]">
+                        <div className="max-w-4xl mx-auto px-4 text-center">
+                            <img src="https://i.imgur.com/9Rgu8tm.jpg" className="h-12 w-12 rounded-full mx-auto mb-4 border border-[#D4AF37]" />
+                            <p className="text-sm italic mb-8">"Glow from within with Adani"</p>
+                            <div className="flex justify-center gap-6 mb-8 text-xs">
+                                <a href="https://wa.me/254723619431" className="flex items-center hover:text-[#D4AF37]"><Icon name="Phone" size={14} className="mr-1" /> WhatsApp</a>
+                                <a href="https://www.instagram.com/adanii_beautyandwellness" className="flex items-center hover:text-[#D4AF37]"><Icon name="Instagram" size={14} className="mr-1" /> Instagram</a>
+                            </div>
+                            <p className="text-[10px] text-gray-700">© 2026 Adani Beauty. Designed for Excellence.</p>
+                        </div>
+                    </footer>
+                </div>
+            );
+        };
+
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<App />);
+    </script>
+</body>
+</html>
